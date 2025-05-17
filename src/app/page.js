@@ -1,6 +1,41 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 export default function HomePage() {
+  const images = [
+    "/images/bungkerkaliadem.jpg",
+    "/images/BatuAlien.jpeg.jpg",
+    "/images/MuseumMini.jpeg.jpg",
+  ];
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Auto slide tiap 5 detik
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === images.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Fungsi ke slide sebelumnya
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+    );
+  };
+
+  // Fungsi ke slide berikutnya
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
   return (
     <main className="bg-white text-gray-800">
       {/* Header */}
@@ -29,25 +64,36 @@ export default function HomePage() {
       </header>
 
       {/* Hero Slider Section */}
-      <section className="relative overflow-hidden">
-        <div className="flex overflow-x-auto no-scrollbar snap-x">
-          {[
-            "/images/bungkerkaliadem.jpg",
-            "/images/BatuAlien.jpeg.jpg",
-            "/images/MuseumMini.jpeg.jpg",
-          ].map((src, idx) => (
-            <div key={idx} className="flex-shrink-0 w-full snap-center">
-              <Image
-                src={src}
-                alt={`Slide ${idx + 1}`}
-                width={1920}
-                height={600}
-                className="w-full h-[600px] object-cover"
-                priority={idx === 0}
-              />
-            </div>
-          ))}
+      <section className="relative w-full h-[600px] flex items-center justify-center bg-black">
+        {/* Tombol prev */}
+        <button
+          onClick={prevSlide}
+          className="absolute left-4 z-10 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition"
+          aria-label="Previous Slide"
+        >
+          &#60;
+        </button>
+
+        {/* Gambar */}
+        <div className="w-full h-full relative">
+          <Image
+            src={images[currentIndex]}
+            alt={`Slide ${currentIndex + 1}`}
+            layout="fill"
+            objectFit="cover"
+            className="transition-opacity duration-1000"
+            priority
+          />
         </div>
+
+        {/* Tombol next */}
+        <button
+          onClick={nextSlide}
+          className="absolute right-4 z-10 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition"
+          aria-label="Next Slide"
+        >
+          &#62;
+        </button>
       </section>
 
       {/* Hero Section: Title + Description */}
@@ -64,37 +110,24 @@ export default function HomePage() {
         </p>
       </section>
 
-      {/* Jeep Packages & Booking Button */}
-      <section className="px-4 py-10 text-center">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-6">
-          Paket Jeep yang Tersedia
-        </h2>
-        <button className="bg-green-600 text-white py-2 px-6 rounded-full hover:bg-green-700 mb-6">
-          🚙 Pesan Sekarang
+      {/* Jeep Icon + Pesan Sekarang dalam 1 button dengan lingkaran besar dan kotak persegi */}
+      <section className="px-4 py-10 flex justify-center">
+        <button
+          className="relative flex items-center py-3 px-8 rounded-md text-lg font-semibold hover:bg-blue-700 transition overflow-visible"
+          style={{ backgroundColor: "#3D6CB9" }}
+        >
+          <div
+            className="flex items-center justify-center w-16 h-16 rounded-full shadow-lg absolute -left-6"
+            style={{ backgroundColor: "#17294F" }}
+          >
+            <span className="text-white text-4xl">🚙</span>
+          </div>
+          <span className="ml-14 text-white">Pesan Sekarang!!!</span>
         </button>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-          {Array.from({ length: 6 }).map((_, idx) => (
-            <div
-              key={idx}
-              className="border p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow"
-            >
-              <Image
-                src="/images/bungkerkaliadem.jpg"
-                alt={`Paket Jeep ${idx + 1}`}
-                width={300}
-                height={200}
-                className="w-full h-32 object-cover rounded"
-              />
-              <p className="mt-2 font-medium text-gray-800">
-                Paket Jeep {idx + 1}
-              </p>
-            </div>
-          ))}
-        </div>
       </section>
 
       {/* Facilities Section */}
-      <section className="px-4 py-10 bg-gray-100">
+      <section className="px-4 py-10 bg-white-50">
         <h2 className="text-center text-2xl font-semibold mb-8">
           FASILITAS KAMI
         </h2>
@@ -106,6 +139,34 @@ export default function HomePage() {
             { label: "Mushola", src: "/images/PetilasanMbahMarijan.jpeg.jpg" },
             { label: "Kantin", src: "/images/TheLostWorldPark.jpg" },
             { label: "Sewa Skuter", src: "/images/TrackAir.jpeg.jpg" },
+          ].map((item, idx) => (
+            <div key={idx} className="text-center">
+              <div className="bg-white rounded-lg shadow hover:shadow-xl transition-shadow overflow-hidden">
+                <Image
+                  src={item.src}
+                  alt={item.label}
+                  width={300}
+                  height={240} // Tinggi gambar untuk SEO, tapi CSS mengatur tampilan
+                  className="w-full h-60 object-cover" // Ubah tinggi di sini
+                />
+              </div>
+              <p className="mt-3 font-medium text-gray-800">{item.label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Jeep Section */}
+      <section className="px-4 py-10">
+        <h2 className="text-center text-2xl font-semibold mb-8">JEEP KAMI</h2>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          {[
+            { label: "Jeep Merapi 1", src: "/images/TrackAir.jpeg.jpg" },
+            { label: "Jeep Merapi 2", src: "/images/TheLostWorldPark.jpg" },
+            { label: "Jeep Merapi 3", src: "/images/MuseumMini.jpeg.jpg" },
+            { label: "Jeep Merapi 4", src: "/images/bungkerkaliadem.jpg" },
+            { label: "Jeep Merapi 5", src: "/images/BatuAlien.jpeg.jpg" },
+            { label: "Jeep Merapi 6", src: "/images/TrackAir.jpeg.jpg" },
           ].map((item, idx) => (
             <div
               key={idx}
@@ -156,19 +217,13 @@ export default function HomePage() {
                     </span>
                   ))}
                 </div>
-                <div className="flex items-center gap-2 text-sm text-gray-600">
+                <div className="text-sm text-gray-600">
                   <div className="font-semibold">Pengguna {idx + 1}</div>
-                  <span className="text-gray-400">•</span>
-                  <div className="text-gray-500">2 hari yang lalu</div>
+                  <div className="text-gray-500 text-xs">2 hari yang lalu</div>
                 </div>
                 <div className="mt-4 flex items-center gap-2">
-                  <Image
-                    src="/images/google-icon.png"
-                    alt="Google"
-                    width={20}
-                    height={20}
-                    className="rounded-full"
-                  />
+                  <span className="text-lg">🌐</span>{" "}
+                  {/* Ikon Google sebagai emoji */}
                   <p className="text-sm font-medium text-gray-600">Google</p>
                 </div>
                 <div className="mt-4">
