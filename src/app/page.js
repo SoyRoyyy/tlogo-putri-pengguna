@@ -207,109 +207,21 @@ export default function HomePage() {
             ].map((review, idx) => (
               <div
                 key={idx}
-                className="bg-gray-100 rounded-lg p-6 shadow-lg transition-transform transform hover:scale-105"
+                className="bg-white p-6 rounded-xl shadow-lg border-l-4 border-blue-500"
               >
-                <p className="text-sm italic text-gray-700 mb-4">"{review}"</p>
-                <div className="flex items-center gap-1 mb-2">
-                  {Array.from({ length: 5 }).map((_, starIdx) => (
-                    <span key={starIdx} className="text-yellow-500 text-xl">
-                      ⭐
-                    </span>
-                  ))}
-                </div>
-                <div className="text-sm text-gray-600">
-                  <div className="font-semibold">Pengguna {idx + 1}</div>
-                  <div className="text-gray-500 text-xs">2 hari yang lalu</div>
-                </div>
-                <div className="mt-4 flex items-center gap-2">
-                  <span className="text-lg">🌐</span>{" "}
-                  {/* Ikon Google sebagai emoji */}
-                  <p className="text-sm font-medium text-gray-600">Google</p>
-                </div>
-                <div className="mt-4">
-                  <Image
-                    src="/images/bungkerkaliadem.jpg"
-                    alt="Gambar Ulasan"
-                    width={300}
-                    height={200}
-                    className="w-full h-32 object-cover rounded-lg"
-                  />
-                </div>
+                <p className="text-lg text-gray-800">{review}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
-
-      {/* Location Section with Google Maps */}
-      <section className="px-4 py-10 bg-gray-100">
-        <h2 className="text-center text-2xl font-semibold mb-6">Lokasi</h2>
-        <div className="max-w-4xl mx-auto">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3952.648632392294!2d110.44126721432394!3d-7.829266679660496!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a5798e1b3f5a9%3A0x7c53642b0378394a!2sTlogo%20Putri!5e0!3m2!1sen!2sid!4v1715600000000"
-            width="100%"
-            height="450"
-            allowFullScreen=""
-            loading="lazy"
-            className="rounded shadow"
-          ></iframe>
+      
+      {/* Footer Section */}
+      <footer className="bg-gray-900 text-white py-10">
+        <div className="text-center">
+          <p className="text-sm">&copy; 2025 Tlogo Putri. All rights reserved.</p>
         </div>
-      </section>
-
-      {/* Articles & News Section */}
-      <section className="px-4 py-10 bg-gray-50">
-        <h2 className="text-2xl font-semibold text-center mb-8 text-gray-800">
-          Artikel & Berita
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-          {Array.from({ length: 3 }).map((_, idx) => (
-            <div
-              key={idx}
-              className="bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105"
-            >
-              <Image
-                src="/images/TrackAir.jpeg.jpg"
-                alt={`Artikel ${idx + 1}`}
-                width={300}
-                height={200}
-                className="w-full h-48 object-cover"
-              />
-              <h3 className="mt-4 text-xl font-semibold text-gray-800 px-4">
-                Judul Artikel {idx + 1}
-              </h3>
-              <p className="text-sm text-gray-600 px-4 mb-4">
-                Deskripsi singkat artikel yang menjelaskan konten utama dengan
-                jelas dan menarik perhatian pembaca.
-              </p>
-              <button className="text-blue-600 hover:underline text-sm font-medium px-4 mb-4">
-                Baca Selengkapnya
-              </button>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="px-4 py-10 bg-gray-100">
-        <h2 className="text-center text-2xl font-semibold mb-8">FAQ's</h2>
-        <div className="max-w-2xl mx-auto space-y-4">
-          {[
-            "Apa saja jenis paket jeep yang tersedia?",
-            "Apakah bisa pesan online?",
-            "Di mana lokasi titik kumpul?",
-            "Apakah tersedia fasilitas keluarga?",
-            "Bagaimana jika cuaca buruk saat booking?",
-          ].map((q, idx) => (
-            <details key={idx} className="bg-white p-4 rounded shadow">
-              <summary className="cursor-pointer font-medium">{q}</summary>
-              <p className="mt-2 text-sm text-gray-600">
-                Jawaban dari pertanyaan ini akan muncul di sini.
-              </p>
-            </details>
-          ))}
-        </div>
-      </section>
+      </footer>
     </main>
   );
 }
-``;
