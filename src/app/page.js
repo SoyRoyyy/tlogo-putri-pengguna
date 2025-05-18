@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
+import Link from 'next/link';
+
 
 export default function HomePage() {
   const images = [
@@ -135,19 +137,22 @@ export default function HomePage() {
 
       {/* Jeep Icon + Pesan Sekarang dalam 1 button dengan lingkaran besar dan kotak persegi */}
       <section className="px-4 py-10 flex justify-center">
+        <Link href="/pemesanan" passHref>
         <button
-          className="relative flex items-center py-3 px-8 rounded-md text-lg font-semibold hover:bg-blue-700 transition overflow-visible"
-          style={{ backgroundColor: "#3D6CB9" }}
+        className="relative flex items-center py-3 px-8 rounded-md text-lg font-semibold hover:bg-blue-700 transition overflow-visible cursor-pointer"
+        style={{ backgroundColor: "#3D6CB9" }}
         >
           <div
-            className="flex items-center justify-center w-16 h-16 rounded-full shadow-lg absolute -left-6"
-            style={{ backgroundColor: "#17294F" }}
+          className="flex items-center justify-center w-16 h-16 rounded-full shadow-lg absolute -left-6"
+          style={{ backgroundColor: "#17294F" }}
           >
             <span className="text-white text-4xl">🚙</span>
-          </div>
-          <span className="ml-14 text-white">Pesan Sekarang!!!</span>
-        </button>
-      </section>
+            </div>
+            <span className="ml-14 text-white">Pesan Sekarang!!!</span>
+            </button>
+            </Link>
+            </section>
+
 
       {/* Facilities Section */}
       <section className="px-4 py-10 bg-gray-50" id="fasilitas">
@@ -188,7 +193,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                title: "Paket Jeep Merapi",
+                title: "PAKET 1",
                 details: [
                   "OFFROAD GROGOL",
                   "SPOT FOTO OPAK",
@@ -197,10 +202,10 @@ export default function HomePage() {
                   "TRACK AIR",
                 ],
                 image: "/images/jeep-merapi.jpg",
-                price: "Rp 500.000",
+                price: "Rp 400.000",
               },
               {
-                title: "Paket Goa Pindul",
+                title: "PAKET 2",
                 details: [
                   "OFFROAD GROGOL",
                   "SPOT FOTO OPAK",
@@ -210,10 +215,10 @@ export default function HomePage() {
                   "TRACK AIR",
                 ],
                 image: "/images/goa-pindul.jpg",
-                price: "Rp 350.000",
+                price: "Rp 450.000",
               },
               {
-                title: "Paket Kaliurang",
+                title: "PAKET 3",
                 details: [
                   "PETILASAN MBAH MARIJAN",
                   "SPOT FOTO OPAK",
@@ -222,10 +227,10 @@ export default function HomePage() {
                   "TRACK AIR",
                 ],
                 image: "/images/kaliurang.jpg",
-                price: "Rp 300.000",
+                price: "Rp 450.000",
               },
               {
-                title: "Paket Lava Tour",
+                title: "PAKET 4",
                 details: [
                   "OFFROAD GROGOL",
                   "PETILASAN MBAH MARIJAN",
@@ -235,10 +240,10 @@ export default function HomePage() {
                   "TRACK AIR",
                 ],
                 image: "/images/lava-tour.jpg",
-                price: "Rp 450.000",
+                price: "Rp 500.000",
               },
               {
-                title: "Paket City Tour Jogja",
+                title: "PAKET 5",
                 details: [
                   "PETILASAN MBAH MARIJAN",
                   "SPOT FOTO OPAK",
@@ -248,10 +253,10 @@ export default function HomePage() {
                   "TRACK AIR",
                 ],
                 image: "/images/city-tour.jpg",
-                price: "Rp 400.000",
+                price: "Rp 550.000",
               },
               {
-                title: "Paket Pantai Parangtritis",
+                title: "PAKET SUNRISE",
                 details: [
                   "BUNGKER KALI ADEM",
                   "SPOT FOTO JEEP",
@@ -260,7 +265,7 @@ export default function HomePage() {
                   "TRACK AIR",
                 ],
                 image: "/images/parangtritis.jpg",
-                price: "Rp 320.000",
+                price: "Rp 550.000",
               },
             ].map((paket, idx) => (
               <div
@@ -288,7 +293,7 @@ export default function HomePage() {
                       {paket.price}
                     </div>
                     <button
-                      className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+                      className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors cursor-pointer"
                       onClick={() => alert(`Pesan ${paket.title} sekarang!`)}
                     >
                       Pesan Sekarang
