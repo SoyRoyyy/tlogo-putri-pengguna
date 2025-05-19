@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
-import Link from 'next/link';
-
+import Link from "next/link";
 
 export default function HomePage() {
   const images = [
@@ -15,7 +14,6 @@ export default function HomePage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Auto-slide tiap 5 detik
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
@@ -31,65 +29,109 @@ export default function HomePage() {
 
   return (
     <main className="bg-white text-gray-800 font-sans">
-      {/* Header */}
-      <header className="flex justify-between items-center px-6 py-4 shadow-md sticky top-0 bg-white z-50 transition duration-300">
-        <div className="flex items-center space-x-3">
-          <Image src="/images/image.png" alt="Logo" width={40} height={40} />
-          <span className="font-bold text-xl text-green-700">Tlogo Putri</span>
+      <header className="flex justify-between items-center px-6 py-4 sticky top-0 bg-white z-50 shadow-md shadow-black/10">
+        {/* Logo kiri */}
+        <div className="flex items-center space-x-3 pl-1 md:pl-0">
+          <Image
+            src="/images/image.png"
+            alt="Logo"
+            width={40}
+            height={40}
+            className="block"
+          />
+          <span className="font-extrabold text-2xl text-black tracking-wide whitespace-nowrap">
+            Tlogo Putri
+          </span>
         </div>
-        <nav className="hidden md:flex space-x-6">
-          {["home", "paket", "fasilitas", "artikel", "about"].map((item) => (
-            <a
-              key={item}
-              href={`#${item}`}
-              className="text-gray-700 hover:text-green-600 transition font-medium capitalize"
-            >
-              {item}
-            </a>
-          ))}
-        </nav>
+
+        {/* Menu & toggle */}
+        <div className="flex items-center space-x-4">
+          {/* Desktop Menu */}
+          <nav className="hidden md:block">
+            <ul className="flex space-x-10 font-semibold text-black">
+              {["home", "paket", "fasilitas", "artikel", "about"].map(
+                (item) => (
+                  <li key={item} className="relative group">
+                    <a
+                      href={`#${item}`}
+                      className="capitalize px-3 py-1 transition-colors duration-300
+                      hover:text-blue-600 focus:text-blue-600 focus:outline-none"
+                    >
+                      {item}
+                    </a>
+                    {/* Underline Effect */}
+                    <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-blue-600 transition-all duration-300 group-hover:w-full" />
+                  </li>
+                )
+              )}
+            </ul>
+          </nav>
+
+          {/* Mobile Toggle */}
+          <button
+            className="md:hidden p-2 rounded-md text-black hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle Menu"
+            aria-expanded={menuOpen}
+          >
+            {menuOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
+        </div>
+
         {/* Mobile Menu */}
-        <button
-          className="md:hidden"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle Menu"
-        >
-          {menuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        {menuOpen && (
+          <nav className="md:hidden bg-white shadow-lg border-t border-gray-200 absolute top-full left-0 right-0 z-40">
+            <ul className="flex flex-col max-w-7xl mx-auto px-6 py-5 space-y-4 font-semibold text-black">
+              {["home", "paket", "fasilitas", "artikel", "about"].map(
+                (item) => (
+                  <li key={item}>
+                    <a
+                      href={`#${item}`}
+                      onClick={() => setMenuOpen(false)}
+                      className="block capitalize px-3 py-2 rounded-md hover:text-blue-600 focus:text-blue-600 focus:outline-none transition-colors duration-300"
+                    >
+                      {item}
+                    </a>
+                  </li>
+                )
+              )}
+            </ul>
+          </nav>
+        )}
       </header>
 
-      {/* Mobile nav menu */}
+      {/* Mobile Menu */}
       {menuOpen && (
-        <nav className="md:hidden px-6 py-4 bg-white shadow-md">
-          {["home", "paket", "fasilitas", "artikel", "about"].map((item) => (
-            <a
-              key={item}
-              href={`#${item}`}
-              onClick={() => setMenuOpen(false)}
-              className="block py-2 text-gray-700 hover:text-green-600 transition font-medium capitalize"
-            >
-              {item}
-            </a>
-          ))}
+        <nav className="md:hidden bg-white shadow-md">
+          <div className="max-w-7xl mx-auto px-4 py-4">
+            {["home", "paket", "fasilitas", "artikel", "about"].map((item) => (
+              <a
+                key={item}
+                href={`#${item}`}
+                onClick={() => setMenuOpen(false)}
+                className="block py-2 text-gray-700 hover:text-blue-600 transition font-medium capitalize"
+              >
+                {item}
+              </a>
+            ))}
+          </div>
         </nav>
       )}
 
       {/* Hero Slider */}
-      <section className="relative w-full h-[600px] flex items-center justify-center bg-black overflow-hidden">
-        {/* Gambar Slide */}
-        <div className="w-full h-full relative transition duration-1000 ease-in-out">
+      <section className="relative w-full h-screen flex items-center justify-center bg-black overflow-hidden">
+        <div className="absolute inset-0 z-0">
           <Image
             key={currentIndex}
             src={images[currentIndex]}
             alt={`Slide ${currentIndex + 1}`}
-            layout="fill"
-            objectFit="cover"
-            className="transition-opacity duration-1000 opacity-90"
+            fill
+            className="object-cover w-full h-full transition-opacity duration-1000 opacity-90"
             priority
           />
         </div>
 
-        {/* Tombol navigasi */}
+        {/* Slider Nav Buttons */}
         <button
           onClick={prevSlide}
           className="absolute left-4 z-10 bg-black bg-opacity-40 text-white p-3 rounded-full hover:bg-opacity-60 transition"
@@ -105,7 +147,7 @@ export default function HomePage() {
           &#10095;
         </button>
 
-        {/* Indikator slide */}
+        {/* Indicators */}
         <div className="absolute bottom-6 flex justify-center w-full space-x-2 z-10">
           {images.map((_, idx) => (
             <span
@@ -113,17 +155,17 @@ export default function HomePage() {
               onClick={() => setCurrentIndex(idx)}
               className={`w-3 h-3 rounded-full cursor-pointer transition ${
                 idx === currentIndex
-                  ? "bg-green-500"
+                  ? "bg-blue-600 shadow-lg shadow-blue-500/50"
                   : "bg-white bg-opacity-50 hover:bg-opacity-80"
               }`}
-            ></span>
+            />
           ))}
         </div>
       </section>
 
       {/* Hero Section: Title + Description */}
-      <section className="px-4 py-8 max-w-5xl mx-auto text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">
+      <section className="px-4 pt-10 pb-4 max-w-5xl mx-auto text-center">
+        <h1 className="text-3xl font-bold text-gray-900 mb-6">
           Nikmati Keindahan Alam Tlogo Putri — Liburan yang Tak Terlupakan!
         </h1>
         <p className="text-lg text-gray-700 leading-relaxed">
@@ -135,31 +177,33 @@ export default function HomePage() {
         </p>
       </section>
 
-      {/* Jeep Icon + Pesan Sekarang dalam 1 button dengan lingkaran besar dan kotak persegi */}
-      <section className="px-4 py-10 flex justify-center">
+      {/* Jeep Icon + Pesan Sekarang */}
+      <section className="px-4 pt-2 pb-12 flex justify-center">
         <Link href="/pemesanan" passHref>
-        <button
-        className="relative flex items-center py-3 px-8 rounded-md text-lg font-semibold hover:bg-blue-700 transition overflow-visible cursor-pointer"
-        style={{ backgroundColor: "#3D6CB9" }}
-        >
-          <div
-          className="flex items-center justify-center w-16 h-16 rounded-full shadow-lg absolute -left-6"
-          style={{ backgroundColor: "#17294F" }}
+          <button
+            className="relative flex items-center py-3 px-8 rounded-md text-lg font-semibold hover:bg-blue-700 transition overflow-visible cursor-pointer"
+            style={{ backgroundColor: "#3D6CB9" }}
           >
-            <span className="text-white text-4xl">🚙</span>
+            <div
+              className="flex items-center justify-center w-16 h-16 rounded-full shadow-lg absolute -left-6"
+              style={{ backgroundColor: "#17294F" }}
+            >
+              <span className="text-white text-4xl">🚙</span>
             </div>
             <span className="ml-14 text-white">Pesan Sekarang!!!</span>
-            </button>
-            </Link>
-            </section>
-
+          </button>
+        </Link>
+      </section>
 
       {/* Facilities Section */}
-      <section className="px-4 py-10 bg-gray-50" id="fasilitas">
-        <h2 className="text-center text-2xl font-semibold mb-8">
+      <section
+        className="px-6 py-12 bg-gradient-to-b from-white via-gray-50 to-white"
+        id="fasilitas"
+      >
+        <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
           FASILITAS KAMI
         </h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {[
             { label: "Tempat Parkir Luas", src: "/images/bungkerkaliadem.jpg" },
             { label: "Taman", src: "/images/MuseumMini.jpeg.jpg" },
@@ -168,133 +212,111 @@ export default function HomePage() {
             { label: "Kantin", src: "/images/TheLostWorldPark.jpg" },
             { label: "Sewa Skuter", src: "/images/TrackAir.jpeg.jpg" },
           ].map((item, idx) => (
-            <div key={idx} className="text-center">
-              <div className="bg-white rounded-lg shadow hover:shadow-xl transition-shadow overflow-hidden">
+            <div
+              key={idx}
+              className="bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer transform transition-transform duration-300 ease-in-out
+                   hover:scale-[1.05] hover:shadow-2xl"
+              data-aos="fade-up"
+              data-aos-delay={idx * 100}
+            >
+              <div className="relative w-full h-56 md:h-64 overflow-hidden">
                 <Image
                   src={item.src}
                   alt={item.label}
-                  width={300}
-                  height={240}
-                  className="w-full h-60 object-cover"
+                  fill
+                  className="object-cover object-center transition-transform duration-500 ease-in-out hover:scale-110"
+                  sizes="(max-width: 768px) 100vw,
+                   (max-width: 1200px) 50vw,
+                   33vw"
                 />
               </div>
-              <p className="mt-3 font-medium text-gray-800">{item.label}</p>
+              <p className="mt-4 mb-6 text-center font-semibold text-gray-800 text-lg select-none">
+                {item.label}
+              </p>
             </div>
           ))}
         </div>
       </section>
 
       {/* Paket Section */}
-      <section className="px-4 py-10 bg-gray-50">
+      <section className="px-6 py-14 bg-gray-50">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+          <h2 className="text-3xl font-extrabold text-gray-900 mb-10 text-center tracking-wide">
             Paket Wisata Populer
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
             {[
               {
                 title: "PAKET 1",
-                details: [
-                  "OFFROAD GROGOL",
-                  "SPOT FOTO OPAK",
-                  "MUSEUM MINI",
-                  "BATU ALIEN",
-                  "TRACK AIR",
-                ],
                 image: "/images/jeep-merapi.jpg",
                 price: "Rp 400.000",
               },
               {
                 title: "PAKET 2",
-                details: [
-                  "OFFROAD GROGOL",
-                  "SPOT FOTO OPAK",
-                  "MUSEUM MINI",
-                  "BATU ALIEN",
-                  "THE LOST WORLD PARK (TLWP)",
-                  "TRACK AIR",
-                ],
                 image: "/images/goa-pindul.jpg",
                 price: "Rp 450.000",
               },
               {
                 title: "PAKET 3",
-                details: [
-                  "PETILASAN MBAH MARIJAN",
-                  "SPOT FOTO OPAK",
-                  "BUNGKER KALI ADEM",
-                  "TRACK TEGONG/TEBING GENDOL",
-                  "TRACK AIR",
-                ],
                 image: "/images/kaliurang.jpg",
                 price: "Rp 450.000",
               },
               {
                 title: "PAKET 4",
-                details: [
-                  "OFFROAD GROGOL",
-                  "PETILASAN MBAH MARIJAN",
-                  "SPOT FOTO OPAK",
-                  "BUNGKER KALI ADEM",
-                  "BATU ALIEN/TLWP",
-                  "TRACK AIR",
-                ],
                 image: "/images/lava-tour.jpg",
                 price: "Rp 500.000",
               },
               {
                 title: "PAKET 5",
-                details: [
-                  "PETILASAN MBAH MARIJAN",
-                  "SPOT FOTO OPAK",
-                  "BUNKER KALI ADEM",
-                  "BATU ALIEN/TLWP",
-                  "MUSEUM MINI",
-                  "TRACK AIR",
-                ],
                 image: "/images/city-tour.jpg",
                 price: "Rp 550.000",
               },
               {
                 title: "PAKET SUNRISE",
-                details: [
-                  "BUNGKER KALI ADEM",
-                  "SPOT FOTO JEEP",
-                  "BATU ALIEN/TLWP",
-                  "MUSEUM MINI",
-                  "TRACK AIR",
-                ],
                 image: "/images/parangtritis.jpg",
                 price: "Rp 550.000",
               },
             ].map((paket, idx) => (
               <div
                 key={idx}
-                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
+                className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
               >
                 <Image
                   src={paket.image}
                   alt={paket.title}
                   width={400}
                   height={250}
-                  className="w-full h-48 object-cover"
+                  className="w-full h-56 object-cover rounded-t-xl"
                 />
-                <div className="p-4">
-                  <h3 className="text-lg font-semibold mb-2">{paket.title}</h3>
-                  {/* Ganti deskripsi dengan list paket yang akan didapat */}
-                  <ul className="list-disc list-inside text-gray-600 text-sm mb-4">
-                    {paket.details.map((item, i) => (
-                      <li key={i}>{item}</li>
-                    ))}
-                  </ul>
-
-                  <div className="flex items-center justify-between">
-                    <div className="font-bold text-green-600">
+                <div className="p-6 flex flex-col flex-grow justify-between">
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-xl font-semibold text-black tracking-tight">
+                      {paket.title}
+                    </h3>
+                    <button
+                      className="
+                  text-black font-semibold text-sm uppercase tracking-wide
+                  border-b-2 border-transparent
+                  pb-1
+                  hover:border-black
+                  hover:text-gray-800
+                  transition-all duration-300
+                  focus:outline-none focus:ring-2 focus:ring-black rounded
+                "
+                      onClick={() => alert(`Detail ${paket.title}`)}
+                      aria-label={`Detail ${paket.title}`}
+                    >
+                      Detail
+                    </button>
+                  </div>
+                  <div className="flex items-center justify-between mt-auto">
+                    <div className="font-extrabold text-blue-700 text-lg tracking-wide">
                       {paket.price}
                     </div>
                     <button
-                      className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors cursor-pointer"
+                      className="bg-blue-700 text-white px-5 py-2 rounded-lg hover:bg-blue-800 transition-colors font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
                       onClick={() => alert(`Pesan ${paket.title} sekarang!`)}
+                      aria-label={`Pesan ${paket.title} sekarang`}
                     >
                       Pesan Sekarang
                     </button>
@@ -422,109 +444,134 @@ export default function HomePage() {
       </section>
 
       {/* Articles & News Section */}
-      <section className="px-4 py-10 bg-gray-50">
-        <h2 className="text-2xl font-semibold text-center mb-8 text-gray-800">
-          Artikel & Berita
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-          {Array.from({ length: 3 }).map((_, idx) => (
-            <div
-              key={idx}
-              className="bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105"
-            >
-              <Image
-                src="/images/TrackAir.jpeg.jpg"
-                alt={`Artikel ${idx + 1}`}
-                width={300}
-                height={200}
-                className="w-full h-48 object-cover"
-              />
+      <section className="px-6 py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
+            Artikel & Berita
+          </h2>
 
-              <h3 className="mt-4 text-xl font-semibold text-gray-800 px-4">
-                Judul Artikel {idx + 1}
-              </h3>
-              <p className="text-sm text-gray-600 px-4 mb-4">
-                Deskripsi singkat artikel yang menjelaskan konten utama dengan
-                jelas dan menarik perhatian pembaca.
-              </p>
-              <button className="text-blue-600 hover:underline text-sm font-medium px-4 mb-4">
-                Baca Selengkapnya
-              </button>
-            </div>
-          ))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+            {[...Array(3)].map((_, idx) => (
+              <div
+                key={idx}
+                className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden flex flex-col"
+              >
+                <Image
+                  src="/images/TrackAir.jpeg.jpg"
+                  alt={`Artikel ${idx + 1}`}
+                  width={500}
+                  height={300}
+                  className="w-full h-52 object-cover"
+                />
+                <div className="p-6 flex-1 flex flex-col justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                      Judul Artikel {idx + 1}
+                    </h3>
+                    <p className="text-sm text-gray-600 mb-4 leading-relaxed">
+                      Deskripsi singkat artikel yang menjelaskan konten utama
+                      secara ringkas, padat, dan menarik minat pembaca untuk
+                      mengetahui lebih dalam.
+                    </p>
+                  </div>
+                  <div>
+                    <button className="text-blue-600 hover:text-blue-800 text-sm font-medium transition">
+                      Baca Selengkapnya →
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* Location Section with Google Maps */}
-      <section className="px-4 py-10 bg-white-100" id="about">
-        <h2 className="text-center text-2xl font-semibold mb-6">Lokasi</h2>
-        <div className="max-w-4xl mx-auto">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3952.648632392294!2d110.44126721432394!3d-7.829266679660496!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a5798e1b3f5a9%3A0x7c53642b0378394a!2sTlogo%20Putri!5e0!3m2!1sen!2sid!4v1715600000000"
-            width="100%"
-            height="450"
-            allowFullScreen=""
-            loading="lazy"
-            className="rounded shadow"
-            title="Lokasi Tlogo Putri"
-          ></iframe>
+      {/* Lokasi - Google Map Elegan dengan Padding */}
+      <section className="bg-gray-50 py-16" id="about">
+        <div className="max-w-10xl mx-auto px-6 sm:px-8 lg:px-10">
+          <h2 className="text-3xl font-bold text-star text-gray-800 mb-10">
+            Lokasi Kami
+          </h2>
+          <div className="rounded-lg shadow-lg overflow-hidden">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3952.648632392294!2d110.44126721432394!3d-7.829266679660496!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a5798e1b3f5a9%3A0x7c53642b0378394a!2sTlogo%20Putri!5e0!3m2!1sen!2sid!4v1715600000000"
+              width="100%"
+              height="500"
+              allowFullScreen=""
+              loading="lazy"
+              className="w-full h-[500px] border-0"
+              title="Lokasi Tlogo Putri"
+            ></iframe>
+          </div>
         </div>
       </section>
 
       {/* User Reviews Section */}
-      <section className="px-4 py-10 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-semibold text-gray-800">
+      <section className="px-6 py-16 bg-white">
+        <div className="max-w-10xl mx-auto px-6 sm:px-8 lg:px-10">
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-800">
               Ulasan Pengguna
             </h2>
-            <button className="text-blue-600 hover:underline">
+            <button className="text-blue-600 hover:underline text-sm font-medium">
               Lihat Semua
             </button>
           </div>
-          <p className="text-sm text-gray-600 mb-4">
-            Apa kata orang tentang kami?
+          <p className="text-base text-gray-500 mb-10">
+            Apa kata mereka yang sudah berkunjung dan merasakan pengalaman kami?
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+          <div
+            className="flex gap-6 overflow-x-auto pb-4"
+            style={{ scrollSnapType: "x mandatory", scrollbarWidth: "none" }}
+          >
             {[
               "Sangat seru dan menyenangkan! Saya akan kembali lagi!",
               "Pengalaman yang luar biasa, saya sangat menikmatinya!",
               "Tempat yang indah dan pemandangan yang luar biasa!",
+              "Pelayanan sangat ramah dan cepat!",
+              "Tempat sangat bersih dan nyaman, rekomended!",
             ].map((review, idx) => (
               <div
                 key={idx}
-                className="bg-gray-100 rounded-lg p-6 shadow-lg transition-transform transform hover:scale-105"
+                className="flex-shrink-0 w-[400px] bg-gray-50 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition duration-300 scroll-snap-align-start"
               >
-                <p className="text-sm italic text-gray-700 mb-4">"{review}"</p>
-                <div className="flex items-center gap-1 mb-2">
+                <p className="text-gray-700 italic mb-6 text-base leading-relaxed">
+                  "{review}"
+                </p>
+                <div className="flex items-center gap-1 mb-4">
                   {Array.from({ length: 5 }).map((_, starIdx) => (
-                    <span key={starIdx} className="text-yellow-500 text-xl">
+                    <span key={starIdx} className="text-yellow-400 text-xl">
                       ⭐
                     </span>
                   ))}
                 </div>
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <div className="font-semibold">Pengguna {idx + 1}</div>
-                  <span className="text-gray-400">•</span>
-                  <div className="text-gray-500">2 hari yang lalu</div>
+                <div className="flex items-center gap-2 text-base text-gray-500 mb-3">
+                  <span className="font-medium text-gray-700">
+                    Pengguna {idx + 1}
+                  </span>
+                  <span className="text-gray-300">•</span>
+                  <span>2 hari yang lalu</span>
                 </div>
-                <div className="mt-4 flex items-center gap-2">
+                <div className="flex items-center gap-2 mt-2">
                   <Image
                     src="/images/google-icon.png"
                     alt="Google"
-                    width={20}
-                    height={20}
+                    width={24}
+                    height={24}
                     className="rounded-full"
                   />
-                  <p className="text-sm font-medium text-gray-600">Google</p>
+                  <span className="text-base text-gray-500 font-medium">
+                    Google
+                  </span>
                 </div>
-                <div className="mt-4">
+                <div className="mt-5">
                   <Image
                     src="/images/bungkerkaliadem.jpg"
                     alt="Gambar Ulasan"
-                    width={300}
-                    height={200}
-                    className="w-full h-32 object-cover rounded-lg"
+                    width={400}
+                    height={250}
+                    className="w-full h-48 object-cover rounded-lg"
                   />
                 </div>
               </div>
@@ -534,9 +581,11 @@ export default function HomePage() {
       </section>
 
       {/* FAQ Section */}
-      <section className="px-4 py-10 bg-gray-100">
-        <h2 className="text-center text-2xl font-semibold mb-8">FAQ's</h2>
-        <div className="max-w-2xl mx-auto space-y-4">
+      <section className="px-6 py-16 bg-gray-50">
+        <h2 className="text-center text-3xl font-extrabold mb-12 text-gray-900 tracking-wide">
+          FAQ's
+        </h2>
+        <div className="max-w-3xl mx-auto space-y-6">
           {[
             "Apa saja jenis paket jeep yang tersedia?",
             "Apakah bisa pesan online?",
@@ -544,9 +593,28 @@ export default function HomePage() {
             "Apakah tersedia fasilitas keluarga?",
             "Bagaimana jika cuaca buruk saat booking?",
           ].map((q, idx) => (
-            <details key={idx} className="bg-white p-4 rounded shadow">
-              <summary className="cursor-pointer font-medium">{q}</summary>
-              <p className="mt-2 text-sm text-gray-600">
+            <details
+              key={idx}
+              className="group bg-white rounded-xl shadow-md p-6 cursor-pointer select-none transition-shadow duration-300 hover:shadow-xl"
+            >
+              <summary className="flex justify-between items-center font-semibold text-gray-800 text-lg list-none">
+                {q}
+                <svg
+                  className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform duration-300"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </summary>
+              <p className="mt-4 text-gray-600 leading-relaxed text-sm sm:text-base">
                 Jawaban dari pertanyaan ini akan muncul di sini.
               </p>
             </details>
