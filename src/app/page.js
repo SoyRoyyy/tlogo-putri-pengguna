@@ -53,7 +53,7 @@ export default function HomePage() {
                 (item) => (
                   <li key={item} className="relative group">
                     <a
-                      href={`#${item}`}
+                      href={`${item}`}
                       className="capitalize px-3 py-1 transition-colors duration-300
                       hover:text-blue-600 focus:text-blue-600 focus:outline-none"
                     >
@@ -104,19 +104,32 @@ export default function HomePage() {
       {menuOpen && (
         <nav className="md:hidden bg-white shadow-md">
           <div className="max-w-7xl mx-auto px-4 py-4">
-            {["home", "paket", "fasilitas", "artikel", "about"].map((item) => (
-              <a
-                key={item}
-                href={`#${item}`}
-                onClick={() => setMenuOpen(false)}
-                className="block py-2 text-gray-700 hover:text-blue-600 transition font-medium capitalize"
-              >
-                {item}
-              </a>
-            ))}
-          </div>
-        </nav>
-      )}
+            {["home", "paket", "fasilitas", "artikel", "about"].map((item) => {
+              const isArtikel = item === "artikel";
+              return isArtikel ? (
+                <Link
+                  key={item}
+                  href={`/artikel`}
+                  onClick={() => setMenuOpen(false)}
+                  className="block py-2 text-gray-700 hover:text-blue-600 transition font-medium capitalize"
+                >
+                  {item}
+                </Link>
+
+        ) : (
+          <a
+            key={item}
+            href={`#${item}`}
+            onClick={() => setMenuOpen(false)}
+            className="block py-2 text-gray-700 hover:text-blue-600 transition font-medium capitalize"
+          >
+            {item}
+          </a>
+        );
+      })}
+    </div>
+  </nav>
+)}
 
       {/* Hero Slider */}
       <section className="relative w-full h-screen flex items-center justify-center bg-black overflow-hidden">
