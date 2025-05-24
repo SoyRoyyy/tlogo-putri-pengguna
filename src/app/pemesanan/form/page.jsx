@@ -43,7 +43,7 @@ export default function FormPemesanan() {
       <header className="flex justify-between items-center px-6 py-4 shadow-md sticky top-0 bg-white z-50">
         <div className="flex items-center space-x-3">
           <Image src="/images/image.png" alt="Logo" width={40} height={40} />
-          <span className="font-bold text-xl text-green-700">Tlogo Putri</span>
+          <span className="font-bold text-xl text-black">Tlogo Putri</span>
         </div>
         <div className="flex items-center justify-center flex-wrap gap-3 pt-2 text-sm sm:text-base">
           {[
@@ -56,7 +56,7 @@ export default function FormPemesanan() {
               <div
                 className={`w-6 h-6 rounded-full flex items-center justify-center font-bold text-sm ${
                   item.step === currentStep
-                    ? 'bg-blue-600 text-white'
+                    ? 'bg-[#3D6CB9] text-white'
                     : 'bg-gray-300 text-gray-700'
                 }`}
               >
@@ -72,8 +72,8 @@ export default function FormPemesanan() {
       {/* Form Section */}
       <section className="px-4 sm:px-6 lg:px-8 py-10 bg-white min-h-screen">
         <div className="px-6 pt-4">
-          <Link href="/katalog-jeep">
-            <div className="flex items-center text-black hover:underline hover:text-blue-800 transition duration-200">
+          <Link href="/pemesanan">
+            <div className="flex items-center text-black hover:underline hover:text-[#3D6CB9] transition duration-200">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5 mr-1"
@@ -200,7 +200,6 @@ export default function FormPemesanan() {
                 name="refferal"
                 value={formData.refferal}
                 onChange={handleChange}
-                required
                 className="w-full mt-1 px-2 py-2 border text-black text-sm border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -213,7 +212,6 @@ export default function FormPemesanan() {
                 name="voucher"
                 value={formData.voucher}
                 onChange={handleChange}
-                required
                 className="w-full mt-1 px-2 py-2 border text-black text-sm border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -221,7 +219,7 @@ export default function FormPemesanan() {
             {/* Submit */}
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+              className="w-full bg-[#3D6CB9] text-white py-2 rounded-md hover:bg-blue-700 transition cursor-pointer"
             >
               Kirim Pemesanan
             </button>

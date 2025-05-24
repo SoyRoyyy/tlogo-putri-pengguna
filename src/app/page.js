@@ -7,9 +7,11 @@ import Link from "next/link";
 
 export default function HomePage() {
   const images = [
-    "/images/bungkerkaliadem.jpg",
-    "/images/BatuAlien.jpeg.jpg",
-    "/images/MuseumMini.jpeg.jpg",
+    "/images/42.jpg",
+    "/images/DSC04238.jpg",
+    "/images/DSC04616.jpg",
+    "/images/DSC04211.jpg",
+    "/images/DSC04658.jpg"
   ];
   const [currentIndex, setCurrentIndex] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -51,29 +53,30 @@ export default function HomePage() {
 
   return (
     <main className="bg-white text-gray-800 font-sans">
-      {/* Header */}
       <header className="flex justify-between items-center px-6 py-4 sticky top-0 bg-white z-50 shadow-md shadow-black/10">
+        {/* Logo kiri */}
         <div className="flex items-center space-x-3 pl-1 md:pl-0">
           <Image
             src="/images/image.png"
             alt="Logo"
-            width={40}
-            height={40}
+            width={70}
+            height={70}
             className="block"
           />
-          <span className="font-extrabold text-2xl text-black tracking-wide whitespace-nowrap">
-            Tlogo Putri
+          <span className="font-semibold text-3xl text-black tracking-wide whitespace-nowrap">
+            Tlogo Putri Kaliurang
           </span>
         </div>
         <div className="flex items-center space-x-4">
           <nav className="hidden md:block">
-            <ul className="flex space-x-10 font-semibold text-black">
+            <ul className="flex space-x-6 px-7 font-semibold text-black text-xl">
               {["home", "paket", "fasilitas", "artikel", "about"].map(
                 (item) => (
                   <li key={item} className="relative group">
                     <a
                       href={`#${item}`}
-                      className="capitalize px-3 py-1 transition-colors duration-300 hover:text-blue-600 focus:text-blue-600 focus:outline-none"
+                      className="capitalize px-3 py-1 transition-colors duration-300
+                      hover:text-blue-600 focus:text-blue-600 focus:outline-none"
                     >
                       {item}
                     </a>
@@ -92,22 +95,55 @@ export default function HomePage() {
             {menuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
+
+        {/* Mobile Menu */}
+        {menuOpen && (
+          <nav className="md:hidden bg-white shadow-lg border-t border-gray-200 absolute top-full left-0 right-0 z-40">
+            <ul className="flex flex-col max-w-7xl mx-auto px-6 py-5 space-y-4 font-semibold text-black">
+              {["home", "paket", "fasilitas", "artikel", "about"].map(
+                (item) => (
+                  <li key={item}>
+                    <a
+                      href={`#${item}`}
+                      onClick={() => setMenuOpen(false)}
+                      className="block capitalize px-3 py-2 rounded-md hover:text-blue-600 focus:text-blue-600 focus:outline-none transition-colors duration-300"
+                    >
+                      {item}
+                    </a>
+                  </li>
+                )
+              )}
+            </ul>
+          </nav>
+        )}
       </header>
 
       {/* Mobile Menu */}
       {menuOpen && (
         <nav className="md:hidden bg-white shadow-md">
           <div className="max-w-7xl mx-auto px-4 py-4">
-            {["home", "paket", "fasilitas", "artikel", "about"].map((item) => (
-              <a
-                key={item}
-                href={`#${item}`}
-                onClick={() => setMenuOpen(false)}
-                className="block py-2 text-gray-700 hover:text-blue-600 transition font-medium capitalize"
-              >
-                {item}
-              </a>
-            ))}
+            {["home", "paket", "fasilitas", "artikel", "about"].map((item) => {
+              const isArtikel = item === "artikel";
+              return isArtikel ? (
+                <Link
+                  key={item}
+                  href={`/artikel`}
+                  onClick={() => setMenuOpen(false)}
+                  className="block py-2 text-gray-700 hover:text-blue-600 transition font-medium capitalize"
+                >
+                  {item}
+                </Link>
+              ) : (
+                <a
+                  key={item}
+                  href={`#${item}`}
+                  onClick={() => setMenuOpen(false)}
+                  className="block py-2 text-gray-700 hover:text-blue-600 transition font-medium capitalize"
+                >
+                  {item}
+                </a>
+              );
+            })}
           </div>
         </nav>
       )}
@@ -126,17 +162,17 @@ export default function HomePage() {
         </div>
         <button
           onClick={prevSlide}
-          className="absolute left-4 z-10 bg-black bg-opacity-40 text-white p-3 rounded-full hover:bg-opacity-60 transition"
+          className="absolute left-4 z-10 text-white text-6xl font-thin p-3 rounded-full hover:bg-white/20 transition"
           aria-label="Sebelumnya"
         >
-          &#10094;
+          &#x276E; {/* karakter '<' lebih tipis: ❮ */}
         </button>
         <button
           onClick={nextSlide}
-          className="absolute right-4 z-10 bg-black bg-opacity-40 text-white p-3 rounded-full hover:bg-opacity-60 transition"
+          className="absolute right-4 z-10 text-white text-6xl font-thin p-3 rounded-full hover:bg-white/20 transition"
           aria-label="Berikutnya"
         >
-          &#10095;
+          &#x276F; {}
         </button>
         <div className="absolute bottom-6 flex justify-center w-full space-x-2 z-10">
           {images.map((_, idx) => (
@@ -194,12 +230,12 @@ export default function HomePage() {
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {[
-            { label: "Tempat Parkir Luas", src: "/images/bungkerkaliadem.jpg" },
-            { label: "Taman", src: "/images/MuseumMini.jpeg.jpg" },
-            { label: "Toilet", src: "/images/MuseumMini.jpeg.jpg" },
-            { label: "Mushola", src: "/images/PetilasanMbahMarijan.jpeg.jpg" },
+            { label: "Tempat Parkir Luas", src: "/images/DSC03884.jpg" },
+            { label: "Taman", src: "/images/taman.jpg" },
+            { label: "Toilet", src: "/images/toilet.jpg" },
+            { label: "Mushola", src: "/images/mushola.jpg" },
             { label: "Kantin", src: "/images/TheLostWorldPark.jpg" },
-            { label: "Sewa Skuter", src: "/images/TrackAir.jpeg.jpg" },
+            { label: "Sewa Skuter", src: "/images/DSC03913.jpg" },
           ].map((item, idx) => (
             <div
               key={idx}
