@@ -16,11 +16,17 @@ export default function HomePage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
 
+
+  const [isPopupOpen, setIsPopupOpen] = useState (false)
+  const [popupImageIndex, setPopupImageIndex] = useState(0)
+
+
   // Popup
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupImageIndex, setPopupImageIndex] = useState(0);
 
   // Slider otomatis di hero
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) =>
@@ -303,6 +309,9 @@ export default function HomePage() {
                     <button
                       className="bg-blue-700 text-white px-5 py-2 rounded-lg hover:bg-blue-800 transition-colors font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
                       onClick={() => alert(`Pesan ${paket.title} sekarang!`)}
+
+                      aria-label={"Pesan ${paket.title} Sekarang"}
+
                     >
                       Pesan Sekarang
                     </button>
@@ -317,6 +326,11 @@ export default function HomePage() {
       {/* === POPUP MODAL === */}
       {isPopupOpen && (
         <div
+
+          className="fixed inset-0 z-50 flex justify-center items-center px-4 backdrop-blur-sm"
+          style={{ backgroundColor: "rgba(0, 0, 0, 0.1)" }}
+        >
+
         className="fixed inset-0 z-50 flex justify-center items-center px-4 backdrop-blur-sm"
         style={{ backgroundColor: "rgba(0, 0, 0, 0.1)" }}>
           <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full relative overflow-hidden">
@@ -343,7 +357,13 @@ export default function HomePage() {
               <h2 className="text-xl font-bold mb-2">Highlight</h2>
               <ul className="list-disc pl-5 text-gray-700 text-sm space-y-1">
                 <li>Lava Tour Merapi menggunakan Jeep untuk 4 penumpang.</li>
+
+                <li>
+                  Wisata ke Museum Sisa Hartaku, Batu Alien, dan banyak lagi.
+                </li>
+
                 <li>Wisata ke Museum Sisa Hartaku, Batu Alien, dan banyak lagi.</li>
+
                 <li>Pilihan paket lengkap dengan durasi dan rute berbeda.</li>
                 <li>Keberangkatan dari Sleman, Yogyakarta.</li>
                 <li>Fasilitas lengkap: Jeep, pengemudi, dan biaya BBM.</li>
@@ -352,6 +372,7 @@ export default function HomePage() {
           </div>
         </div>
       )}
+
       {/* Why Choose Us Section */}
       <section className="relative bg-gray-100">
         <div className="absolute inset-0">
