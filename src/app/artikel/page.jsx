@@ -1,53 +1,59 @@
-import Image from "next/image";
+"use client";
 
-const articles = [
-  {
-    title:
-      "Weekend Seru di Tlogo Putri Kaliurang, Wisata Alam Plus Hiburan Lengk...",
-    image: "/images/(1).jpeg",
-  },
-  {
-    title: "Nyalimu Seberapa? Uji di Medan Ekstrem Jeep Tlogo Putri Kaliurang!",
-    image: "/images/(2).jpeg",
-  },
-  {
-    title:
-      "Tlogo Putri Kaliurang : Daya Tarik, Harga Tiket, Jam Buka, dan Rute",
-    image: "/images/BatuAlien.jpeg.jpg",
-  },
-  {
-    title: "Wajib Dikunjungi, Tlogo Putri di Kaliurang Ini Sangat Indah",
-    image: "/images/TrackAir.jpeg.jpg",
-  },
-  {
-    title:
-      "Tlogo Putri Kaliurang Yogyakarta: Keajaiban Alam Tersembunyi Di Kaki...",
-    image: "/images/DSC04238.jpg",
-  },
-  {
-    title: "Tlogo Putri Kaliurang - Tiket Masuk, Lokasi, dan Rutenya",
-    image: "/images/DSC04658.jpg",
-  },
-  {
-    title:
-      "Tlogo Putri Kaliurang: Hidden Gem Favorit Buat Healing Murah Meriah",
-    image: "/images/DSC04211.jpg",
-  },
-  {
-    title: "Weekend Santai? Ke Tlogo Putri Aja, Udara Segar dan Alam Terbuka",
-    image: "/images/(4).jpeg",
-  },
-  {
-    title:
-      "Tlogo Putri Kaliurang: 2 Alasan Untuk Berkunjung, Info Tiket, dan Jam Buka",
-    image: "/images/(5).jpeg",
-  },
-];
+import Image from "next/image";
+import { useState, useEffect } from "react";
 
 export default function ArtikelTlogoPutri() {
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const response = await fetch(
+          "http://127.0.0.1:8000/api/content-generate/articleterbit"
+        );
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const data = await response.json();
+
+        if (Array.isArray(data.data)) {
+          setArticles(data.data);
+        } else {
+          throw new Error("Data format tidak sesuai");
+        }
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchArticles();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <p className="text-xl text-gray-500">Memuat artikel...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center min-h-screen text-red-600">
+        <p>Error: {error}</p>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full min-h-screen px-6 py-12 bg-white text-gray-800 relative">
-      {/* Kembali ke Beranda */}
       <div className="absolute top-6 left-6">
         <a
           href="/"
@@ -62,27 +68,30 @@ export default function ArtikelTlogoPutri() {
       </h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-        {articles.map((article, index) => (
+        {articles.map((article) => (
           <div
-            key={index}
+            key={article.id_artikel || article.judul}
             className="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-transform duration-300 hover:-translate-y-1 p-4"
           >
-            <div className="w-full h-48 relative rounded-md overflow-hidden">
+            {/* <div className="w-full h-48 relative rounded-md overflow-hidden">
               <Image
-                src={article.image}
-                alt={article.title}
-                layout="fill"
-                objectFit="cover"
+                src={`http://127.0.0.1:8000/storage/images/${article.gambar}`}
+                alt={article.judul}
+                fill
+                style={{ objectFit: "cover" }}
+                sizes="(max-width: 768px) 100vw,
+                       (max-width: 1200px) 50vw,
+                       33vw"
+                priority={false}
               />
-            </div>
+            </div> */}
             <p className="mt-4 text-base font-semibold text-gray-700">
-              {article.title}
+              {article.judul}
             </p>
           </div>
         ))}
       </div>
 
-      {/* Lihat Semua */}
       <div className="flex justify-end mt-10">
         <a
           href="#"
