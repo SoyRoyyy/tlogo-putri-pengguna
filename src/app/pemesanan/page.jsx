@@ -54,7 +54,7 @@ export default function KatalogPemesanan() {
       <header className="flex justify-between items-center px-6 py-4 shadow-md sticky top-0 bg-white z-50">
         <div className="flex items-center space-x-3">
           <Image src="/images/image.png" alt="Logo" width={40} height={40} />
-          <span className="font-bold text-xl text-green-700">Tlogo Putri</span>
+          <span className="font-bold text-xl text-black">Tlogo Putri</span>
         </div>
         <div className="flex items-center justify-center flex-wrap gap-3 pt-2 text-sm sm:text-base">
           {[
@@ -67,7 +67,7 @@ export default function KatalogPemesanan() {
               <div
                 className={`w-6 h-6 rounded-full flex items-center justify-center font-bold text-sm ${
                   item.step === currentStep
-                    ? "bg-blue-600 text-white"
+                    ? "bg-[#3D6CB9] text-white"
                     : "bg-gray-300 text-gray-700"
                 }`}
               >
@@ -88,7 +88,7 @@ export default function KatalogPemesanan() {
               key={item}
               href={`#${item}`}
               onClick={() => setMenuOpen(false)}
-              className="block py-2 text-gray-700 hover:text-green-600 transition font-medium capitalize"
+              className="block py-2 text-gray-700 hover:text-[#3D6CB9] transition font-medium capitalize"
             >
               {item}
             </a>
@@ -119,7 +119,7 @@ export default function KatalogPemesanan() {
 
         <div className="max-w-7xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800 mb-8 text-center">
-            Katalog Tlogo Putri Adventure
+            Paket Wisata Jeep Tlogo Putri
           </h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {dataPaket.map((paket, idx) => (
@@ -138,10 +138,10 @@ export default function KatalogPemesanan() {
                     ))}
                   </ul>
                   <div className="flex items-center justify-between mt-auto">
-                    <span className="text-green-600 font-bold">{paket.price}</span>
+                    <span className="text-[#3D6CB9] font-bold">{paket.price}</span>
                     <Link
                       href={`/pemesanan/form?paket=${encodeURIComponent(paket.title)}`}
-                      className="bg-blue-600 text-white text-sm px-3 py-2 rounded hover:bg-blue-700 transition"
+                      className="bg-[#3D6CB9] text-white text-sm px-3 py-2 rounded hover:bg-blue-700 transition"
                     >
                       Pesan Sekarang
                     </Link>
@@ -161,7 +161,7 @@ export default function KatalogPemesanan() {
           <div>
             <div className="flex items-center mb-3">
               <svg
-                className="w-8 h-8 text-green-400 mr-2"
+                className="w-8 h-8 text-[#3D6CB9] mr-2"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2"
