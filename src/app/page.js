@@ -21,9 +21,6 @@ export default function HomePage() {
   const [popupImageIndex, setPopupImageIndex] = useState(0)
 
 
-  // Popup
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [popupImageIndex, setPopupImageIndex] = useState(0);
 
   // Slider otomatis di hero
 
@@ -331,8 +328,10 @@ export default function HomePage() {
           style={{ backgroundColor: "rgba(0, 0, 0, 0.1)" }}
         >
 
-        className="fixed inset-0 z-50 flex justify-center items-center px-4 backdrop-blur-sm"
-        style={{ backgroundColor: "rgba(0, 0, 0, 0.1)" }}>
+        <div
+  className="fixed inset-0 z-50 flex justify-center items-center px-4 backdrop-blur-sm"
+  style={{ backgroundColor: "rgba(0, 0, 0, 0.1)" }}
+></div>
           <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full relative overflow-hidden">
             {/* Gambar */}
             <div className="relative w-full h-64 group">
