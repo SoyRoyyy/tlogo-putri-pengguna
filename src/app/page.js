@@ -16,6 +16,9 @@ export default function HomePage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const [isPopupOpen, setIsPopupOpen] = useState (false)
+  const [popupImageIndex, setPopupImageIndex] = useState(0)
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
@@ -253,7 +256,7 @@ export default function HomePage() {
       </section>
 
       {/* Paket Section */}
-      <section className="px-6 py-14 bg-gray-50">
+      <section className="px-6 py-14 bg-gray-50" id="paket">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-extrabold text-gray-900 mb-10 text-center tracking-wide">
             Paket Wisata Populer
@@ -308,17 +311,8 @@ export default function HomePage() {
                       {paket.title}
                     </h3>
                     <button
-                      className="
-                  text-black font-semibold text-sm uppercase tracking-wide
-                  border-b-2 border-transparent
-                  pb-1
-                  hover:border-black
-                  hover:text-gray-800
-                  transition-all duration-300
-                  focus:outline-none focus:ring-2 focus:ring-black rounded
-                "
-                      onClick={() => alert(`Detail ${paket.title}`)}
-                      aria-label={`Detail ${paket.title}`}
+                      className="text-black font-semibold text-sm uppercase tracking-wide border-b-2 border-transparent pb-1 hover:border-black hover:text-gray-800 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-black rounded"
+                      onClick={() => setIsPopupOpen(true)}
                     >
                       Detail
                     </button>
@@ -330,7 +324,7 @@ export default function HomePage() {
                     <button
                       className="bg-blue-700 text-white px-5 py-2 rounded-lg hover:bg-blue-800 transition-colors font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
                       onClick={() => alert(`Pesan ${paket.title} sekarang!`)}
-                      aria-label={`Pesan ${paket.title} sekarang`}
+                      aria-label={"Pesan ${paket.title} Sekarang"}
                     >
                       Pesan Sekarang
                     </button>
@@ -341,6 +335,48 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* === POPUP MODAL === */}
+      {isPopupOpen && (
+        <div
+          className="fixed inset-0 z-50 flex justify-center items-center px-4 backdrop-blur-sm"
+          style={{ backgroundColor: "rgba(0, 0, 0, 0.1)" }}
+        >
+          <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full relative overflow-hidden">
+            {/* Gambar */}
+            <div className="relative w-full h-64 group">
+              <Image
+                src={images[popupImageIndex]}
+                alt={`Gambar ${popupImageIndex}`}
+                fill
+                className="object-cover transition duration-1000"
+              />
+              {/* Tombol X yang hanya muncul saat hover */}
+              <button
+                className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-white bg-opacity-80 hover:bg-opacity-100 text-black rounded-full w-8 h-8 flex items-center justify-center z-10"
+                onClick={() => setIsPopupOpen(false)}
+                aria-label="Tutup popup"
+              >
+                ×
+              </button>
+            </div>
+
+            {/* Konten popup */}
+            <div className="p-6">
+              <h2 className="text-xl font-bold mb-2">Highlight</h2>
+              <ul className="list-disc pl-5 text-gray-700 text-sm space-y-1">
+                <li>Lava Tour Merapi menggunakan Jeep untuk 4 penumpang.</li>
+                <li>
+                  Wisata ke Museum Sisa Hartaku, Batu Alien, dan banyak lagi.
+                </li>
+                <li>Pilihan paket lengkap dengan durasi dan rute berbeda.</li>
+                <li>Keberangkatan dari Sleman, Yogyakarta.</li>
+                <li>Fasilitas lengkap: Jeep, pengemudi, dan biaya BBM.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Why Choose Us Section */}
       <section className="relative bg-gray-100">
