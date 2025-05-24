@@ -31,7 +31,7 @@ export default function HomePage() {
 
   return (
     <main className="bg-white text-gray-800 font-sans">
-      <header className="flex justify-between items-center px-6 py-5 sticky top-0 bg-white z-50 shadow-md shadow-black/10">
+      <header className="flex justify-between items-center px-4 py-2 sticky top-0 bg-white z-50 shadow-md shadow-black/10">
         {/* Logo kiri */}
         <div className="flex items-center space-x-3 pl-1 md:pl-0">
           <Image
@@ -41,7 +41,7 @@ export default function HomePage() {
             height={70}
             className="block"
           />
-          <span className="font-semibold text-3xl text-black tracking-wide whitespace-nowrap">
+          <span className="font-semibold text-xl text-black tracking-wide whitespace-nowrap">
             Tlogo Putri Kaliurang
           </span>
         </div>
@@ -50,7 +50,7 @@ export default function HomePage() {
         <div className="flex items-center space-x-4">
           {/* Desktop Menu */}
           <nav className="hidden md:block">
-            <ul className="flex space-x-6 px-7 font-semibold text-black text-xl">
+            <ul className="flex space-x-6 px-7 font-semibold text-black text-l">
               {["home", "paket", "fasilitas", "artikel", "about"].map(
                 (item) => (
                   <li key={item} className="relative group">
@@ -148,14 +148,14 @@ export default function HomePage() {
         {/* Slider Nav Buttons */}
         <button
           onClick={prevSlide}
-          className="absolute left-4 z-10 text-white text-6xl font-thin p-3 rounded-full hover:bg-white/20 transition"
+          className="absolute left-4 z-10 text-white text-4xl font-thin p-3 rounded-full hover:bg-white/20 transition"
           aria-label="Sebelumnya"
         >
           &#x276E; {/* karakter '<' lebih tipis: ❮ */}
         </button>
         <button
           onClick={nextSlide}
-          className="absolute right-4 z-10 text-white text-6xl font-thin p-3 rounded-full hover:bg-white/20 transition"
+          className="absolute right-4 z-10 text-white text-4xl font-thin p-3 rounded-full hover:bg-white/20 transition"
           aria-label="Berikutnya"
         >
           &#x276F; {}
