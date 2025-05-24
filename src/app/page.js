@@ -42,20 +42,15 @@ export default function HomePage() {
   }, [isPopupOpen]);
 
   const prevSlide = () =>
-    setCurrentIndex(
-      currentIndex === 0 ? images.length - 1 : currentIndex - 1
-    );
+    setCurrentIndex(currentIndex === 0 ? images.length - 1 : currentIndex - 1);
 
   const nextSlide = () =>
-    setCurrentIndex(
-      currentIndex === images.length - 1 ? 0 : currentIndex + 1
-    );
+    setCurrentIndex(currentIndex === images.length - 1 ? 0 : currentIndex + 1);
 
   return (
     <main className="bg-white text-gray-800 font-sans">
-      <header className="flex justify-between items-center px-6 py-4 sticky top-0 bg-white z-50 shadow-md shadow-black/10">
+      {/* Header */}
       <header className="flex justify-between items-center px-4 py-2 sticky top-0 bg-white z-50 shadow-md shadow-black/10">
-    main
         {/* Logo kiri */}
         <div className="flex items-center space-x-3 pl-1 md:pl-0">
           <Image
@@ -69,25 +64,26 @@ export default function HomePage() {
             Tlogo Putri Kaliurang
           </span>
         </div>
+
+        {/* Navigasi Desktop */}
         <div className="flex items-center space-x-4">
           <nav className="hidden md:block">
             <ul className="flex space-x-6 px-7 font-semibold text-black text-l">
-              {["home", "paket", "fasilitas", "artikel", "about"].map(
-                (item) => (
-                  <li key={item} className="relative group">
-                    <a
-                      href={`#${item}`}
-                      className="capitalize px-3 py-1 transition-colors duration-300
-                      hover:text-blue-600 focus:text-blue-600 focus:outline-none"
-                    >
-                      {item}
-                    </a>
-                    <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-blue-600 transition-all duration-300 group-hover:w-full" />
-                  </li>
-                )
-              )}
+              {["home", "paket", "fasilitas", "artikel", "about"].map((item) => (
+                <li key={item} className="relative group">
+                  <a
+                    href={`#${item}`}
+                    className="capitalize px-3 py-1 transition-colors duration-300 hover:text-blue-600 focus:text-blue-600 focus:outline-none"
+                  >
+                    {item}
+                  </a>
+                  <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-blue-600 transition-all duration-300 group-hover:w-full" />
+                </li>
+              ))}
             </ul>
           </nav>
+
+          {/* Tombol Menu Mobile */}
           <button
             className="md:hidden p-2 rounded-md text-black hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
             onClick={() => setMenuOpen(!menuOpen)}
@@ -97,39 +93,18 @@ export default function HomePage() {
             {menuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
-
-        {/* Mobile Menu */}
-        {menuOpen && (
-          <nav className="md:hidden bg-white shadow-lg border-t border-gray-200 absolute top-full left-0 right-0 z-40">
-            <ul className="flex flex-col max-w-7xl mx-auto px-6 py-5 space-y-4 font-semibold text-black">
-              {["home", "paket", "fasilitas", "artikel", "about"].map(
-                (item) => (
-                  <li key={item}>
-                    <a
-                      href={`#${item}`}
-                      onClick={() => setMenuOpen(false)}
-                      className="block capitalize px-3 py-2 rounded-md hover:text-blue-600 focus:text-blue-600 focus:outline-none transition-colors duration-300"
-                    >
-                      {item}
-                    </a>
-                  </li>
-                )
-              )}
-            </ul>
-          </nav>
-        )}
       </header>
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <nav className="md:hidden bg-white shadow-md">
+        <nav className="md:hidden bg-white shadow-md border-t border-gray-200">
           <div className="max-w-7xl mx-auto px-4 py-4">
             {["home", "paket", "fasilitas", "artikel", "about"].map((item) => {
               const isArtikel = item === "artikel";
               return isArtikel ? (
                 <Link
                   key={item}
-                  href={`/artikel`}
+                  href="/artikel"
                   onClick={() => setMenuOpen(false)}
                   className="block py-2 text-gray-700 hover:text-blue-600 transition font-medium capitalize"
                 >
