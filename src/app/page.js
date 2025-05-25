@@ -75,7 +75,7 @@ export default function HomePage() {
               {["home", "paket", "fasilitas", "artikel", "about"].map((item) => (
                 <li key={item} className="relative group">
                   <a
-                    href={`#${item}`}
+                    href={`${item}`}
                     className="capitalize px-3 py-1 transition-colors duration-300 hover:text-blue-600 focus:text-blue-600 focus:outline-none"
                   >
                     {item}
