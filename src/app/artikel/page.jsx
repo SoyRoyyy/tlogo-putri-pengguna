@@ -186,7 +186,7 @@ export default function ArtikelTlogoPutri() {
     <div className="w-full h-48 relative rounded-md overflow-hidden">
       <img
         src={`http://127.0.0.1:8000/storage/gambar/${article.gambar}`}
-        alt={article.judul}
+        alt={article.gambar}
         className="object-cover w-full h-full"
       />
     </div>
