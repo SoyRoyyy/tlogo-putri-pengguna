@@ -109,7 +109,9 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";  // <-- tambah ini
+import { useRouter } from "next/navigation";
+import { FiArrowLeftCircle } from "react-icons/fi";
+
 
 export default function ArtikelTlogoPutri() {
   const router = useRouter();  // <-- inisialisasi router
@@ -162,14 +164,10 @@ export default function ArtikelTlogoPutri() {
   }
 
   return (
-    <div className="w-full min-h-screen px-6 py-12 bg-white text-gray-800 relative">
-      <div className="absolute top-6 left-6">
-        <a
-          href="/"
-          className="text-gray-500 hover:text-blue-600 transition-colors duration-200 font-medium"
-        >
-          &lt; Kembali ke Beranda
-        </a>
+    <div className="w-full min-h-screen px-[114px] py-6 bg-white text-gray-800 relative">
+      <div className="absolute top-6 left-6 flex items-center space-x-2 cursor-pointer text-black-500 hover:text-[#3D6CB9] transition-colors duration-200 font-medium"
+          onClick={() => router.push("/")}>
+        <FiArrowLeftCircle className="text-4xl" />
       </div>
 
       <h1 className="text-3xl md:text-4xl font-bold text-center mb-10 text-gray-900">
