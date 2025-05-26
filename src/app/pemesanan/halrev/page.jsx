@@ -19,9 +19,102 @@ export default function ReviewPage() {
    }
  }, []);
 
- const handleBayar = (mode) => {
-   router.push(`/bayar?mode=${mode}`);
- };
+// ini pakai snap midtrans pop up
+const handleBayar = async (mode) => {
+  const stored = localStorage.getItem('formPemesanan');
+  if (!stored) return alert('Data pembayaran tidak ditemukan');
+
+  const parsed = JSON.parse(stored);
+  delete parsed.paket;
+  parsed.payment_type = mode; 
+  parsed.qty = Number(parsed.qty);
+  // delete parsed.refferal;
+  // delete parsed.voucher;
+
+  console.log('Data yang dikirim ke backend:', parsed);
+
+
+  try {
+    const response = await fetch('http://localhost:8000/api/bookings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(parsed),
+    });
+
+    if (!response.ok) throw new Error('Gagal membuat booking');
+
+    const result = await response.json();
+
+    // Simpan booking_id dan payment_type
+    // localStorage.setItem('booking_id', result.booking_id);
+    // localStorage.setItem('payment_type', mode);
+
+    if (!window.snap || !window.snap.pay) {
+      throw new Error('Midtrans belum dimuat');
+    }
+
+    window.snap.pay(result.snap_token, {
+      onSuccess: (res) => {
+        console.log('Pembayaran sukses:', res);
+        // Redirect ke halaman sukses
+        // window.location.href = `/pemesanan/sukses?booking_id=${result.booking_id}`;
+        window.location.href = '/';
+      },
+      onPending: (res) => {
+        console.log('Menunggu pembayaran:', res);
+        // Optional: redirect atau tampilkan notifikasi
+        window.location.href = `/pemesanan/menunggu?booking_id=${result.booking_id}`;
+      },
+      onError: (err) => {
+        console.error('Terjadi kesalahan pembayaran:', err);
+        alert('Terjadi kesalahan saat proses pembayaran.');
+      },
+      onClose: () => {
+        console.log('Popup ditutup user sebelum bayar');
+      }
+    });
+
+  } catch (err) {
+    console.error(err);
+    alert('Terjadi kesalahan saat membuat pesanan.');
+  }
+};
+
+// Jika mau langsung redirect ke midtrans
+// const handleBayar = async (mode) => {
+//   const stored = localStorage.getItem('formPemesanan');
+//   if (!stored) return alert('Data pembayaran tidak ditemukan');
+
+//   const parsed = JSON.parse(stored);
+//   delete parsed.paket;
+//   parsed.payment_type = mode;
+//   parsed.qty = Number(parsed.qty);
+//   // delete parsed.refferal;
+//   // delete parsed.voucher;
+
+//   console.log('Data yang dikirim ke backend:', parsed);
+
+//   try {
+//     const response = await fetch('http://localhost:8000/api/bookings', {
+//       method: 'POST',
+//       headers: { 'Content-Type': 'application/json' },
+//       body: JSON.stringify(parsed),
+//     });
+
+//     if (!response.ok) throw new Error('Gagal membuat booking');
+
+//     const result = await response.json(); 
+
+//     console.log('Redirect ke Midtrans:', result.redirect_url);
+
+//     // Langsung redirect ke Midtrans
+//     window.location.href = result.redirect_url;
+
+//   } catch (err) {
+//     console.error(err);
+//     alert('Terjadi kesalahan saat membuat pesanan.');
+//   }
+// };
 
  if (!data) {
    return (
@@ -82,7 +175,7 @@ export default function ReviewPage() {
        {/* Detail pemesanan tetap sama */}
        <div className="space-y-4 text-sm text-gray-700 max-w-2xl mx-auto bg-gray-50 p-6 rounded-xl shadow-md">
          <ReviewItem label="Paket Wisata" value={data.paket} />
-         <ReviewItem label="Harga Paket" value={data.price} />
+         <ReviewItem label="Harga Paket" value={new Intl.NumberFormat('id-ID').format(data.gross_amount * data.qty)} />
          <ReviewItem label="Nama Lengkap" value={data.customer_name} />
          <ReviewItem label="Email" value={data.customer_email} />
          <ReviewItem label="No. Telepon" value={data.customer_phone} />
@@ -115,7 +208,7 @@ export default function ReviewPage() {
                Total Pembayaran Anda:
              </p>
              <p className="text-center text-2xl font-bold text-[#3D6CB9] mt-1 mb-2">
-               Rp. 400.000
+               Rp. {new Intl.NumberFormat('id-ID').format(data.gross_amount * data.qty)}
              </p>
              <p className="text-center text-gray-500 text-sm mb-4">
                (Termasuk Pajak dan Biaya Layanan)
@@ -126,13 +219,13 @@ export default function ReviewPage() {
              <div className="flex justify-center space-x-4">
                <button
                  onClick={() => handleBayar('dp')}
-                 className="bg-[#3D6CB9] hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold"
+                 className="bg-[#3D6CB9] hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold cursor-pointer"
                >
-                 DP (50%)
+                 DP (30%)
                </button>
                <button
                  onClick={() => handleBayar('full')}
-                 className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold"
+                 className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold cursor-pointer"
                >
                  Lunas
                </button>
@@ -152,9 +245,12 @@ export default function ReviewPage() {
 }
 
 function ReviewItem({ label, value }) {
- return (
-   <div className="border-b pb-2">
-     <strong>{label}:</strong> <span className="ml-2">{value || '-'}</span>
-   </div>
- );
+  return (
+    <div className="border-b pb-2">
+      <strong>{label}:</strong>{' '}
+      <span className="ml-2">
+        {label === 'Harga Paket' ? `Rp. ${value}` : value || '-'}
+      </span>
+    </div>
+  );
 }

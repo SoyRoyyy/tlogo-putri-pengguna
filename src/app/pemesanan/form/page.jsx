@@ -1,13 +1,13 @@
 'use client';
 
 import { useSearchParams, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export default function FormPemesanan() {
   const searchParams = useSearchParams();
-  const paket = searchParams.get('paket') || '';
+  const slug = searchParams.get('paket');
   const router = useRouter();
 
   const [formData, setFormData] = useState({
@@ -17,10 +17,32 @@ export default function FormPemesanan() {
     start_time: '',
     tour_date: '',
     qty: '',
-    paket: paket,
+    paket: '',
+    package_id: '',
+    gross_amount: '',
     refferal: '',
     voucher: '',
   });
+
+  useEffect(() => {
+    if (slug) {
+      fetch(`http://localhost:8000/api/packages/${encodeURIComponent(slug)}`)
+        .then(res => res.json())
+        .then(data => {
+          if (!data.error) {
+            setFormData(prev => ({
+              ...prev,
+              paket: data.package_name,
+              package_id: data.id,
+              gross_amount: data.price,
+            }));
+          }
+        })
+        .catch(error => {
+          console.error('Gagal fetch data paket:', error);
+        });
+    }
+  }, [slug]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

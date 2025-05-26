@@ -2,51 +2,67 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 
 export default function KatalogPemesanan() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
+  const [tourPackages, setTourPackages] = useState([]);
 
-  const dataPaket = [
-    {
-      title: "PAKET 1",
-      details: ["OFFROAD GROGOL", "SPOT FOTO OPAK", "MUSEUM MINI", "BATU ALIEN", "TRACK AIR"],
-      image: "/images/jeep-merapi.jpg",
-      price: "Rp 400.000",
-    },
-    {
-      title: "PAKET 2",
-      details: ["OFFROAD GROGOL", "SPOT FOTO OPAK", "MUSEUM MINI", "BATU ALIEN", "THE LOST WORLD PARK (TLWP)", "TRACK AIR"],
-      image: "/images/goa-pindul.jpg",
-      price: "Rp 450.000",
-    },
-    {
-      title: "PAKET 3",
-      details: ["PETILASAN MBAH MARIJAN", "SPOT FOTO OPAK", "BUNGKER KALI ADEM", "TRACK TEGONG/TEBING GENDOL", "TRACK AIR"],
-      image: "/images/kaliurang.jpg",
-      price: "Rp 450.000",
-    },
-    {
-      title: "PAKET 4",
-      details: ["OFFROAD GROGOL", "PETILASAN MBAH MARIJAN", "SPOT FOTO OPAK", "BUNGKER KALI ADEM", "BATU ALIEN/TLWP", "TRACK AIR"],
-      image: "/images/lava-tour.jpg",
-      price: "Rp 500.000",
-    },
-    {
-      title: "PAKET 5",
-      details: ["PETILASAN MBAH MARIJAN", "SPOT FOTO OPAK", "BUNKER KALI ADEM", "BATU ALIEN/TLWP", "MUSEUM MINI", "TRACK AIR"],
-      image: "/images/city-tour.jpg",
-      price: "Rp 550.000",
-    },
-    {
-      title: "PAKET SUNRISE",
-      details: ["BUNGKER KALI ADEM", "SPOT FOTO JEEP", "BATU ALIEN/TLWP", "MUSEUM MINI", "TRACK AIR"],
-      image: "/images/parangtritis.jpg",
-      price: "Rp 550.000",
-    },
-  ];
+  // Fetch tour packages from API
+  useEffect(() => {
+    const fetchTourPackages = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/api/packages");
+        const data = await response.json();
+        setTourPackages(data);
+        console.log(data);
+      } catch (error) {
+        console.error("Error fetching tour packages:", error);
+      }
+    };
+    fetchTourPackages();
+  }, []);
+
+  // const dataPaket = [
+  //   {
+  //     title: "PAKET 1",
+  //     details: ["OFFROAD GROGOL", "SPOT FOTO OPAK", "MUSEUM MINI", "BATU ALIEN", "TRACK AIR"],
+  //     image: "/images/jeep-merapi.jpg",
+  //     price: "Rp 400.000",
+  //   },
+  //   {
+  //     title: "PAKET 2",
+  //     details: ["OFFROAD GROGOL", "SPOT FOTO OPAK", "MUSEUM MINI", "BATU ALIEN", "THE LOST WORLD PARK (TLWP)", "TRACK AIR"],
+  //     image: "/images/goa-pindul.jpg",
+  //     price: "Rp 450.000",
+  //   },
+  //   {
+  //     title: "PAKET 3",
+  //     details: ["PETILASAN MBAH MARIJAN", "SPOT FOTO OPAK", "BUNGKER KALI ADEM", "TRACK TEGONG/TEBING GENDOL", "TRACK AIR"],
+  //     image: "/images/kaliurang.jpg",
+  //     price: "Rp 450.000",
+  //   },
+  //   {
+  //     title: "PAKET 4",
+  //     details: ["OFFROAD GROGOL", "PETILASAN MBAH MARIJAN", "SPOT FOTO OPAK", "BUNGKER KALI ADEM", "BATU ALIEN/TLWP", "TRACK AIR"],
+  //     image: "/images/lava-tour.jpg",
+  //     price: "Rp 500.000",
+  //   },
+  //   {
+  //     title: "PAKET 5",
+  //     details: ["PETILASAN MBAH MARIJAN", "SPOT FOTO OPAK", "BUNKER KALI ADEM", "BATU ALIEN/TLWP", "MUSEUM MINI", "TRACK AIR"],
+  //     image: "/images/city-tour.jpg",
+  //     price: "Rp 550.000",
+  //   },
+  //   {
+  //     title: "PAKET SUNRISE",
+  //     details: ["BUNGKER KALI ADEM", "SPOT FOTO JEEP", "BATU ALIEN/TLWP", "MUSEUM MINI", "TRACK AIR"],
+  //     image: "/images/parangtritis.jpg",
+  //     price: "Rp 550.000",
+  //   },
+  // ];
 
   return (
     <main className="bg-white text-gray-800 font-sans">
@@ -122,6 +138,44 @@ export default function KatalogPemesanan() {
             Paket Wisata Jeep Tlogo Putri
           </h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {tourPackages.length === 0 ? (
+              <p>Loading packages...</p>
+            ) : (
+              tourPackages.map((paket, idx) => (
+                <div
+                  key={idx}
+                  className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col"
+                >
+                  <div className="relative w-full h-48 sm:h-56">
+                    <Image
+                      src={paket.image || "/images/default.jpg"}
+                      alt={paket.package_name || "Package Image"}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="p-4 flex flex-col flex-grow">
+                    <h3 className="text-lg font-semibold text-gray-800 mb-1">{paket.package_name}</h3>
+                    <ul className="text-gray-600 text-sm mb-4 list-disc list-inside space-y-1 flex-grow">
+                      {(paket.details || []).map((point, i) => (
+                        <li key={i}>{point}</li>
+                      ))}
+                    </ul>
+                    <div className="flex items-center justify-between mt-auto">
+                      <span className="text-[#3D6CB9] font-bold">{paket.price}</span>
+                      <Link
+                        href={`/pemesanan/form?paket=${encodeURIComponent(paket.slug)}`}
+                        className="bg-[#3D6CB9] text-white text-sm px-3 py-2 rounded hover:bg-blue-700 transition"
+                      >
+                        Pesan Sekarang
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+          {/* <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {dataPaket.map((paket, idx) => (
               <div
                 key={idx}
@@ -149,7 +203,7 @@ export default function KatalogPemesanan() {
                 </div>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
       </section>
 
