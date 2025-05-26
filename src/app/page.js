@@ -21,6 +21,22 @@ export default function HomePage() {
   const [popupImageIndex, setPopupImageIndex] = useState(0)
 
 
+  const [tourPackages, setTourPackages] = useState([]);
+// Fetch tour pakcage
+  useEffect(() => {
+
+    const fetchTourPackages = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:8000/api/packages");
+        const data = await response.json();
+        setTourPackages(data);
+        console.log(data);
+      } catch (error) {
+        console.error("Error fetching tour packages:", error);
+      }
+    };
+    fetchTourPackages();
+  }, []);
 
   // Slider otomatis di hero
 
@@ -238,7 +254,7 @@ export default function HomePage() {
       </section>
 
       {/* Paket Section */}
-      <section className="px-6 py-14 bg-gray-50" id="paket">
+      {/* <section className="px-6 py-14 bg-gray-50" id="paket">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-extrabold text-gray-900 mb-10 text-center tracking-wide">
             Paket Wisata Populer
@@ -318,7 +334,57 @@ export default function HomePage() {
             ))}
           </div>
         </div>
+      </section> */}
+
+      <section className="px-6 py-14 bg-gray-50" id="paket">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-extrabold text-gray-900 mb-10 text-center tracking-wide">
+            Paket Wisata Populer
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+            {tourPackages.map((paket) => (
+              <div
+                key={paket.id}
+                className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
+              >
+                <Image
+                  src={`/images/${paket.package_name.toLowerCase().replace(/\s+/g, "-")}.jpg`}
+                  alt={paket.package_name}
+                  width={400}
+                  height={250}
+                  className="w-full h-56 object-cover rounded-t-xl"
+                />
+                <div className="p-6 flex flex-col flex-grow justify-between">
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-xl font-semibold text-black tracking-tight">
+                      {paket.package_name}
+                    </h3>
+                    <button
+                      className="text-black font-semibold text-sm uppercase tracking-wide border-b-2 border-transparent pb-1 hover:border-black hover:text-gray-800 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-black rounded"
+                      onClick={() => setIsPopupOpen(true)}
+                    >
+                      Detail
+                    </button>
+                  </div>
+                  <div className="flex items-center justify-between mt-auto">
+                    <div className="font-extrabold text-blue-700 text-lg tracking-wide">
+                      Rp {paket.price.toLocaleString("id-ID")}
+                    </div>
+                    <button
+                      className="bg-blue-700 text-white px-5 py-2 rounded-lg hover:bg-blue-800 transition-colors font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                      onClick={() => alert(`Pesan ${paket.package_name} sekarang!`)}
+                      aria-label={`Pesan ${paket.package_name} Sekarang`}
+                    >
+                      Pesan Sekarang
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
+
 
       {/* === POPUP MODAL === */}
       {isPopupOpen && (
