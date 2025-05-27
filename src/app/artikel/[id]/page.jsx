@@ -109,10 +109,13 @@ export default function ArtikelDetail({ params }) {
             className="w-[900px] max-w-full max-h-[400px] h-auto mb-6 rounded-lg mx-auto"
           />
         )}
+        {article.caption_gambar && (
+          <p className="text-center font-semibold mb-5 text-[#3D6CB9]">{article.caption_gambar}</p>
+        )}
 
         <div
           className="text-gray-800 text-justify"
-          dangerouslySetInnerHTML={{ __html: article.isi_konten }}
+          dangerouslySetInnerHTML={{ __html: article.isi_konten }} // ngerender isi konten dr kode HTML ke string
         />
       </div>
 
