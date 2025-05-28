@@ -10,7 +10,16 @@ import { useRouter } from 'next/navigation';
 export default function ReviewPage() {
  const [data, setData] = useState(null);
  const [isModalOpen, setIsModalOpen] = useState(false);
+ const [paymentType, setPaymentType] = useState(null);
+
  const router = useRouter();
+
+useEffect(() => {
+  if (isModalOpen) {
+    const stored = localStorage.getItem('payment_type');
+    setPaymentType(stored); // 'dp' atau 'full'
+  }
+}, [isModalOpen]);
 
  useEffect(() => {
    const stored = localStorage.getItem('formPemesanan');
@@ -21,6 +30,35 @@ export default function ReviewPage() {
 
 // ini pakai snap midtrans pop up
 const handleBayar = async (mode) => {
+
+  // const callbacks = {
+  //   onSuccess: (result) => {
+  //     console.log('Pembayaran berhasil', result);
+  //     // Redirect atau kasih notifikasi
+  //     setTimeout(() => {
+  //         // window.location.href = `/pemesanan/sukses?booking_id=${bookingId}`;
+  //         window.location.href = `/`;
+  //     }, 1000);
+  //   },
+  //   onPending: (result) => {
+  //     console.log('Menunggu pembayaran', result);
+  //     setTimeout(() => {
+  //         // window.location.href = `/pemesanan/sukses?booking_id=${bookingId}`;
+  //         window.location.href = `/`;
+  //       }, 1000);
+  //   },
+  //   onError: (result) => {
+  //     console.error('Terjadi kesalahan pembayaran', result);
+  //     setTimeout(() => {
+  //         // window.location.href = `/pemesanan/sukses?booking_id=${bookingId}`;
+  //         window.location.href = `/`;
+  //       }, 1000);
+  //   },
+  //   onClose: () => {
+  //     console.log('Popup ditutup tanpa menyelesaikan pembayaran');
+  //   },
+  // };
+
   const stored = localStorage.getItem('formPemesanan');
   if (!stored) return alert('Data pembayaran tidak ditemukan');
 
@@ -30,8 +68,51 @@ const handleBayar = async (mode) => {
   parsed.qty = Number(parsed.qty);
   // delete parsed.refferal;
   // delete parsed.voucher;
-
   console.log('Data yang dikirim ke backend:', parsed);
+
+  const existingOrderId = localStorage.getItem('order_id');
+  const existingSnapToken = localStorage.getItem('snap_token');
+  const existingPaymentType = localStorage.getItem('payment_type');
+
+  if (existingSnapToken && existingOrderId) {
+    return window.snap.pay(existingSnapToken, { 
+
+      onSuccess: function(result) {
+        console.log('Pembayaran berhasil:', result);
+                  localStorage.removeItem('formPemesanan');
+          localStorage.removeItem('payment_type');
+          localStorage.removeItem('snap_token');
+          localStorage.removeItem('order_id');
+        setTimeout(() => {
+          // window.location.href = `/pemesanan/sukses?booking_id=${bookingId}`;
+          window.location.href = `/`;
+        }, 1000);
+      },
+      onPending: function(result) {
+        console.log('Menunggu pembayaran:', result);
+        setTimeout(() => {
+          // window.location.href = `/pemesanan/sukses?booking_id=${bookingId}`;
+          window.location.href = `/`;
+        }, 1000);
+      },
+      onError: function(result) {
+        console.log('Terjadi kesalahan:', result);
+        setTimeout(() => {
+          // window.location.href = `/pemesanan/sukses?booking_id=${bookingId}`;
+          window.location.href = `/`;
+        }, 1000);
+      },
+      onClose: function () {
+        console.log('User menutup popup pembayaran Midtrans');
+
+        // Simpan payment_type yang sedang digunakan (sudah disimpan sebelumnya, ini hanya memastikan)
+        const savedType = localStorage.getItem('payment_type');
+        if (savedType) {
+          setPaymentType(savedType); // update state di React
+        }
+      },
+     });
+  }
 
 
   try {
@@ -46,32 +127,51 @@ const handleBayar = async (mode) => {
     const result = await response.json();
 
     // Simpan booking_id dan payment_type
-    // localStorage.setItem('booking_id', result.booking_id);
-    // localStorage.setItem('payment_type', mode);
+    localStorage.setItem('payment_type', result.order.payment_type);
+    localStorage.setItem('snap_token', result.snap_token);
+    localStorage.setItem('order_id', result.order.order_id);
+
 
     if (!window.snap || !window.snap.pay) {
       throw new Error('Midtrans belum dimuat');
     }
 
     window.snap.pay(result.snap_token, {
-      onSuccess: (res) => {
-        console.log('Pembayaran sukses:', res);
-        // Redirect ke halaman sukses
-        // window.location.href = `/pemesanan/sukses?booking_id=${result.booking_id}`;
-        window.location.href = '/';
+      onSuccess: function(result) {
+        console.log('Pembayaran berhasil:', result);
+          localStorage.removeItem('formPemesanan');
+          localStorage.removeItem('payment_type');
+          localStorage.removeItem('snap_token');
+          localStorage.removeItem('order_id');
+        setTimeout(() => {
+          // window.location.href = `/pemesanan/sukses?booking_id=${bookingId}`;
+          window.location.href = `/`;
+        }, 1000);
       },
-      onPending: (res) => {
-        console.log('Menunggu pembayaran:', res);
-        // Optional: redirect atau tampilkan notifikasi
-        window.location.href = `/pemesanan/menunggu?booking_id=${result.booking_id}`;
+      onPending: function(result) {
+        console.log('Menunggu pembayaran:', result);
+        setTimeout(() => {
+          // window.location.href = `/pemesanan/sukses?booking_id=${bookingId}`;
+          window.location.href = `/`;
+        }, 1000);
       },
-      onError: (err) => {
-        console.error('Terjadi kesalahan pembayaran:', err);
-        alert('Terjadi kesalahan saat proses pembayaran.');
+      onError: function(result) {
+        console.log('Terjadi kesalahan:', result);
+        setTimeout(() => {
+          // window.location.href = `/pemesanan/sukses?booking_id=${bookingId}`;
+          window.location.href = `/`;
+        }, 1000);
       },
-      onClose: () => {
-        console.log('Popup ditutup user sebelum bayar');
-      }
+      onClose: function () {
+        console.log('User menutup popup pembayaran Midtrans');
+
+        // Simpan payment_type yang sedang digunakan (sudah disimpan sebelumnya, ini hanya memastikan)
+        const savedType = localStorage.getItem('payment_type');
+        if (savedType) {
+          setPaymentType(savedType); // update state di React
+        }
+      },
+      
     });
 
   } catch (err) {
@@ -79,6 +179,22 @@ const handleBayar = async (mode) => {
     alert('Terjadi kesalahan saat membuat pesanan.');
   }
 };
+
+const handleCancel = async () => {
+  const orderId = localStorage.getItem('order_id');
+  if (orderId) {
+    await fetch(`http://localhost:8000/api/bookings/${orderId}`, {
+      method: 'DELETE',
+    });
+  }
+
+  localStorage.removeItem('payment_type');
+  localStorage.removeItem('snap_token');
+  localStorage.removeItem('order_id');
+  setPaymentType(null);
+  setIsModalOpen(false);
+};
+
 
 // Jika mau langsung redirect ke midtrans
 // const handleBayar = async (mode) => {
@@ -217,7 +333,7 @@ const handleBayar = async (mode) => {
                Pilih Tahapan Pembayaran
              </p>
              <div className="flex justify-center space-x-4">
-               <button
+               {/* <button
                  onClick={() => handleBayar('dp')}
                  className="bg-[#3D6CB9] hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold cursor-pointer"
                >
@@ -228,14 +344,58 @@ const handleBayar = async (mode) => {
                  className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold cursor-pointer"
                >
                  Lunas
-               </button>
+               </button> */}
+               <button
+                  onClick={() => handleBayar('dp')}
+                  disabled={paymentType && paymentType !== 'dp'}
+                  className={`px-6 py-3 rounded-lg font-semibold cursor-pointer ${
+                    paymentType && paymentType !== 'dp'
+                      ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
+                      : 'bg-[#3D6CB9] hover:bg-blue-700 text-white'
+                  }`}
+                >
+                  DP (30%)
+                </button>
+                <button
+                  onClick={() => handleBayar('full')}
+                  disabled={paymentType && paymentType !== 'full'}
+                  className={`px-6 py-3 rounded-lg font-semibold cursor-pointer ${
+                    paymentType && paymentType !== 'full'
+                      ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
+                      : 'bg-green-600 hover:bg-green-700 text-white'
+                  }`}
+                >
+                  Lunas
+                </button>
              </div>
              <button
-               onClick={() => setIsModalOpen(false)}
+              onClick={() => {
+                handleCancel();
+                localStorage.removeItem('payment_type');
+                localStorage.removeItem('snap_token');
+                localStorage.removeItem('order_id');
+                setPaymentType(null); // Reset ke semula
+                setIsModalOpen(false);
+              }}
+              //  onClick={() => setIsModalOpen(false)}
                className="mt-6 text-sm text-gray-500 hover:underline w-full text-center block"
              >
                Batal
              </button>
+             {/* {paymentType && (
+              <button
+                onClick={() => {
+                  localStorage.removeItem('payment_type');
+                  localStorage.removeItem('snap_token');
+                  localStorage.removeItem('order_id');
+                  setPaymentType(null);
+                }}
+                className="mt-2 text-sm text-red-500 hover:underline w-full text-center block"
+              >
+                Ubah Metode Pembayaran
+              </button>
+            )} */}
+
            </div>
          </Dialog.Panel>
        </div>
@@ -254,3 +414,23 @@ function ReviewItem({ label, value }) {
     </div>
   );
 }
+
+
+      // onSuccess: (res) => {
+      //   console.log('Pembayaran sukses:', res);
+      //   // Redirect ke halaman sukses
+      //   // window.location.href = `/pemesanan/sukses?booking_id=${result.booking_id}`;
+      //   window.location.href = '/';
+      // },
+      // onPending: (res) => {
+      //   console.log('Menunggu pembayaran:', res);
+      //   // Optional: redirect atau tampilkan notifikasi
+      //   window.location.href = `/pemesanan/menunggu?booking_id=${result.booking_id}`;
+      // },
+      // onError: (err) => {
+      //   console.error('Terjadi kesalahan pembayaran:', err);
+      //   alert('Terjadi kesalahan saat proses pembayaran.');
+      // },
+      // onClose: () => {
+      //   console.log('Popup ditutup user sebelum bayar');
+      // }
