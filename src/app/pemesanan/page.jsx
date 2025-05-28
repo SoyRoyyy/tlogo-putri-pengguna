@@ -146,70 +146,71 @@ export default function KatalogPemesanan() {
             Paket Wisata Jeep Tlogo Putri
           </h2>
           <div className="flex flex-wrap gap-7 justify-center mx-5">
-  {tourPackages.length === 0 ? (
-    // Loading cards placeholder
-    Array.from({ length: 6 }).map((_, idx) => (
-      <div
-        key={idx}
-        className="bg-gray-200 h-100 md:w-sm animate-pulse rounded-xl shadow-md overflow-hidden flex flex-col"
-      >
-        <div className="w-full h-48 sm:h-56 bg-gray-300" />
-        <div className="p-6 flex flex-col flex-grow space-y-4">
-          <div className="h-6 bg-gray-300 rounded w-3/4" />
-          <ul className="space-y-3">
-            <li className="h-4 bg-gray-300 rounded w-full" />
-            <li className="h-4 bg-gray-300 rounded w-5/6" />
-            <li className="h-4 bg-gray-300 rounded w-3/4" />
-          </ul>
-          <div className="flex items-center justify-between mt-auto pt-4">
-            <div className="h-5 w-1/4 bg-gray-300 rounded" />
-            <div className="h-10 w-24 bg-gray-300 rounded" />
+            {tourPackages.length === 0 ? (
+              // Loading cards placeholder
+              Array.from({ length: 6 }).map((_, idx) => (
+                <div
+                  key={idx}
+                  className="bg-gray-200 h-100 md:w-sm animate-pulse rounded-xl shadow-md overflow-hidden flex flex-col"
+                >
+                  <div className="w-full h-48 sm:h-56 bg-gray-300" />
+                  <div className="p-6 flex flex-col flex-grow space-y-4">
+                    <div className="h-6 bg-gray-300 rounded w-3/4" />
+                    <ul className="space-y-3">
+                      <li className="h-4 bg-gray-300 rounded w-full" />
+                      <li className="h-4 bg-gray-300 rounded w-5/6" />
+                      <li className="h-4 bg-gray-300 rounded w-3/4" />
+                    </ul>
+                    <div className="flex items-center justify-between mt-auto pt-4">
+                      <div className="h-5 w-1/4 bg-gray-300 rounded" />
+                      <div className="h-10 w-24 bg-gray-300 rounded" />
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              // Card list setelah data muncul
+            tourPackages.map((paket, idx) => (
+                <div
+                  key={idx}
+                  className="bg-white h-110 md:w-sm rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col border border-gray-100"
+                >   
+                   <div className="relative w-full h-48 sm:h-56">
+                    <Image
+                      // src={`/images/paket/${paket.image.toLowerCase().replace(/\s+/g, "-")}.jpg`}
+                      src={`/images/paket/${paket.image}`}
+                      alt={paket.package_name}
+                      width={400}
+                      height={250}
+                      className="w-full h-56 object-cover rounded-t-xl"
+                    />
+                  </div>
+                  <div className="p-6 flex flex-col flex-grow space-y-4">
+                    <h3 className="text-xl font-bold text-gray-800 text-left">
+                      {paket.package_name}
+                    </h3>
+                    <span className='text-gray-600 text-sm list-disc list-inside space-y-2 flex-grow'>
+                      <p className='capitalize'>{paket.destination}</p>
+                    </span>
+                    {/* <ul className="text-gray-600 text-sm list-disc list-inside space-y-2 flex-grow">
+                    </ul> */}
+                    <div className="flex items-center justify-between mt-auto pt-4">
+                      <span className="text-[#3d6cb9] font-semibold text-lg">
+                        Rp.
+                        {paket.price}
+                      </span>
+                      <Link
+                        href={`/pemesanan/form?paket=${encodeURIComponent(paket.slug)}`}
+                        className="bg-[#3D6CB9] text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium"
+                      >
+                        Pesan Sekarang
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
-        </div>
-      </div>
-    ))
-  ) : (
-    // Card list setelah data muncul
-    tourPackages.map((paket, idx) => (
-      <div
-        key={idx}
-        className="bg-white h-110 md:w-sm rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col border border-gray-100"
-      >   
-         <div className="relative w-full h-48 sm:h-56">
-          <Image
-            src={`/images/paket/${paket.image.toLowerCase().replace(/\s+/g, "-")}.jpg`}
-            alt={paket.package_name}
-            width={400}
-            height={250}
-            className="w-full h-56 object-cover rounded-t-xl"
-          />
-        </div>
-        <div className="p-6 flex flex-col flex-grow space-y-4">
-          <h3 className="text-xl font-bold text-gray-800 text-left">
-            {paket.package_name}
-          </h3>
-          <span className='text-gray-600 text-sm list-disc list-inside space-y-2 flex-grow'>
-            <p className='capitalize'>{paket.destination}</p>
-          </span>
-          {/* <ul className="text-gray-600 text-sm list-disc list-inside space-y-2 flex-grow">
-          </ul> */}
-          <div className="flex items-center justify-between mt-auto pt-4">
-            <span className="text-[#3d6cb9] font-semibold text-lg">
-              Rp.
-              {paket.price}
-            </span>
-            <Link
-              href={`/pemesanan/form?paket=${encodeURIComponent(paket.slug)}`}
-              className="bg-[#3D6CB9] text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium"
-            >
-              Pesan Sekarang
-            </Link>
-          </div>
-        </div>
-      </div>
-    ))
-  )}
-</div>
         </div>
       </section>
 
