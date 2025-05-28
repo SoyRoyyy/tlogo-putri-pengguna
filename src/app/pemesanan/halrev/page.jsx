@@ -345,7 +345,7 @@ const handleCancel = async () => {
                >
                  Lunas
                </button> */}
-               <button
+               {/* <button
                   onClick={() => handleBayar('dp')}
                   disabled={paymentType && paymentType !== 'dp'}
                   className={`px-6 py-3 rounded-lg font-semibold cursor-pointer ${
@@ -366,7 +366,7 @@ const handleCancel = async () => {
                   }`}
                 >
                   Lunas
-                </button>
+                </button> */}
              </div>
              <button
               onClick={() => {
