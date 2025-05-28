@@ -348,7 +348,7 @@ export default function HomePage() {
                 className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
               >
                 <Image
-                  src={`/images/${paket.package_name.toLowerCase().replace(/\s+/g, "-")}.jpg`}
+                  src={`/images/paket/${paket.image.toLowerCase().replace(/\s+/g, "-")}.jpg`}
                   alt={paket.package_name}
                   width={400}
                   height={250}
