@@ -175,26 +175,24 @@ export default function KatalogPemesanan() {
         key={idx}
         className="bg-white h-110 md:w-sm rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col border border-gray-100"
       >   
-        <div className="relative w-full h-48 sm:h-56">
+         <div className="relative w-full h-48 sm:h-56">
           <Image
-            src={paket.image || "/images/DSC04616.jpg"}
-            alt={paket.package_name || "Package Image"}
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            src={`/images/paket/${paket.image.toLowerCase().replace(/\s+/g, "-")}.jpg`}
+            alt={paket.package_name}
+            width={400}
+            height={250}
+            className="w-full h-56 object-cover rounded-t-xl"
           />
         </div>
         <div className="p-6 flex flex-col flex-grow space-y-4">
           <h3 className="text-xl font-bold text-gray-800 text-left">
             {paket.package_name}
           </h3>
-          <ul className="text-gray-600 text-sm list-disc list-inside space-y-2 flex-grow">
-            {(paket.details || []).map((point, i) => (
-              <li key={i} className="leading-relaxed">
-                {point}
-              </li>
-            ))}
-          </ul>
+          <span className='text-gray-600 text-sm list-disc list-inside space-y-2 flex-grow'>
+            <p className='capitalize'>{paket.destination}</p>
+          </span>
+          {/* <ul className="text-gray-600 text-sm list-disc list-inside space-y-2 flex-grow">
+          </ul> */}
           <div className="flex items-center justify-between mt-auto pt-4">
             <span className="text-[#3d6cb9] font-semibold text-lg">
               Rp.
