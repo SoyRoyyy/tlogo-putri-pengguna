@@ -122,7 +122,7 @@ const handleBayar = async (mode) => {
       body: JSON.stringify(parsed),
     });
 
-    if (!response.ok) throw new Error('Gagal membuat booking');
+    // if (!response.ok) throw new Error('Gagal membuat booking');
 
     const result = await response.json();
 
