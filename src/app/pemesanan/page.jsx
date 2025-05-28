@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+
 
 export default function KatalogPemesanan() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -68,11 +68,19 @@ export default function KatalogPemesanan() {
     <main className="bg-white text-gray-800 font-sans">
       {/* Header */}
       <header className="flex justify-between items-center px-6 py-4 shadow-md sticky top-0 bg-white z-50">
-        <div className="flex items-center space-x-3">
-          <Image src="/images/image.png" alt="Logo" width={40} height={40} />
-          <span className="font-bold text-xl text-black">Tlogo Putri</span>
+        <div className="flex items-center space-x-3 pl-1 md:pl-0">
+          <Image
+            src="/images/image.png"
+            alt="Logo"
+            width={70}
+            height={70}
+            className="block"
+          />
+          <span className="font-semibold text-xl text-black tracking-wide whitespace-nowrap">
+            Tlogo Putri Kaliurang
+            </span>
         </div>
-        <div className="flex items-center justify-center flex-wrap gap-3 pt-2 text-sm sm:text-base">
+        <div className="flex space-x-3 px-4 font-semibold gap-3 pt-2 text-sm sm:text-base">
           {[
             { step: 1, label: "Pesan" },
             { step: 2, label: "Review" },
@@ -137,99 +145,92 @@ export default function KatalogPemesanan() {
           <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800 mb-8 text-center">
             Paket Wisata Jeep Tlogo Putri
           </h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {tourPackages.length === 0 ? (
-              <p>Loading packages...</p>
-            ) : (
-              tourPackages.map((paket, idx) => (
-                <div
-                  key={idx}
-                  className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col"
-                >
-                  <div className="relative w-full h-48 sm:h-56">
-                    <Image
-                      src={paket.image || "/images/default.jpg"}
-                      alt={paket.package_name || "Package Image"}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="p-4 flex flex-col flex-grow">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-1">{paket.package_name}</h3>
-                    <ul className="text-gray-600 text-sm mb-4 list-disc list-inside space-y-1 flex-grow">
-                      {(paket.details || []).map((point, i) => (
-                        <li key={i}>{point}</li>
-                      ))}
-                    </ul>
-                    <div className="flex items-center justify-between mt-auto">
-                      <span className="text-[#3D6CB9] font-bold">{paket.price}</span>
-                      <Link
-                        href={`/pemesanan/form?paket=${encodeURIComponent(paket.slug)}`}
-                        className="bg-[#3D6CB9] text-white text-sm px-3 py-2 rounded hover:bg-blue-700 transition"
-                      >
-                        Pesan Sekarang
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              ))
-            )}
+          <div className="flex flex-wrap gap-7 justify-center mx-5">
+  {tourPackages.length === 0 ? (
+    // Loading cards placeholder
+    Array.from({ length: 6 }).map((_, idx) => (
+      <div
+        key={idx}
+        className="bg-gray-200 h-100 md:w-sm animate-pulse rounded-xl shadow-md overflow-hidden flex flex-col"
+      >
+        <div className="w-full h-48 sm:h-56 bg-gray-300" />
+        <div className="p-6 flex flex-col flex-grow space-y-4">
+          <div className="h-6 bg-gray-300 rounded w-3/4" />
+          <ul className="space-y-3">
+            <li className="h-4 bg-gray-300 rounded w-full" />
+            <li className="h-4 bg-gray-300 rounded w-5/6" />
+            <li className="h-4 bg-gray-300 rounded w-3/4" />
+          </ul>
+          <div className="flex items-center justify-between mt-auto pt-4">
+            <div className="h-5 w-1/4 bg-gray-300 rounded" />
+            <div className="h-10 w-24 bg-gray-300 rounded" />
           </div>
-          {/* <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {dataPaket.map((paket, idx) => (
-              <div
-                key={idx}
-                className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col"
-              >
-                <div className="relative w-full h-48 sm:h-56">
-                  <Image src={paket.image} alt={paket.title} fill className="object-cover" />
-                </div>
-                <div className="p-4 flex flex-col flex-grow">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-1">{paket.title}</h3>
-                  <ul className="text-gray-600 text-sm mb-4 list-disc list-inside space-y-1 flex-grow">
-                    {paket.details.map((point, i) => (
-                      <li key={i}>{point}</li>
-                    ))}
-                  </ul>
-                  <div className="flex items-center justify-between mt-auto">
-                    <span className="text-[#3D6CB9] font-bold">{paket.price}</span>
-                    <Link
-                      href={`/pemesanan/form?paket=${encodeURIComponent(paket.title)}`}
-                      className="bg-[#3D6CB9] text-white text-sm px-3 py-2 rounded hover:bg-blue-700 transition"
-                    >
-                      Pesan Sekarang
-                    </Link>
-                  </div>
-                </div>
-              </div>
+        </div>
+      </div>
+    ))
+  ) : (
+    // Card list setelah data muncul
+    tourPackages.map((paket, idx) => (
+      <div
+        key={idx}
+        className="bg-white h-110 md:w-sm rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col border border-gray-100"
+      >   
+        <div className="relative w-full h-48 sm:h-56">
+          <Image
+            src={paket.image || "/images/DSC04616.jpg"}
+            alt={paket.package_name || "Package Image"}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+        </div>
+        <div className="p-6 flex flex-col flex-grow space-y-4">
+          <h3 className="text-xl font-bold text-gray-800 text-left">
+            {paket.package_name}
+          </h3>
+          <ul className="text-gray-600 text-sm list-disc list-inside space-y-2 flex-grow">
+            {(paket.details || []).map((point, i) => (
+              <li key={i} className="leading-relaxed">
+                {point}
+              </li>
             ))}
-          </div> */}
+          </ul>
+          <div className="flex items-center justify-between mt-auto pt-4">
+            <span className="text-[#3d6cb9] font-semibold text-lg">
+              Rp.
+              {paket.price}
+            </span>
+            <Link
+              href={`/pemesanan/form?paket=${encodeURIComponent(paket.slug)}`}
+              className="bg-[#3D6CB9] text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium"
+            >
+              Pesan Sekarang
+            </Link>
+          </div>
+        </div>
+      </div>
+    ))
+  )}
+</div>
         </div>
       </section>
 
       {/* Footer */}
-      {/* Footer */}
-        <footer className="bg-[#3D6CB9] text-gray-100 py-10 mt-10">
-        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-10">
+      <footer className="bg-[#3D6CB9] text-gray-100 py-10 mt-10">
+        <div className="mx-auto px-[200px] grid grid-cols-1 md:grid-cols-3 gap-10">
           {/* Logo & Deskripsi */}
           <div>
             <div className="flex items-center mb-3">
-              <svg
-                className="w-8 h-8 text-[#3D6CB9] mr-2"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 2L2 7l10 5 10-5-10-5zm0 13l10-5v6l-10 5-10-5v-6l10 5z"
-                />
-              </svg>
+              <Image
+              src="/images/image.png"
+              alt="Logo"
+              width={70}
+              height={70}
+              className="block"
+              />
               <h1 className="text-xl font-bold text-white">Tlogo Putri</h1>
             </div>
-            <p className="text-sm text-white-400">
+            <p className="text-sm text-white">
               Wisata alam terbaik dengan pelayanan profesional dan pengalaman
               yang berkesan.
             </p>
@@ -292,7 +293,7 @@ export default function KatalogPemesanan() {
               {/* WhatsApp */}
               <a href="#" className="hover:text-green-400 transition">
                 <svg
-                  className="w-9 h-9"
+                  className="w-8 h-8"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2"
@@ -305,7 +306,6 @@ export default function KatalogPemesanan() {
                   />
                 </svg>
               </a>
-
               {/* Facebook */}
               <a href="#" className="hover:text-blue-400 transition">
                 <svg
@@ -328,7 +328,7 @@ export default function KatalogPemesanan() {
           {/* Alamat */}
           <div>
             <h3 className="text-white font-semibold mb-4">Alamat</h3>
-            <p className="text-sm text-white-400 leading-relaxed">
+            <p className="text-sm text-white leading-relaxed">
               Kaliurang Timur, RT.06/RW15,
               <br />
               Kaliurang, Hargobinangun,
@@ -340,7 +340,7 @@ export default function KatalogPemesanan() {
           </div>
         </div>
 
-        <div className="mt-10 border-t border-gray-700 pt-4 text-center text-sm text-black-500">
+        <div className="mt-10 border-t border-gray-700 pt-4 text-center text-sm text-black-500 px-[200px]">
           <p>
             © 2024 Tlogo Putri. All rights reserved. | Created by{" "}
             <span className="text-white font-medium">YourName</span>
