@@ -88,10 +88,10 @@ export default function HomePage() {
         <div className="flex items-center space-x-4">
           <nav className="hidden md:block">
             <ul className="flex space-x-6 px-7 font-semibold text-black text-l">
-              {["home", "paket", "fasilitas", "artikel", "about"].map((item) => (
+              {["home", "fasilitas", "paket", "artikel", "about"].map((item) => (
                 <li key={item} className="relative group">
                   <a
-                    href={`${item}`}
+                    href={`#${item}`}
                     className="capitalize px-3 py-1 transition-colors duration-300 hover:text-blue-600 focus:text-blue-600 focus:outline-none"
                   >
                     {item}
@@ -118,7 +118,7 @@ export default function HomePage() {
       {menuOpen && (
         <nav className="md:hidden bg-white shadow-md border-t border-gray-200">
           <div className="max-w-7xl mx-auto px-4 py-4">
-            {["home", "paket", "fasilitas", "artikel", "about"].map((item) => {
+            {["home", "fasilitas", "paket", "artikel", "about"].map((item) => {
               const isArtikel = item === "artikel";
               return isArtikel ? (
                 <Link
@@ -145,7 +145,7 @@ export default function HomePage() {
       )}
 
       {/* Hero Slider */}
-      <section className="relative w-full h-screen flex items-center justify-center bg-black overflow-hidden">
+      <section id="home" className="relative w-full h-screen flex items-center justify-center bg-black overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
             key={currentIndex}
@@ -230,7 +230,7 @@ export default function HomePage() {
             { label: "Taman", src: "/images/taman.jpg" },
             { label: "Toilet", src: "/images/toilet.jpg" },
             { label: "Mushola", src: "/images/mushola.jpg" },
-            { label: "Kantin", src: "/images/TheLostWorldPark.jpg" },
+            { label: "Kantin", src: "/images/kantin.PNG" },
             { label: "Sewa Skuter", src: "/images/DSC03913.jpg" },
           ].map((item, idx) => (
             <div
@@ -348,7 +348,8 @@ export default function HomePage() {
                 className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
               >
                 <Image
-                  src={`/images/paket/${paket.image}            i[o'n  iy8=                             ]`}
+                  // src={`/images/paket/${paket.image.toLowerCase().replace(/\s+/g, "-")}.jpg`}
+                  src={`/images/paket/${paket.image}`}
                   alt={paket.package_name}
                   width={400}
                   height={250}
@@ -390,16 +391,55 @@ export default function HomePage() {
       {isPopupOpen && (
         <div
 
-          className="fixed inset-0 z-50 flex justify-center items-center px-4 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex justify-center items-center px-4 backdrop-blur-xs"
           style={{ backgroundColor: "rgba(0, 0, 0, 0.1)" }}
         >
 
         <div
-  className="fixed inset-0 z-50 flex justify-center items-center px-4 backdrop-blur-sm"
-  style={{ backgroundColor: "rgba(0, 0, 0, 0.1)" }}
-></div>
-          <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full relative overflow-hidden">
-            {/* Gambar */}
+          className="fixed inset-0 z-50 flex justify-center items-center px-4"
+          style={{ backgroundColor: "rgba(0, 0, 0, 0.1)" }}
+        ></div>
+              
+        {isPopupOpen && (
+          <div
+            className="fixed inset-0 z-50 flex justify-center items-center px-4 backdrop-blur-xs"
+            style={{ backgroundColor: "rgba(0, 0, 0, 0.1)" }}
+          >
+            <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full relative overflow-hidden">
+              {/* Gambar */}
+              <div className="relative w-full h-64 group">
+                <Image
+                  src={images[popupImageIndex]}
+                  alt={`Gambar ${popupImageIndex}`}
+                  fill
+                  className="object-cover transition duration-1000 pointer-events-none"
+                />
+                <button
+                  className="absolute top-2 right-2 bg-white bg-opacity-80 hover:bg-opacity-100 text-black rounded-full w-8 h-8 flex items-center justify-center z-10"
+                  onClick={() => setIsPopupOpen(false)}
+                  aria-label="Tutup popup"
+                >
+                  ×
+                </button>
+              </div>
+        
+              {/* Konten popup */}
+              <div className="p-6">
+                <h2 className="text-xl font-bold mb-2">Highlight</h2>
+                <ul className="list-disc pl-5 text-gray-700 text-sm space-y-1">
+                  <li>Lava Tour Merapi menggunakan Jeep untuk 4 penumpang.</li>
+                  <li>Wisata ke Museum Sisa Hartaku, Batu Alien, dan banyak lagi.</li>
+                  <li>Pilihan paket lengkap dengan durasi dan rute berbeda.</li>
+                  <li>Keberangkatan dari Sleman, Yogyakarta.</li>
+                  <li>Fasilitas lengkap: Jeep, pengemudi, dan biaya BBM.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+
+          {/* <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full relative overflow-hidden">
+
             <div className="relative w-full h-64 group">
               <Image
                 src={images[popupImageIndex]}
@@ -407,7 +447,6 @@ export default function HomePage() {
                 fill
                 className="object-cover transition duration-1000"
               />
-              {/* Tombol X yang hanya muncul saat hover */}
               <button
                 className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-white bg-opacity-80 hover:bg-opacity-100 text-black rounded-full w-8 h-8 flex items-center justify-center z-10"
                 onClick={() => setIsPopupOpen(false)}
@@ -417,7 +456,7 @@ export default function HomePage() {
               </button>
             </div>
 
-            {/* Konten popup */}
+
             <div className="p-6">
               <h2 className="text-xl font-bold mb-2">Highlight</h2>
               <ul className="list-disc pl-5 text-gray-700 text-sm space-y-1">
@@ -434,7 +473,7 @@ export default function HomePage() {
                 <li>Fasilitas lengkap: Jeep, pengemudi, dan biaya BBM.</li>
               </ul>
             </div>
-          </div>
+          </div> */}
         </div>
       )}
 
@@ -626,7 +665,7 @@ export default function HomePage() {
                 key={idx}
                 className="flex-shrink-0 w-[400px] bg-gray-50 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition duration-300 scroll-snap-align-start"
               >
-                <p className="text-gray-700 italic mb-6">"{review}"</p>
+                <p className="text-gray-700 italic mb-6">{review}</p>
                 <div className="flex items-center gap-1 mb-4">
                   {Array(5).fill(0).map((_, i) => (
                     <span key={i} className="text-yellow-400 text-xl">⭐</span>
@@ -642,7 +681,7 @@ export default function HomePage() {
       {/* FAQ Section */}
       <section className="px-6 py-16 bg-gray-50">
         <h2 className="text-center text-3xl font-extrabold mb-12 text-gray-900 tracking-wide">
-          FAQ's
+          FAQ
         </h2>
         <div className="max-w-3xl mx-auto space-y-6">
           {[
