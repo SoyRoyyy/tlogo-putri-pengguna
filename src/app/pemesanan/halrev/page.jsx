@@ -12,7 +12,22 @@ export default function ReviewPage() {
  const [isModalOpen, setIsModalOpen] = useState(false);
  const [paymentType, setPaymentType] = useState(null);
 
- const router = useRouter();
+ const [token, setToken] = useState(null);  // Inisialisasi token dengan nilai null
+  const router = useRouter();  // Gunakan router untuk navigasi jika diperlukan
+
+  useEffect(() => {
+    // Ambil token dari URL atau localStorage
+    const urlToken = new URLSearchParams(window.location.search).get('token');
+    if (urlToken) {
+      setToken(urlToken);
+    } else {
+      const storedToken = localStorage.getItem('token');
+      if (storedToken) {
+        setToken(storedToken);
+      }
+    }
+  }, []); // Trigger effect hanya sekali saat komponen dimuat
+
 
 useEffect(() => {
   if (isModalOpen) {
@@ -270,22 +285,24 @@ const handleCancel = async () => {
      <section className="px-4 sm:px-6 py-10 max-w-7xl mx-auto">
        {/* Link kembali tetap sama */}
        <div className="px-4 pt-4 flex -mb-8">
-         <Link href="/pemesanan/form/">
-           <div className="flex items-left text-black hover:underline hover:text-[#3D6CB9] transition duration-200">
-             <svg
-               xmlns="http://www.w3.org/2000/svg"
-               className="h-5 w-5 mr-1"
-               fill="none"
-               viewBox="0 0 24 24"
-               stroke="currentColor"
-               strokeWidth={2}
-             >
-               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-             </svg>
-             <span>Kembali ke form</span>
-           </div>
-         </Link>
-       </div>
+  <Link href={`/pemesanan/form?token=${encodeURIComponent(token)}`}>
+  <div className="flex items-left text-black hover:underline hover:text-[#3D6CB9] transition duration-200">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="h-5 w-5 mr-1"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+    </svg>
+    <span>Kembali ke form</span>
+  </div>
+</Link>
+
+</div>
+
        {/* Judul review tetap sama */}
        <h2 className="text-2xl mb-10 font-bold text-center">Review Pemesanan Anda</h2>
        {/* Detail pemesanan tetap sama */}

@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 export default function FormPemesanan() {
   const searchParams = useSearchParams();
-  const slug = searchParams.get('paket');
+  const token = searchParams.get('token');
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -27,27 +27,38 @@ export default function FormPemesanan() {
     voucher: '',
   });
 
-  useEffect(() => {
-    if (slug) {
-      setIsLoading(true);
-      fetch(`http://localhost:8000/api/packages/${encodeURIComponent(slug)}`)
-        .then(res => res.json())
-        .then(data => {
-          if (!data.error) {
-            setFormData(prev => ({
-              ...prev,
-              paket: data.package_name,
-              package_id: data.id,
-              gross_amount: data.price,
-            }));
-          }
-        })
-        .catch(error => {
-          console.error('Gagal fetch data paket:', error);
-        })
-        .finally(() => setIsLoading(false));
+useEffect(() => {
+  console.log("Token yang diterima:", token);  // Cek token yang diterima
+
+  if (token) {
+    const tokenMap = JSON.parse(localStorage.getItem('tokenSlugMap') || '{}');
+    const slug = tokenMap[token];
+
+    if (!slug) {
+      console.error('Slug tidak ditemukan untuk token:', token);
+      return;
     }
-  }, [slug]);
+
+    setIsLoading(true);
+    fetch(`http://localhost:8000/api/packages/${encodeURIComponent(slug)}`)
+      .then(res => res.json())
+      .then(data => {
+        if (!data.error) {
+          setFormData(prev => ({
+            ...prev,
+            paket: data.package_name,
+            package_id: data.id,
+            gross_amount: data.price,
+          }));
+        }
+      })
+      .catch(error => {
+        console.error('Gagal fetch data paket:', error);
+      })
+      .finally(() => setIsLoading(false));
+  }
+}, [token]);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;

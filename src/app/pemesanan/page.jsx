@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-
+import { v4 as uuidv4 } from 'uuid';
 
 export default function KatalogPemesanan() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -11,19 +11,33 @@ export default function KatalogPemesanan() {
   const [tourPackages, setTourPackages] = useState([]);
 
   // Fetch tour packages from API
-  useEffect(() => {
+   useEffect(() => {
     const fetchTourPackages = async () => {
       try {
         const response = await fetch("http://localhost:8000/api/packages");
         const data = await response.json();
-        setTourPackages(data);
-        console.log(data);
+
+        // Tambahkan token random dan simpan ke localStorage untuk mapping
+        const withToken = data.map((item) => {
+          const token = uuidv4();
+          return { ...item, token };
+        });
+
+        // Simpan mapping token ↔ slug ke localStorage
+        const tokenMap = withToken.reduce((acc, item) => {
+          acc[item.token] = item.slug;
+          return acc;
+        }, {});
+        localStorage.setItem('tokenSlugMap', JSON.stringify(tokenMap));
+
+        setTourPackages(withToken);
       } catch (error) {
         console.error("Error fetching tour packages:", error);
       }
     };
     fetchTourPackages();
   }, []);
+
 
   // const dataPaket = [
   //   {
@@ -200,11 +214,11 @@ export default function KatalogPemesanan() {
                         {paket.price}
                       </span>
                       <Link
-                        href={`/pemesanan/form?paket=${encodeURIComponent(paket.slug)}`}
-                        className="bg-[#3D6CB9] text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium"
-                      >
-                        Pesan Sekarang
-                      </Link>
+                      href={`/pemesanan/form?token=${encodeURIComponent(paket.token)}`}
+                      className="bg-[#3D6CB9] text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium"
+                    >
+                      Pesan Sekarang
+                    </Link>
                     </div>
                   </div>
                 </div>
