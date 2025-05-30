@@ -5,12 +5,12 @@ import Image from "next/image";
 
 export default function FasilitasKami() {
   const fasilitas = [
-    { label: "Tempat Parkir Luas", src: "/images/DSC03884.jpg" },
+    { label: "Tempat Parkir Luas", src: "/images/DSC03884.JPG" },
     { label: "Taman", src: "/images/taman.jpg" },
     { label: "Toilet", src: "/images/toilet.jpg" },
     { label: "Mushola", src: "/images/mushola.jpg" },
     { label: "Kantin", src: "/images/kantin.PNG" },
-    { label: "Sewa Skuter", src: "/images/DSC03913.jpg" },
+    { label: "Sewa Skuter", src: "/images/DSC03913.JPG" },
   ];
 
   return (
