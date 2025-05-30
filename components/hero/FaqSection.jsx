@@ -2,11 +2,31 @@
 
 export default function FaqSection() {
   const questions = [
-    "Apa saja jenis paket jeep yang tersedia?",
-    "Apakah bisa pesan online?",
-    "Di mana lokasi titik kumpul?",
-    "Apakah tersedia fasilitas keluarga?",
-    "Bagaimana jika cuaca buruk saat booking?",
+    {
+      question: "Apa saja jenis paket jeep yang tersedia?",
+      answer:
+        "Di Tlogo Putri, kami punya 6 paket seru yang siap bikin petualanganmu makin gokil! Mulai dari paket santai buat keluarga, petualangan off-road yang memacu adrenalin, sampai paket foto-foto kece buat kamu yang doyan Instagramable shots!.",
+    },
+    {
+      question: "Apakah bisa pesan online?",
+      answer:
+        "Ya, kamu bisa pesan online melalui website kami dengan mudah dan cepat.",
+    },
+    {
+      question: "Di mana lokasi titik kumpul?",
+      answer:
+        "Titik kumpul berada di kantor kami di Jalan Raya Nomor 123, dekat pusat kota.",
+    },
+    {
+      question: "Apakah tersedia fasilitas keluarga?",
+      answer:
+        "Tentu, kami menyediakan fasilitas khusus untuk keluarga agar nyaman dan aman selama perjalanan.",
+    },
+    {
+      question: "Bagaimana jika cuaca buruk saat booking?",
+      answer:
+        "Jika cuaca buruk, kami akan menghubungi kamu untuk menjadwalkan ulang atau mengembalikan biaya.",
+    },
   ];
 
   return (
@@ -21,7 +41,7 @@ export default function FaqSection() {
             className="group bg-white rounded-xl shadow-md p-6 cursor-pointer transition-shadow duration-300 hover:shadow-xl"
           >
             <summary className="flex justify-between items-center font-semibold text-gray-800 text-lg list-none">
-              {q}
+              {q.question}
               <svg
                 className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform"
                 fill="none"
@@ -36,9 +56,7 @@ export default function FaqSection() {
                 />
               </svg>
             </summary>
-            <p className="mt-4 text-gray-600 text-sm">
-              Jawaban dari pertanyaan ini akan muncul di sini.
-            </p>
+            <p className="mt-4 text-gray-600 text-sm">{q.answer}</p>
           </details>
         ))}
       </div>
