@@ -5,11 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 
 const images = [
-  "/images/42.jpg",
-  "/images/DSC04238.jpg",
-  "/images/DSC04616.jpg",
-  "/images/DSC04211.jpg",
-  "/images/DSC04658.jpg"
+  "punlic/images/42.jpg",
+  "punlic/images/DSC04238.jpg",
+  "punlic/images/DSC04616.jpg",
+  "punlic/images/DSC04211.jpg",
+  "punlic/images/DSC04658.jpg"
 ];
 
 export default function HeroSection() {
