@@ -4,12 +4,13 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+// ✅ Pastikan semua file gambar ini ada di folder public/images/
 const images = [
-  "punlic/images/42.jpg",
-  "punlic/images/DSC04238.jpg",
-  "punlic/images/DSC04616.jpg",
-  "punlic/images/DSC04211.jpg",
-  "punlic/images/DSC04658.jpg"
+  "/images/42.jpg",
+  "/images/DSC04238.jpg",
+  "/images/DSC04616.jpg",
+  "/images/DSC04211.jpg",
+  "/images/DSC04658.jpg"
 ];
 
 export default function HeroSection() {
@@ -17,9 +18,7 @@ export default function HeroSection() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prev) =>
-        prev === images.length - 1 ? 0 : prev + 1
-      );
+      setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
     }, 5000);
     return () => clearInterval(interval);
   }, []);
@@ -33,7 +32,10 @@ export default function HeroSection() {
   return (
     <>
       {/* Hero Slider */}
-      <section id="home" className="relative w-full h-screen flex items-center justify-center bg-black overflow-hidden">
+      <section
+        id="home"
+        className="relative w-full h-screen flex items-center justify-center bg-black overflow-hidden"
+      >
         <div className="absolute inset-0 z-0">
           <Image
             key={currentIndex}
