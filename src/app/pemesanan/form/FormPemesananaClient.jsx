@@ -2,9 +2,9 @@
 
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import PaketForms from "../components/hero/PaketForms";
-import BookingForm from "../components/hero/BookingForm";
-import { getPackageBySlug } from "../src/app/lib/api";
+import PaketForms from "../../../../components/hero/PaketForms";
+import BookingForm from "../../../../components/hero/BookingForm";
+import { getPackageBySlug } from "../../lib/api";
 
 export default function FormPemesananPage() {
   const searchParams = useSearchParams();
