@@ -11,7 +11,7 @@
 //   useEffect(() => {
 //     async function fetchArticle() {
 //       try {
-//         const res = await fetch(`http://127.0.0.1:8000/api/content-generate/article/${id}`); // <- Ganti ke endpoint ini
+//         const res = await fetch(`https://tlogo-putri-pengguna-za4a-git-main-soyroyyys-projects.vercel.app/api/content-generate/article/${id}`); // <- Ganti ke endpoint ini
 //         if (!res.ok) throw new Error("Gagal mengambil data artikel");
 //         const data = await res.json();
 //         setArticle(data.data);
@@ -104,7 +104,7 @@ export default function ArtikelDetail({ params }) {
 
         {article.gambar && (
           <img
-            src={`http://127.0.0.1:8000/storage/gambar/${article.gambar}`}
+            src={`https://tlogo-putri-pengguna-za4a-git-main-soyroyyys-projects.vercel.app/storage/gambar/${article.gambar}`}
             alt={article.judul}
             className="w-[900px] max-w-full max-h-[400px] h-auto mb-6 rounded-lg mx-auto"
           />
