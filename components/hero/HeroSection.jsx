@@ -6,11 +6,11 @@ import Link from "next/link";
 
 // ✅ Pastikan semua file gambar ini ada di folder public/images/
 const images = [
-  "/images/42.jpg",
-  "/images/DSC04238.jpg",
-  "/images/DSC04616.jpg",
-  "/images/DSC04211.jpg",
-  "/images/DSC04658.jpg"
+  "/images/42.JPG",
+  "/images/DSC04238.JPG",
+  "/images/DSC04616.JPG",
+  "/images/DSC04211.JPG",
+  "/images/DSC04658.JPG"
 ];
 
 export default function HeroSection() {
