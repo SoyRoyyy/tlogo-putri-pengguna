@@ -16,4 +16,19 @@ export async function getTourPackages() {
   }
 }
 
+export async function getPackageBySlug(slug) {
+  try {
+    const res = await fetch(`http://localhost:8000/api/packages/${encodeURIComponent(slug)}`);
+    const data = await res.json();
+    if (!data.error) {
+      return data;
+    } else {
+      throw new Error("Data error");
+    }
+  } catch (err) {
+    console.error("Gagal fetch data paket:", err);
+    throw err;
+  }
+}
+
 
