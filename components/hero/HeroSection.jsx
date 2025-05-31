@@ -34,7 +34,7 @@ export default function HeroSection() {
       {/* Hero Slider */}
       <section
         id="home"
-        className="relative w-full h-screen flex items-center justify-center bg-black overflow-hidden"
+        className="relative w-full min-h-[60vh] sm:h-screen flex items-center justify-center bg-black overflow-hidden"
       >
         <div className="absolute inset-0 z-0">
           <Image
@@ -44,11 +44,12 @@ export default function HeroSection() {
             fill
             className="object-cover w-full h-full transition-opacity duration-1000 opacity-90"
             priority
+            sizes="(max-width: 768px) 100vw, 50vw"
           />
         </div>
         <button
           onClick={prevSlide}
-          className="absolute left-4 z-10 text-white text-4xl font-thin p-3 rounded-full hover:bg-white/20 transition"
+          className="absolute left-4 z-10 text-white text-3xl sm:text-4xl font-thin p-2 sm:p-3 rounded-full hover:bg-white/20 transition"
           aria-label="Sebelumnya"
         >
           &#x276E;
@@ -65,7 +66,7 @@ export default function HeroSection() {
             <span
               key={idx}
               onClick={() => setCurrentIndex(idx)}
-              className={`w-3 h-3 rounded-full cursor-pointer transition ${
+              className={`w-4 h-4 sm:w-3 sm:h-3 rounded-full cursor-pointer transition ${
                 idx === currentIndex
                   ? "bg-blue-600 shadow-lg shadow-blue-500/50"
                   : "bg-white bg-opacity-50 hover:bg-opacity-80"
@@ -102,7 +103,9 @@ export default function HeroSection() {
             >
               <span className="text-white text-4xl">🚙</span>
             </div>
-            <span className="ml-12 text-white justify-center">Pesan Sekarang!!!</span>
+            <span className="ml-12 text-white justify-center">
+              Pesan Sekarang!!!
+            </span>
           </button>
         </Link>
       </section>

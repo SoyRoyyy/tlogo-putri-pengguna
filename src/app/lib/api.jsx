@@ -31,4 +31,24 @@ export async function getPackageBySlug(slug) {
   }
 }
 
+export async function getPublishedArticles() {
+  try {
+    const response = await fetch(
+      "http://127.0.0.1:8000/api/content-generate/articleterbit"
+    );
 
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const data = await response.json();
+
+    if (Array.isArray(data.data)) {
+      return data.data;
+    } else {
+      throw new Error("Data format tidak sesuai");
+    }
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
