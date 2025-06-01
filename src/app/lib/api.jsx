@@ -15,7 +15,7 @@ export async function getTourPackages() {
     return []; 
   }
 }
-
+ 
 export async function getPackageBySlug(slug) {
   try {
     const res = await fetch(`http://localhost:8000/api/packages/${encodeURIComponent(slug)}`);
@@ -53,38 +53,38 @@ export async function getPublishedArticles() {
   }
 }
 
-// export const getRemainingPayment = async (orderId) => {
-//   const res = await fetch(`http://localhost:8000/api/orders/${orderId}/remaining-payment`, {
-//     method: "GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//   });
+const BASE_URL = "http://localhost:8000/api";
 
-//   if (!res.ok) {
-//     throw new Error("Gagal mengambil data sisa tagihan");
-//   }
-
-//   return res.json(); // response JSON dari backend
-// };
-
-
-// src/lib/api.js
-
-export async function fetchRemainingPayment(order_id) {
+export async function createBooking(payload) {
   try {
-    const res = await fetch(
-      `http://localhost:8000/api/orders/${order_id}/remaining-payment`
-    );
+    const response = await fetch(`${BASE_URL}/bookings`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
 
-    if (!res.ok) {
-      throw new Error(`HTTP error! Status: ${res.status}`);
+    if (!response.ok) {
+      throw new Error("Gagal membuat booking");
     }
 
-    const data = await res.json();
-    return data;
-  } catch (err) {
-    console.error("Gagal fetch sisa tagihan:", err);
-    throw err;
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error("createBooking error:", error);
+    throw error;
+  }
+}
+
+export async function cancelBooking(orderId) {
+  try {
+    const response = await fetch(`${BASE_URL}/bookings/${orderId}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) {
+      throw new Error("Gagal membatalkan booking");
+    }
+  } catch (error) {
+    console.error("cancelBooking error:", error);
+    throw error;
   }
 }

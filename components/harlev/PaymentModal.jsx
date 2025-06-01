@@ -7,6 +7,7 @@ export default function PaymentModal({
   onConfirmFull,
   onCancel,
   amount,
+  paymentType
 }) {
   return (
     <Dialog open={isOpen} onClose={onClose} className="relative z-50">
@@ -18,27 +19,49 @@ export default function PaymentModal({
           <div className="p-6">
             <p className="text-center text-gray-700 text-lg font-semibold">Total Pembayaran Anda:</p>
             <p className="text-center text-2xl font-bold text-[#3D6CB9] mt-2">
-              Rp{new Intl.NumberFormat('id-ID').format(amount)}
+              Rp {new Intl.NumberFormat('id-ID').format(amount)}
             </p>
-            <div className="mt-6 flex flex-col space-y-3">
+            <div className="mt-8 mb-5 flex justify-evenly">
               <button
                 onClick={onConfirmDP}
-                className="bg-yellow-400 text-black px-4 py-2 rounded-md hover:bg-yellow-500 transition"
+                disabled={paymentType && paymentType !== 'dp'}
+                className={`px-4 py-2 rounded-md font-semibold transition cursor-pointer ${
+                  paymentType && paymentType !== 'dp'
+                    ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
+                    : 'bg-yellow-400 text-black hover:bg-yellow-500'
+                }`}
               >
                 Bayar DP 50%
               </button>
+              
               <button
                 onClick={onConfirmFull}
-                className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition"
+                disabled={paymentType && paymentType !== 'full'}
+                className={`px-4 py-2 rounded-md font-semibold transition cursor-pointer ${
+                  paymentType && paymentType !== 'full'
+                    ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
+                    : 'bg-green-600 text-white hover:bg-green-700'
+                }`}
               >
                 Bayar Penuh
               </button>
-              <button
-                onClick={onCancel}
-                className="mt-2 text-sm text-red-500 underline hover:text-red-700 transition"
-              >
-                Batalkan
-              </button>
+            </div>
+            <div className="flex justify-center">
+              {paymentType ? (
+                <button
+                  onClick={onCancel}
+                  className="bg-[#3D6CB9] mt-2 text-sm  text-white px-4 py-2 rounded-md hover:bg-blue-500 transition cursor-pointer"
+                >
+                  Ganti Metode
+                </button>
+              ) : (
+                <button
+                  onClick={onCancel}
+                  className=" mt-2 text-sm text-slate-600 px-4 py-2 rounded-md transition cursor-pointer hover:text-slate-950"
+                >
+                  Kembali
+                </button>
+              )}
             </div>
           </div>
         </Dialog.Panel>
