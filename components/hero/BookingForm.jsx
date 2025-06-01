@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 
 const FormPemesanan = ({
@@ -8,12 +8,26 @@ const FormPemesanan = ({
   isLoading,
   submitting,
 }) => {
+  useEffect(() => {
+    const today = new Date();
+    const defaultTime = today.toTimeString().slice(0, 5); // HH:MM
+    const defaultDate = today.toISOString().split("T")[0]; // YYYY-MM-DD
+
+    if (!formData.start_time) {
+      handleChange({ target: { name: "start_time", value: defaultTime } });
+    }
+
+    if (!formData.tour_date) {
+      handleChange({ target: { name: "tour_date", value: defaultDate } });
+    }
+  }, []);
+
   return (
     <section className="px-4 sm:px-6 lg:px-8 py-10 bg-white min-h-screen">
-      {/* Kembali ke Katalog */}
-      <div className="px-6 pt-4">
+      {/* Tombol Kembali */}
+      <div className="mb-4">
         <Link href="/pemesanan">
-          <div className="flex items-center text-black hover:underline hover:text-[#3D6CB9] transition duration-200">
+          <div className="flex items-center text-black hover:underline hover:text-[#3D6CB9] transition duration-200 cursor-pointer">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5 mr-1"
@@ -33,9 +47,9 @@ const FormPemesanan = ({
         </Link>
       </div>
 
-      {/* Form Pemesanan */}
+      {/* Form Container */}
       <div
-        className={`max-w-xl mx-auto p-6 rounded-xl shadow-md transition ${
+        className={`max-w-4xl mx-auto p-6 rounded-xl shadow-md transition ${
           isLoading ? "animate-pulse bg-gray-100" : "bg-gray-50"
         }`}
       >
@@ -43,14 +57,19 @@ const FormPemesanan = ({
           Form Pemesanan
         </h2>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-1 md:grid-cols-2 gap-4"
+        >
           {/* Paket Wisata */}
-          <InputField
-            label="Paket Wisata"
-            name="paket"
-            value={formData.paket}
-            readOnly
-          />
+          <div className="md:col-span-2">
+            <InputField
+              label="Paket Wisata"
+              name="paket"
+              value={formData.paket}
+              readOnly
+            />
+          </div>
 
           {/* Nama */}
           <InputField
@@ -101,7 +120,7 @@ const FormPemesanan = ({
             required
           />
 
-          {/* Tanggal Tour */}
+          {/* Tanggal Pemesanan */}
           <InputField
             label="Tanggal Pemesanan"
             name="tour_date"
@@ -112,15 +131,17 @@ const FormPemesanan = ({
           />
 
           {/* Jumlah Armada */}
-          <InputField
-            label="Jumlah Armada"
-            name="qty"
-            type="number"
-            min="1"
-            value={formData.qty}
-            onChange={handleChange}
-            required
-          />
+          <div className="md:col-span-2">
+            <InputField
+              label="Jumlah Armada"
+              name="qty"
+              type="number"
+              min="1"
+              value={formData.qty}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
           {/* Kode Refferal */}
           <InputField
@@ -141,17 +162,21 @@ const FormPemesanan = ({
           />
 
           {/* Tombol Submit */}
-          <button
-            type="submit"
-            disabled={submitting}
-            className={`w-full py-2 rounded-md text-white font-semibold transition ${
-              submitting
-                ? "bg-[#3D6CB9] animate-pulse cursor-not-allowed"
-                : "bg-[#3D6CB9] hover:bg-blue-700"
-            }`}
-          >
-            {submitting ? "Mengirim..." : "Kirim Pemesanan"}
-          </button>
+          <div className="md:col-span-2">
+            <button
+              type="submit"
+              disabled={submitting}
+              className={`w-full py-3 rounded-lg text-white font-semibold transition
+                ${
+                  submitting
+                    ? "bg-[#3D6CB9] animate-pulse cursor-not-allowed"
+                    : "bg-[#3D6CB9] hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                }
+              `}
+            >
+              {submitting ? "Mengirim..." : "Kirim Pemesanan"}
+            </button>
+          </div>
         </form>
       </div>
     </section>
@@ -169,9 +194,12 @@ const InputField = ({
   readOnly = false,
   ...rest
 }) => (
-  <div>
-    <label className="block text-sm font-medium text-black">{label}</label>
+  <div className="flex flex-col">
+    <label htmlFor={name} className="text-sm font-medium text-black mb-1">
+      {label}
+    </label>
     <input
+      id={name}
       type={type}
       name={name}
       value={value}
@@ -179,8 +207,8 @@ const InputField = ({
       required={required}
       placeholder={placeholder}
       readOnly={readOnly}
-      className={`w-full mt-1 px-2 py-2 border text-black text-sm border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-        readOnly ? "bg-gray-100" : ""
+      className={`w-full px-3 py-2 border text-black text-sm border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+        readOnly ? "bg-gray-100 cursor-not-allowed" : ""
       }`}
       {...rest}
     />

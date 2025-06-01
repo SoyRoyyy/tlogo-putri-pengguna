@@ -9,39 +9,47 @@ const Header_katalog = ({ currentStep }) => {
   ];
 
   return (
-    <header className="flex justify-between items-center px-6 py-4 shadow-md sticky top-0 bg-white z-50">
-      <div className="flex items-center space-x-3 pl-1 md:pl-0">
-        <Image
-          src="/images/image.png"
-          alt="Logo"
-          width={70}
-          height={70}
-          className="block"
-        />
-        <span className="font-semibold text-xl text-black tracking-wide whitespace-nowrap">
-          Tlogo Putri Kaliurang
-        </span>
-      </div>
-      <div className="flex space-x-3 px-4 font-semibold gap-3 pt-2 text-sm sm:text-base">
-        {steps.map((item, idx) => (
-          <div key={item.step} className="flex items-center whitespace-nowrap">
+    <header className="w-full shadow-md sticky top-0 bg-white z-50">
+      <div className="max-w-screen-xl mx-auto flex flex-wrap items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+        {/* Logo dan Judul */}
+        <div className="flex items-center space-x-3 mb-2 sm:mb-0">
+          <Image
+            src="/images/image.png"
+            alt="Logo"
+            width={60}
+            height={60}
+            className="block"
+          />
+          <span className="font-semibold text-lg sm:text-xl text-black tracking-wide">
+            Tlogo Putri Kaliurang
+          </span>
+        </div>
+
+        {/* Langkah-langkah */}
+        <div className="flex flex-wrap items-center space-x-2 gap-y-2 text-sm sm:text-base font-semibold justify-center sm:justify-end">
+          {steps.map((item, idx) => (
             <div
-              className={`w-6 h-6 rounded-full flex items-center justify-center font-bold text-sm ${
-                item.step === currentStep
-                  ? "bg-[#3D6CB9] text-white"
-                  : "bg-gray-300 text-gray-700"
-              }`}
+              key={item.step}
+              className="flex items-center whitespace-nowrap"
             >
-              {item.step}
+              <div
+                className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center font-bold text-sm ${
+                  item.step === currentStep
+                    ? "bg-[#3D6CB9] text-white"
+                    : "bg-gray-300 text-gray-700"
+                }`}
+              >
+                {item.step}
+              </div>
+              <span className="ml-2 mr-3 font-medium text-gray-800 hidden sm:inline">
+                {item.label}
+              </span>
+              {idx !== steps.length - 1 && (
+                <span className="text-gray-400">—</span>
+              )}
             </div>
-            <span className="ml-2 mr-4 font-medium text-gray-800">
-              {item.label}
-            </span>
-            {idx !== steps.length - 1 && (
-              <span className="text-gray-400">—</span>
-            )}
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </header>
   );
