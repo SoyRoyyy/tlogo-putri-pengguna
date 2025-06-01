@@ -12,16 +12,29 @@ export default function ArtikelTlogoPutri() {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [fadeInCards, setFadeInCards] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const result = await getPublishedArticles();
+        const sortedArticles = result.sort((a, b) => {
+          // Mengubah string tanggal dan waktu dari 'created_at' menjadi objek Date
+          const dateA = new Date(a.created_at);
+          const dateB = new Date(b.created_at);
+
+          // Mengurutkan dari tanggal terbaru ke tanggal terlama (descending order) dateB - dateA akan memberikan nilai jika B lebih baru dari A sehingga B akan muncul lebih dulu
+          return dateB.getTime() - dateA.getTime();
+        });
+
         setArticles(result);
       } catch (err) {
         setError(err.message);
       } finally {
         setLoading(false);
+        setTimeout(() => {
+          setFadeInCards(true);
+        }, 100);
       }
     };
 
@@ -58,8 +71,18 @@ export default function ArtikelTlogoPutri() {
       </h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-        {articles.map((article) => (
-          <ArticleCard key={article.id} article={article} />
+        {articles.map((article, index) => (
+          <div
+            key={article.id}
+            className="flex flex-col h-full"
+            style={{
+              opacity: fadeInCards ? 1 : 0,
+              transform: fadeInCards ? "translateY(0)" : "translateY(20px)",
+              transition: `opacity 0.6s ease ${index * 0.2}s, transform 0.6s ease ${index * 0.2}s`,
+            }}
+          >
+            <ArticleCard article={article} />
+          </div>
         ))}
       </div>
 
