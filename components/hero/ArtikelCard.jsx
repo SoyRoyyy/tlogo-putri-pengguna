@@ -19,11 +19,15 @@ export default function ArticleCard({ article }) {
                         <h3 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">
                           {article.judul}
                         </h3>
-                        <p className="text-gray-600 text-sm line-clamp-3">
-                          {article.isi_konten.length > 100
-                          ? article.isi_konten.slice(0, 100) + "..."
-                          : article.isi_konten}
-                          </p>
+                        <p
+                          className="text-gray-600 text-sm line-clamp-3"
+                          dangerouslySetInnerHTML={{ __html: article.isi_konten
+                              ? article.isi_konten.length > 100
+                                ? article.isi_konten.slice(0, 100) + "..."
+                                : article.isi_konten
+                              : ""
+                          }}
+                        />
                       </div>
                       <div>
                         <button
