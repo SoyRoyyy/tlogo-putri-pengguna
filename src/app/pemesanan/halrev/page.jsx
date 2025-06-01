@@ -68,7 +68,7 @@ export default function ReviewPage() {
         onSuccess(result) {
           console.log('Pembayaran berhasil:', result);
           localStorage.clear();
-          setTimeout(() => window.location.href = `/`, 1000);
+          setTimeout(() => window.location.href = `/pemesanan/success`, 1000);
         },
         onPending(result) {
           console.log('Menunggu pembayaran:', result);
@@ -100,7 +100,7 @@ export default function ReviewPage() {
   onSuccess(result) {
     console.log('Pembayaran berhasil:', result);
     localStorage.clear(); 
-    setTimeout(() => window.location.href = `/`, 1000);
+    setTimeout(() => window.location.href = `/pemesanan/success`, 1000);
   },
   onPending(result) {
     console.log('Menunggu pembayaran:', result);
