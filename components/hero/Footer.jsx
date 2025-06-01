@@ -130,7 +130,7 @@ const Footer = () => {
       <div className="mt-10 border-t border-gray-700 pt-4 text-center text-sm text-black-500 px-4 md:px-20 lg:px-48">
         <p>
           © 2024 Tlogo Putri. All rights reserved. | Created by{" "}
-          <span className="text-white font-medium">YourName</span>
+          <span className="text-white font-medium">Prodi Sistem Informasi Universitas Jenderal Achmad Yani Yogyakarta</span>
         </p>
       </div>
     </footer>

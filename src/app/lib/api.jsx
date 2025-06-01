@@ -52,3 +52,39 @@ export async function getPublishedArticles() {
     throw new Error(error.message);
   }
 }
+
+// export const getRemainingPayment = async (orderId) => {
+//   const res = await fetch(`http://localhost:8000/api/orders/${orderId}/remaining-payment`, {
+//     method: "GET",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//   });
+
+//   if (!res.ok) {
+//     throw new Error("Gagal mengambil data sisa tagihan");
+//   }
+
+//   return res.json(); // response JSON dari backend
+// };
+
+
+// src/lib/api.js
+
+export async function fetchRemainingPayment(order_id) {
+  try {
+    const res = await fetch(
+      `http://localhost:8000/api/orders/${order_id}/remaining-payment`
+    );
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
+
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.error("Gagal fetch sisa tagihan:", err);
+    throw err;
+  }
+}
