@@ -15,7 +15,7 @@ export async function getTourPackages() {
     return []; 
   }
 }
-
+ 
 export async function getPackageBySlug(slug) {
   try {
     const res = await fetch(`http://localhost:8000/api/packages/${encodeURIComponent(slug)}`);
@@ -50,5 +50,44 @@ export async function getPublishedArticles() {
     }
   } catch (error) {
     throw new Error(error.message);
+  }
+}
+
+
+
+
+const BASE_URL = "http://localhost:8000/api";
+
+export async function createBooking(payload) {
+  try {
+    const response = await fetch(`${BASE_URL}/bookings`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      throw new Error("Gagal membuat booking");
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error("createBooking error:", error);
+    throw error;
+  }
+}
+
+export async function cancelBooking(orderId) {
+  try {
+    const response = await fetch(`${BASE_URL}/bookings/${orderId}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) {
+      throw new Error("Gagal membatalkan booking");
+    }
+  } catch (error) {
+    console.error("cancelBooking error:", error);
+    throw error;
   }
 }
