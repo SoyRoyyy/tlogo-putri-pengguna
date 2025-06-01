@@ -88,3 +88,21 @@ export async function cancelBooking(orderId) {
     throw error;
   }
 }
+
+export async function fetchRemainingPayment(order_id) {
+  try {
+    const res = await fetch(
+      `http://localhost:8000/api/orders/${order_id}/remaining-payment`
+    );
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
+
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.error("Gagal fetch sisa tagihan:", err);
+    throw err;
+  }
+}
