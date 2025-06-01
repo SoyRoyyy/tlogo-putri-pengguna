@@ -55,11 +55,16 @@ export default function ArtikelBerita () {
         </h2>
         <button
           onClick={() => router.push("/artikel")}
-          className="text-[#2A4095] font-medium underline text-base transition duration-200 cursor-pointer"
-          style={{
-            background: "transparent",
-            textShadow: "0px 0px 1px rgba(0, 0, 0, 0.4)",
-          }}
+          className="
+              px-6 py-2 rounded-lg
+              border-2 border-[#3D6CB9]  /* Border biru */
+              text-gray-800             /* Warna teks */
+              font-medium             /* Teks lebih tebal */
+              hover:bg-[#3D6CB9]        /* Background biru saat hover */
+              hover:text-white          /* Teks putih saat hover */
+              transition duration-200   /* Transisi halus */
+              focus:outline-none focus:ring-2 focus:ring-[#3D6CB9] focus:ring-opacity-50 cursor-pointer
+            "
         >
           Lihat Semua
         </button>

@@ -26,7 +26,7 @@ export default function ArticleCard({ article }) {
                           </p>
                       </div>
                       <div>
-                        <button className="text-blue-600 hover:text-blue-800 text-sm font-medium transition mt-4">
+                        <button className="text-blue-600 hover:text-blue-800 text-sm font-medium transition mt-4 cursor-pointer">
                           Baca Selengkapnya →
                         </button>
                       </div>
