@@ -124,7 +124,7 @@ export default function ArtikelDetail({ params }) {
 
         {article.gambar && (
           <img
-            src={`https://tlogo-putri-pengguna-za4a-git-main-soyroyyys-projects.vercel.app/storage/gambar/${article.gambar}`}
+            src={`https://tlogo-putri-pengguna-za4a-git-main-soyroyyys-projects.vercel.app/storage/app/public/gambar/${article.gambar}`}
             alt={article.judul}
             className="w-[900px] max-w-full max-h-[400px] h-auto mb-6 rounded-lg mx-auto"
           />
@@ -157,11 +157,7 @@ export default function ArtikelDetail({ params }) {
                       <img
                         src={`http://127.0.0.1:8000/storage/gambar/${relatedArticle.gambar}`}
                         alt={relatedArticle.judul}
-                        layout="fill"
-                        objectFit="cover"
-                        className="rounded-md"
-                        // Jika di development lokal ada masalah gambar, bisa tambahkan unoptimized
-                        unoptimized={process.env.NODE_ENV === 'development'}
+                        className="object-cover w-full h-full absolute inset-0"
                       />
                     ) : (
                       <div className="w-full h-full bg-gray-200 rounded-md flex items-center justify-center text-gray-500 text-xs">
