@@ -5,7 +5,7 @@ export default function ArticleCard({ article }) {
   const router = useRouter();
 
   return (
-      <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden flex flex-col cursor-pointer" 
+      <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden flex flex-col cursor-pointer h-full" 
       onClick={() => router.push(`/artikel/${article.id}`)}>
                     <img
                       src={`http://127.0.0.1:8000/storage/gambar/${article.gambar}`}
@@ -16,16 +16,25 @@ export default function ArticleCard({ article }) {
                     />
                     <div className="p-6 flex-1 flex flex-col justify-between">
                       <div>
-                        <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                        <h3 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">
                           {article.judul}
                         </h3>
-                          {article.isi_konten.length > 100
-                          ? article.isi_konten.slice(0, 100) + "..."
-                          : article.isi_konten}
+                        <p
+                          className="text-gray-600 text-sm line-clamp-3"
+                          dangerouslySetInnerHTML={{ __html: article.isi_konten
+                              ? article.isi_konten.length > 100
+                                ? article.isi_konten.slice(0, 100) + "..."
+                                : article.isi_konten
+                              : ""
+                          }}
+                        />
                       </div>
                       <div>
-                        <button className="text-blue-600 hover:text-blue-800 text-sm font-medium transition">
-                          Baca Selengkapnya →
+                        <button
+                          className="text-sm font-medium transition mt-4 cursor-pointer hover:brightness-110"
+                          style={{ color: "#3D6CB9" }}
+                        >
+                          Baca Selengkapnya
                         </button>
                       </div>
                     </div>

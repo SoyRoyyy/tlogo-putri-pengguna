@@ -46,18 +46,39 @@ export default function ArtikelBerita () {
   }
 
   return (
-    <section className="px-6 py-16 bg-gray-50" id="artikel">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
+  <section className="px-6 py-16 bg-gray-50" id="artikel">
+    <div className="max-w-7xl mx-auto">
+      {/* Container judul + tombol lihat semua */}
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-3xl font-bold text-gray-800">
           Artikel
         </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-                {articles.slice(0, 3).map((article) => (
-                  <ArticleCard key={article.id} article={article} />
-                ))}
-              </div>
+        <button
+          onClick={() => router.push("/artikel")}
+          className="
+              px-6 py-2 rounded-lg
+              border-2 border-[#3D6CB9]  /* Border biru */
+              text-gray-800             /* Warna teks */
+              font-medium             /* Teks lebih tebal */
+              hover:bg-[#3D6CB9]        /* Background biru saat hover */
+              hover:text-white          /* Teks putih saat hover */
+              transition duration-200   /* Transisi halus */
+              focus:outline-none focus:ring-2 focus:ring-[#3D6CB9] focus:ring-opacity-50 cursor-pointer
+            "
+        >
+          Lihat Semua
+        </button>
       </div>
-    </section>
-  );
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        {articles.slice(0, 3).map((article) => (
+          <ArticleCard key={article.id} article={article} />
+        ))}
+      </div>
+
+    </div>
+  </section>
+);
+
 };
 
