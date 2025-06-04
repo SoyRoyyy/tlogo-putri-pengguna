@@ -70,7 +70,6 @@ export async function createBooking(payload) {
     const result = await response.json();
     return result;
   } catch (error) {
-    console.error("createBooking error:", error);
     throw error;
   }
 }
@@ -84,7 +83,6 @@ export async function cancelBooking(orderId) {
       throw new Error("Gagal membatalkan booking");
     }
   } catch (error) {
-    console.error("cancelBooking error:", error);
     throw error;
   }
 }
@@ -92,8 +90,28 @@ export async function cancelBooking(orderId) {
 export async function fetchRemainingPayment(order_id) {
   try {
     const res = await fetch(
-      `http://localhost:8000/api/orders/${order_id}/remaining-payment`
+      `${BASE_URL}/orders/${order_id}/remaining-payment`
     );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error("Data Tidak Ditemukan" || `HTTP error! Status: ${res.status}`);
+    }
+
+    return data;
+  } catch (err) {
+    throw err;
+  }
+}
+
+
+export async function remainingPayment(order_id) {
+  try {
+    const res = await fetch(
+      `${BASE_URL}/orders/${order_id}/remaining-payment`, {
+        method: "POST",
+      });
 
     if (!res.ok) {
       throw new Error(`HTTP error! Status: ${res.status}`);
@@ -102,7 +120,6 @@ export async function fetchRemainingPayment(order_id) {
     const data = await res.json();
     return data;
   } catch (err) {
-    console.error("Gagal fetch sisa tagihan:", err);
     throw err;
   }
 }
