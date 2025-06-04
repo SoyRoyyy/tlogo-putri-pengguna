@@ -71,14 +71,13 @@ export default function FormPemesananPage() {
 
   return (
     <main className="bg-white text-gray-800 font-sans">
-      <PaketForms />
-      <BookingForm
-        formData={formData}
-        isLoading={isLoading}
-        submitting={submitting}
-        handleChange={handleChange}
-        handleSubmit={handleSubmit}
-      />
+    <PaketForms currentStep={1} />
+    <BookingForm
+      formData={formData}
+      isLoading={isLoading}
+      submitting={submitting}
+      handleChange={handleChange}
+      handleSubmit={handleSubmit}/>      
     </main>
   );
 }

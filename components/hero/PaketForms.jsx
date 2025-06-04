@@ -9,47 +9,43 @@ const PaketForms = ({ currentStep }) => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-md">
-      <div className="flex flex-col md:flex-row justify-between items-center px-4 sm:px-6 lg:px-8 py-4 space-y-4 md:space-y-0">
+    <header className="w-full shadow-md sticky top-0 bg-white z-50">
+      <div className="max-w-screen-xl mx-auto flex flex-wrap items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         {/* Logo dan Judul */}
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-3 mb-2 sm:mb-0">
           <Image
             src="/images/image.png"
             alt="Logo"
             width={60}
             height={60}
-            className="block object-contain"
+            className="block"
           />
-          <h1 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800 tracking-wide">
+          <span className="font-semibold text-lg sm:text-xl text-black tracking-wide">
             Tlogo Putri Kaliurang
-          </h1>
+          </span>
         </div>
 
         {/* Langkah Pemesanan */}
-        <div className="flex flex-wrap justify-center gap-4 md:gap-6 items-center">
+        <div className="flex flex-wrap items-center space-x-2 gap-y-2 text-sm sm:text-base font-semibold justify-center sm:justify-end">
           {steps.map((item, idx) => (
-            <div key={item.step} className="flex items-center">
-              {/* Bulatan Langkah */}
+            <div
+              key={item.step}
+              className="flex items-center whitespace-nowrap"
+            >
               <div
-                className={`w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 ${
+                className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center font-bold text-sm ${
                   item.step === currentStep
-                    ? "bg-[#3D6CB9] text-white shadow-md scale-110"
+                    ? "bg-[#3D6CB9] text-white"
                     : "bg-gray-300 text-gray-700"
                 }`}
               >
                 {item.step}
               </div>
-
-              {/* Label Langkah */}
-              <span className="ml-2 mr-4 text-sm sm:text-base text-gray-800 font-medium transition-all duration-300">
+              <span className="ml-2 mr-3 font-medium text-gray-800 hidden sm:inline">
                 {item.label}
               </span>
-
-              {/* Garis Pemisah */}
               {idx !== steps.length - 1 && (
-                <span className="hidden sm:inline text-gray-400 text-xl">
-                  —
-                </span>
+                <span className="text-gray-400">—</span>
               )}
             </div>
           ))}

@@ -1,15 +1,12 @@
-"use client";
-
-
+'use client';
 
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import StepIndicator from '../../../../components/harlev/StepIndicator';
 import BackToFormLink from '../../../../components/harlev/BackToFormLink';
 import PaymentModal from '../../../../components/harlev/PaymentModal';
+import PaketForms from '../../../../components/hero/PaketForms';
 import { createBooking, cancelBooking } from '../../lib/api';
-
 
 function ReviewItem({ label, value }) {
   return (
@@ -28,25 +25,28 @@ export default function ReviewPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [paymentType, setPaymentType] = useState(null);
   const [isSnapLoading, setIsSnapLoading] = useState(false);
-
   const router = useRouter();
 
   useEffect(() => {
-    const urlToken = new URLSearchParams(window.location.search).get("token");
-    setToken(urlToken || localStorage.getItem("token"));
+    if (typeof window === 'undefined') return;
 
-    const stored = localStorage.getItem("formPemesanan");
+    const urlToken = new URLSearchParams(window.location.search).get('token');
+    const savedToken = localStorage.getItem('token');
+    setToken(urlToken || savedToken);
+
+    const stored = localStorage.getItem('formPemesanan');
     if (stored) setData(JSON.parse(stored));
   }, []);
 
   useEffect(() => {
-    if (isModalOpen) {
-      setPaymentType(localStorage.getItem("payment_type"));
+    if (isModalOpen && typeof window !== 'undefined') {
+      setPaymentType(localStorage.getItem('payment_type'));
     }
   }, [isModalOpen]);
 
-
   const handleBayar = async (mode) => {
+    if (typeof window === 'undefined') return;
+
     localStorage.setItem('payment_type', mode);
     setIsModalOpen(false);
 
@@ -61,30 +61,32 @@ export default function ReviewPage() {
     const existingOrderId = localStorage.getItem('order_id');
     const existingSnapToken = localStorage.getItem('snap_token');
 
-    if (existingSnapToken && existingOrderId) {
-      setIsSnapLoading(true);
+    const triggerSnap = (snapToken) => {
+      if (!window.snap?.pay) return alert('Midtrans belum dimuat');
 
-      return window.snap.pay(existingSnapToken, {
+      setIsSnapLoading(true);
+      window.snap.pay(snapToken, {
         onSuccess(result) {
           console.log('Pembayaran berhasil:', result);
           localStorage.clear();
-          setTimeout(() => window.location.href = `/pemesanan/success`, 1000);
+          setTimeout(() => window.location.href = '/pemesanan/success', 1000);
         },
         onPending(result) {
           console.log('Menunggu pembayaran:', result);
-          setTimeout(() => window.location.href = `/`, 1000);
         },
         onError(result) {
           console.log('Terjadi kesalahan:', result);
-          setTimeout(() => window.location.href = `/`, 1000);
         },
         onClose() {
-          console.log('User menutup popup pembayaran Midtrans');
-          const savedType = localStorage.getItem('payment_type');
-          if (savedType) setPaymentType(savedType);
+          console.log('Popup pembayaran ditutup');
+          setPaymentType(localStorage.getItem('payment_type'));
           setIsSnapLoading(false);
         },
       });
+    };
+
+    if (existingSnapToken && existingOrderId) {
+      return triggerSnap(existingSnapToken);
     }
 
     try {
@@ -93,63 +95,31 @@ export default function ReviewPage() {
       localStorage.setItem('snap_token', result.snap_token);
       localStorage.setItem('order_id', result.order.order_id);
 
-      if (!window.snap || !window.snap.pay) throw new Error('Midtrans belum dimuat');
-      setIsSnapLoading(true);
-
-      window.snap.pay(result.snap_token, {
-  onSuccess(result) {
-    console.log('Pembayaran berhasil:', result);
-    localStorage.clear(); 
-    setTimeout(() => window.location.href = `/pemesanan/success`, 1000);
-  },
-  onPending(result) {
-    console.log('Menunggu pembayaran:', result);
-    // setTimeout(() => window.location.href = `/`, 1000);
-  },
-  onError(result) {
-    console.log('Terjadi kesalahan:', result);
-    // setTimeout(() => window.location.href = `/`, 1000);
-  },
-  onClose() {
-    console.log('User menutup popup pembayaran Midtrans');
-    const savedType = localStorage.getItem('payment_type');
-    if (savedType) setPaymentType(savedType);
-    setIsSnapLoading(false);
-  },
-});
-
-
+      triggerSnap(result.snap_token);
     } catch (err) {
       console.error(err);
       alert('Terjadi kesalahan saat membuat pesanan.');
     }
   };
 
+  const handleCancel = async () => {
+    const orderId = localStorage.getItem('order_id');
 
- const handleCancel = async () => {
-  const orderId = localStorage.getItem('order_id');
-  try {
-    if (orderId) {
-      await cancelBooking(orderId); 
+    try {
+      if (orderId) await cancelBooking(orderId);
+
+      ['payment_type', 'snap_token', 'order_id', 'token'].forEach(key =>
+        localStorage.removeItem(key)
+      );
+
+      setPaymentType(null);
+      setIsModalOpen(false);
+      router.push('/pemesanan/halrev');
+    } catch (error) {
+      console.error('Gagal membatalkan pesanan:', error);
+      alert('Gagal membatalkan pesanan. Silakan coba lagi.');
     }
-
-    localStorage.removeItem('payment_type');
-    localStorage.removeItem('snap_token');
-    localStorage.removeItem('order_id');
-    localStorage.removeItem('token');
-
-    setPaymentType(null);
-    setIsModalOpen(false);
-
-    router.push('/pemesanan/halrev');
-  } catch (error) {
-    console.error('Gagal membatalkan pesanan:', error);
-    alert('Gagal membatalkan pesanan. Silakan coba lagi.');
-  }
-};
-
-
-
+  };
 
   if (!data) {
     return (
@@ -165,50 +135,25 @@ export default function ReviewPage() {
 
   return (
     <main className="bg-gray-50 text-gray-900 font-sans min-h-screen w-full">
-      {/* Header */}
-      <header className="flex flex-wrap justify-between items-center px-4 sm:px-6 py-4 shadow-md sticky top-0 bg-white z-50">
-        <div className="flex items-center space-x-3">
-          <Image
-            src="/images/image.png"
-            alt="Logo Tlogo Putri"
-            width={36}
-            height={36}
-          />
-          <span className="font-semibold text-lg sm:text-xl text-gray-800">
-            Tlogo Putri
-          </span>
-        </div>
+      <PaketForms currentStep={2} />
 
-        {/* Step Indicator tampil hanya di desktop */}
-        <div className="hidden sm:block">
-          <StepIndicator />
-        </div>
-      </header>
-
-      {/* Tombol kembali ke form */}
       <div className="px-4 sm:px-6 mt-6 mb-2">
         <BackToFormLink token={token} />
       </div>
 
-      {/* Main Content */}
       <section className="px-4 sm:px-6 py-6 w-full mx-auto">
         <h2 className="text-lg sm:text-2xl font-semibold text-center text-blue-800 mb-4">
           Review Pemesanan Anda
         </h2>
 
-        {/* Step Indicator tampil hanya di mobile */}
         <div className="block sm:hidden mb-4">
           <StepIndicator />
         </div>
 
-        {/* Card Review */}
         <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-4 sm:p-5 space-y-4 max-w-md mx-auto w-full">
           <div className="divide-y divide-gray-100">
             <ReviewItem label="Paket Wisata" value={data.paket} />
-            <ReviewItem
-              label="Harga Total"
-              value={`Rp${new Intl.NumberFormat("id-ID").format(total)}`}
-            />
+            <ReviewItem label="Harga Total" value={`Rp${new Intl.NumberFormat("id-ID").format(total)}`} />
             <ReviewItem label="Nama Lengkap" value={data.customer_name} />
             <ReviewItem label="Email" value={data.customer_email} />
             <ReviewItem label="No. Telepon" value={data.customer_phone} />
@@ -219,7 +164,6 @@ export default function ReviewPage() {
             <ReviewItem label="Kode Voucher" value={data.voucher || "-"} />
           </div>
 
-          {/* Tombol Lanjut */}
           <div className="pt-4 flex justify-end">
             <button
               onClick={() => setIsModalOpen(true)}
@@ -231,7 +175,6 @@ export default function ReviewPage() {
         </div>
       </section>
 
-      {/* Modal Pembayaran */}
       <PaymentModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -247,7 +190,6 @@ export default function ReviewPage() {
           <span className="text-sm text-gray-600 animate-pulse">Memuat pembayaran...</span>
         </div>
       )}
-
     </main>
-  );  
+  );
 }
