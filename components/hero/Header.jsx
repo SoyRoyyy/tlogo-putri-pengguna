@@ -12,18 +12,21 @@ export default function Header() {
   return (
     <header className="flex justify-between items-center px-4 py-2 sticky top-0 bg-white z-50 shadow-md shadow-black/10">
       {/* Logo kiri */}
-      <div className="flex items-center space-x-3 pl-1 md:pl-0">
-        <Image
-          src="/images/image.png"
-          alt="Logo"
-          width={70}
-          height={70}
-          className="block"
-        />
-        <span className="font-semibold text-xl text-black tracking-wide whitespace-nowrap">
-          Tlogo Putri Kaliurang
-        </span>
-      </div>
+      <Link href="/" className="flex items-center space-x-3 mb-2 sm:mb-0">
+      {/* Gunakan tag <a> hanya jika pakai Next.js <13, tapi di App Router, cukup begini */}
+        <div className="flex items-center space-x-3">
+          <Image
+            src="/images/image.png"
+            alt="Logo"
+            width={60}
+            height={60}
+            className="block"
+          />
+          <span className="font-semibold text-lg sm:text-xl text-black tracking-wide">
+            Tlogo Putri Kaliurang
+          </span>
+        </div>
+      </Link>
 
       {/* Navigasi Desktop */}
       <div className="flex items-center space-x-4">
