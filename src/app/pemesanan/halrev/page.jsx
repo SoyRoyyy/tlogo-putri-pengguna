@@ -28,15 +28,21 @@ export default function ReviewPage() {
   const router = useRouter();
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+  if (typeof window === 'undefined') return;
 
-    const urlToken = new URLSearchParams(window.location.search).get('token');
-    const savedToken = localStorage.getItem('token');
-    setToken(urlToken || savedToken);
+  const urlToken = new URLSearchParams(window.location.search).get('token');
+  const savedToken = localStorage.getItem('token');
+  const finalToken = urlToken || savedToken;
 
-    const stored = localStorage.getItem('formPemesanan');
+  if (finalToken) {
+    localStorage.setItem('token', finalToken); // ✅ Tambahkan ini!
+    setToken(finalToken);
+  }
+
+  const stored = localStorage.getItem('formPemesanan');
     if (stored) setData(JSON.parse(stored));
   }, []);
+
 
   useEffect(() => {
     if (isModalOpen && typeof window !== 'undefined') {

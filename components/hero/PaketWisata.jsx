@@ -41,12 +41,16 @@ const PaketWisata = ({ tourPackages, setIsPopupOpen, setPopupImageIndex, handleO
                     Rp {paket.price.toLocaleString("id-ID")}
                   </div>
                   <Link
-                    href={`/src/App/pemesanan/form?page_id=${paket.id}`}
-                    className="bg-[#3D6CB9] text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition-colors font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
-                    aria-label={`Pesan ${paket.package_name} Sekarang`}
-                  >
-                    Pesan Sekarang
+                    href={`/pemesanan/form?token=${paket.token}`}
+                    onClick={() => {
+                      const tokenMap = JSON.parse(localStorage.getItem("tokenSlugMap") || "{}");
+                      tokenMap[paket.token] = paket.slug; // simpan mapping token ke slug
+                      localStorage.setItem("tokenSlugMap", JSON.stringify(tokenMap));
+                      }}
+                      className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-300">
+                        Pesan Sekarang
                   </Link>
+
                 </div>
               </div>
             </div>
