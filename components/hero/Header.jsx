@@ -12,18 +12,20 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-white shadow-md shadow-black/10 transition-all">
       <div className="max-w-screen-xl mx-auto flex justify-between items-center px-4 py-2 w-full">
         {/* Logo kiri */}
-        <div className="flex items-center space-x-3">
-          <Image
-            src="/images/image.png"
-            alt="Logo"
-            width={70}
-            height={70}
-            className="block"
-          />
-          <span className="font-semibold text-xl text-black tracking-wide whitespace-nowrap">
-            Tlogo Putri Kaliurang
-          </span>
-        </div>
+        <Link href="/" className="flex items-center space-x-3 mb-2 sm:mb-0">
+          <div className="flex items-center space-x-3">
+            <Image
+              src="/images/image.png"
+              alt="Logo"
+              width={60}
+              height={60}
+              className="block"
+            />
+            <span className="font-semibold text-lg sm:text-xl text-black tracking-wide whitespace-nowrap">
+              Tlogo Putri Kaliurang
+            </span>
+          </div>
+        </Link>
 
         {/* Navigasi Desktop */}
         <nav className="hidden md:block">

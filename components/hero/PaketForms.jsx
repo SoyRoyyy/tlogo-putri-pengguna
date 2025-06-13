@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const PaketForms = ({ currentStep }) => {
   const steps = [
@@ -11,19 +12,21 @@ const PaketForms = ({ currentStep }) => {
   return (
     <header className="w-full shadow-md sticky top-0 bg-white z-50">
       <div className="max-w-screen-xl mx-auto flex flex-wrap items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-        {/* Logo dan Judul */}
-        <div className="flex items-center space-x-3 mb-2 sm:mb-0">
-          <Image
-            src="/images/image.png"
-            alt="Logo"
-            width={60}
-            height={60}
-            className="block"
-          />
-          <span className="font-semibold text-lg sm:text-xl text-black tracking-wide">
-            Tlogo Putri Kaliurang
-          </span>
-        </div>
+        <Link href="/" className="flex items-center space-x-3 mb-2 sm:mb-0">
+        {/* Gunakan tag <a> hanya jika pakai Next.js <13, tapi di App Router, cukup begini */}
+          <div className="flex items-center space-x-3">
+            <Image
+              src="/images/image.png"
+              alt="Logo"
+              width={60}
+              height={60}
+              className="block"
+            />
+            <span className="font-semibold text-lg sm:text-xl text-black tracking-wide">
+              Tlogo Putri Kaliurang
+            </span>
+          </div>
+        </Link>
 
         {/* Langkah Pemesanan */}
         <div className="flex flex-wrap items-center space-x-2 gap-y-2 text-sm sm:text-base font-semibold justify-center sm:justify-end">
