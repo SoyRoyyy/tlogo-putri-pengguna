@@ -120,15 +120,21 @@ export default function ArtikelDetail({ params }) {
           >
             Editor
           </p>
-        </div>
+        </div>  
 
         {article.gambar && (
-          <img
-            src={`https://tlogo-putri-pengguna-za4a-git-main-soyroyyys-projects.vercel.app/storage/app/public/gambar/${article.gambar}`}
-            alt={article.judul}
-            className="w-[900px] max-w-full max-h-[400px] h-auto mb-6 rounded-lg mx-auto"
-          />
-        )}
+  <img
+    src={
+      article.gambar.startsWith("http")
+        ? article.gambar
+        : `https://tpapi.siunjaya.id/storage/gambar/${article.gambar}`
+    }
+    alt="Gambar Artikel"
+    className="w-[900px] max-w-full max-h-[400px] h-auto mb-6 rounded-lg mx-auto"
+  />
+)}
+
+
         {article.caption_gambar && (
           <p className="text-center font-semibold mb-5 text-[#3D6CB9]">{article.caption_gambar}</p>
         )}
