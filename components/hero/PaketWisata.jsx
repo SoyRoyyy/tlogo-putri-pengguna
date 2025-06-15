@@ -1,8 +1,15 @@
+"use client";
 import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import ModalMaintenance from "../modalpending";
+const PaketWisata = ({
+  tourPackages,
+  setIsPopupOpen,
+  setPopupImageIndex,
+  handleOpenPopup,
+}) => {
+  const [showModal, setShowModal] = useState(false);
 
-const PaketWisata = ({ tourPackages, setIsPopupOpen, setPopupImageIndex, handleOpenPopup }) => {
   return (
     <section className="px-6 py-14 bg-gray-50" id="paket">
       <div className="max-w-7xl mx-auto">
@@ -30,7 +37,7 @@ const PaketWisata = ({ tourPackages, setIsPopupOpen, setPopupImageIndex, handleO
                   <button
                     className="text-black font-semibold text-sm uppercase tracking-wide border-b-2 border-transparent hover:border-black hover:text-gray-800 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-black rounded"
                     onClick={() =>
-                      handleOpenPopup([`/images/paket/${paket.image}`]) // Gambar untuk popup
+                      handleOpenPopup([`/images/paket/${paket.image}`])
                     }
                   >
                     Detail
@@ -40,6 +47,14 @@ const PaketWisata = ({ tourPackages, setIsPopupOpen, setPopupImageIndex, handleO
                   <div className="font-extrabold text-lg tracking-wide">
                     Rp {paket.price.toLocaleString("id-ID")}
                   </div>
+
+                  <button
+                    onClick={() => setShowModal(true)}
+                    className="bg-[#3D6CB9] text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition-colors font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                    aria-label={`Pesan ${paket.package_name} Sekarang`}
+                  >
+                    Pesan Sekarang
+                  </button>
                   <Link
                     href={`/pemesanan/form?token=${paket.token}`}
                     onClick={() => {
@@ -50,12 +65,17 @@ const PaketWisata = ({ tourPackages, setIsPopupOpen, setPopupImageIndex, handleO
                       className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-300">
                         Pesan Sekarang
                   </Link>
-
                 </div>
               </div>
             </div>
           ))}
         </div>
+
+        {/* Modal muncul jika showModal true */}
+        <ModalMaintenance
+          show={showModal}
+          onClose={() => setShowModal(false)}
+        />
       </div>
     </section>
   );

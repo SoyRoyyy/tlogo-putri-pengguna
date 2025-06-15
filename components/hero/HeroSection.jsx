@@ -1,5 +1,7 @@
 // components/HeroSection.jsx
 "use client";
+
+import { FaCar } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -101,8 +103,9 @@ export default function HeroSection() {
               className="flex items-center justify-center w-16 h-16 rounded-full shadow-lg absolute -left-6"
               style={{ backgroundColor: "#17294F" }}
             >
-              <span className="text-white text-4xl">🚙</span>
+              <FaCar className="text-white text-3xl" />
             </div>
+
             <span className="ml-12 text-white justify-center">
               Pesan Sekarang!!!
             </span>

@@ -8,7 +8,20 @@ const FormPemesanan = ({
   isLoading,
   submitting,
 }) => {
+  // Load data dari localStorage saat komponen mount
   useEffect(() => {
+    const savedForm = localStorage.getItem("formPemesananData");
+    if (savedForm) {
+      const parsedData = JSON.parse(savedForm);
+      // Isi formData dengan data dari localStorage via handleChange
+      for (const key in parsedData) {
+        if (parsedData.hasOwnProperty(key) && !formData[key]) {
+          handleChange({ target: { name: key, value: parsedData[key] } });
+        }
+      }
+    }
+
+    // Set default waktu dan tanggal jika belum ada di formData
     const today = new Date();
     const defaultTime = today.toTimeString().slice(0, 5); // HH:MM
     const defaultDate = today.toISOString().split("T")[0]; // YYYY-MM-DD
@@ -16,18 +29,32 @@ const FormPemesanan = ({
     if (!formData.start_time) {
       handleChange({ target: { name: "start_time", value: defaultTime } });
     }
-
     if (!formData.tour_date) {
       handleChange({ target: { name: "tour_date", value: defaultDate } });
     }
   }, []);
 
+  // Simpan setiap perubahan formData ke localStorage
+  useEffect(() => {
+    if (Object.values(formData).some((v) => v !== "" && v !== undefined)) {
+      localStorage.setItem("formPemesananData", JSON.stringify(formData));
+    }
+  }, [formData]);
+
+  // Fungsi hapus data form di localStorage
+  const clearFormData = () => {
+    localStorage.removeItem("formPemesananData");
+  };
+
   return (
     <section className="px-4 sm:px-6 lg:px-8 py-10 bg-white min-h-screen">
       {/* Tombol Kembali */}
       <div className="mb-4">
-        <Link href="/pemesanan">
-          <div className="flex items-center text-black hover:underline hover:text-[#3D6CB9] transition duration-200 cursor-pointer">
+        <Link href="/pemesanan" passHref>
+          <div
+            onClick={clearFormData}
+            className="flex items-center text-black hover:underline hover:text-[#3D6CB9] transition duration-200 cursor-pointer"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5 mr-1"
@@ -118,6 +145,8 @@ const FormPemesanan = ({
             value={formData.start_time}
             onChange={handleChange}
             required
+            min="03:00"
+            max="17:00"
           />
 
           {/* Tanggal Pemesanan */}
