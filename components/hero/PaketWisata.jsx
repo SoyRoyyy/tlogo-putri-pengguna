@@ -47,6 +47,7 @@ const PaketWisata = ({
                   <div className="font-extrabold text-lg tracking-wide">
                     Rp {paket.price.toLocaleString("id-ID")}
                   </div>
+
                   <button
                     onClick={() => setShowModal(true)}
                     className="bg-[#3D6CB9] text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition-colors font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
@@ -54,6 +55,16 @@ const PaketWisata = ({
                   >
                     Pesan Sekarang
                   </button>
+                  <Link
+                    href={`/pemesanan/form?token=${paket.token}`}
+                    onClick={() => {
+                      const tokenMap = JSON.parse(localStorage.getItem("tokenSlugMap") || "{}");
+                      tokenMap[paket.token] = paket.slug; // simpan mapping token ke slug
+                      localStorage.setItem("tokenSlugMap", JSON.stringify(tokenMap));
+                      }}
+                      className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-300">
+                        Pesan Sekarang
+                  </Link>
                 </div>
               </div>
             </div>

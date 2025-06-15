@@ -3,8 +3,17 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+
 
 const PaketSection = ({ tourPackages = [] }) => {
+  const router = useRouter();
+
+  const handlePesan = (token) => {
+    localStorage.setItem("selectedToken", token);
+    router.push(`/pemesanan/form?token=${encodeURIComponent(token)}`);
+  };
+
   return (
     <section className="px-4 sm:px-6 lg:px-8 py-10 bg-gray-50 min-h-screen">
       <div className="px-6 pt-4">
@@ -83,16 +92,14 @@ const PaketSection = ({ tourPackages = [] }) => {
                       <span className="text-[#3d6cb9] font-semibold text-lg">
                         Rp. {paket.price}
                       </span>
-                      <Link
-                        href={`/pemesanan/form?token=${encodeURIComponent(
-                          paket.token
-                        )}`}
-                        className="bg-[#3D6CB9] text-white px-5 py-2 rounded-lg
-                          hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500
-                          transition-colors duration-200 font-medium shadow-md"
+                      <button
+                      onClick={() => handlePesan(paket.token)}
+                      className="bg-[#3D6CB9] text-white px-5 py-2 rounded-lg
+                      hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500
+                      transition-colors duration-200 font-medium shadow-md"
                       >
                         Pesan Sekarang
-                      </Link>
+                      </button>
                     </div>
                   </div>
                 </div>

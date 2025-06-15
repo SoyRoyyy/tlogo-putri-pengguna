@@ -13,6 +13,7 @@ export default function FormPemesananPage() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const [formData, setFormData] = useState({
     customer_name: "",
@@ -28,32 +29,53 @@ export default function FormPemesananPage() {
     voucher: "",
   });
 
+  // PREFILL dari localStorage saat component mount
   useEffect(() => {
-    console.log("Token yang diterima:", token);
-
-    if (token) {
-      const tokenMap = JSON.parse(localStorage.getItem("tokenSlugMap") || "{}");
-      const slug = tokenMap[token];
-
-      if (!slug) {
-        console.error("Slug tidak ditemukan untuk token:", token);
-        return;
-      }
-
-      setIsLoading(true);
-      getPackageBySlug(slug)
-        .then((data) => {
-          setFormData((prev) => ({
-            ...prev,
-            paket: data.package_name,
-            package_id: data.id,
-            gross_amount: data.price,
-          }));
-        })
-        .catch((error) => console.error(error))
-        .finally(() => setIsLoading(false));
+    const savedForm = localStorage.getItem("formPemesanan");
+    if (savedForm) {
+      setFormData(JSON.parse(savedForm));
     }
+  }, []);
+
+  // AMBIL DATA PAKET dari token → slug
+  useEffect(() => {
+    if (!token) return;
+
+    const tokenMap = JSON.parse(localStorage.getItem("tokenSlugMap") || "{}");
+    const slug = tokenMap[token];
+
+    if (!slug) {
+      setErrorMsg("Paket tidak ditemukan atau token tidak valid.");
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(true);
+    getPackageBySlug(slug)
+      .then((data) => {
+        if (!data || !data.package_name) {
+          setErrorMsg("Data paket tidak tersedia atau rusak.");
+          return;
+        }
+
+        setFormData((prev) => ({
+          ...prev,
+          paket: data.package_name,
+          package_id: data.id,
+          gross_amount: data.price,
+        }));
+      })
+      .catch((error) => {
+        console.error("Gagal memuat data paket:", error);
+        setErrorMsg("Terjadi kesalahan saat mengambil data paket.");
+      })
+      .finally(() => setIsLoading(false));
   }, [token]);
+
+  // SIMPAN ke localStorage setiap kali formData berubah
+  useEffect(() => {
+    localStorage.setItem("formPemesanan", JSON.stringify(formData));
+  }, [formData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -63,7 +85,9 @@ export default function FormPemesananPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitting(true);
+
     localStorage.setItem("formPemesanan", JSON.stringify(formData));
+
     setTimeout(() => {
       router.push("/pemesanan/halrev");
     }, 600);
@@ -71,13 +95,21 @@ export default function FormPemesananPage() {
 
   return (
     <main className="bg-white text-gray-800 font-sans">
-    <PaketForms currentStep={1} />
-    <BookingForm
-      formData={formData}
-      isLoading={isLoading}
-      submitting={submitting}
-      handleChange={handleChange}
-      handleSubmit={handleSubmit}/>      
+      <PaketForms currentStep={1} />
+
+      {errorMsg && (
+        <div className="bg-red-100 text-red-700 px-4 py-2 mb-4 mx-4 rounded">
+          {errorMsg}
+        </div>
+      )}
+
+      <BookingForm
+        formData={formData}
+        isLoading={isLoading}
+        submitting={submitting}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+      />
     </main>
   );
 }
