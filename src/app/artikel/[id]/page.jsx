@@ -1,8 +1,8 @@
 "use client";
 
 import { use, useState, useEffect } from "react";
-import Footer from "@/components/hero/Footer";
-import ArtikelHeader from "@/components/Artikel/ArtikelHeader";
+import Footer from "../../../components/hero/Footer";
+import ArtikelHeader from "../../../../components/Artikel/ArtikelHeader";
 import ArtikelContent from "@/components/Artikel/ArtikelContent";
 import ArtikelGambar from "@/components/Artikel/ArtikelGambar";
 import ArtikelTerkait from "@/components/artikel/ArtikelTerkait";
