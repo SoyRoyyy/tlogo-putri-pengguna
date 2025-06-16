@@ -1,12 +1,14 @@
 "use client";
 
-import { use, useState, useEffect } from "react";
-import Footer from "../../../components/hero/Footer";
-import ArtikelHeader from "../../../../components/Artikel/ArtikelHeader";
-import ArtikelContent from "@/components/Artikel/ArtikelContent";
-import ArtikelGambar from "@/components/Artikel/ArtikelGambar";
-import ArtikelTerkait from "@/components/artikel/ArtikelTerkait";
-import LoadingOrError from "@/components/artikel/LoadingOrError";
+// KODE FINAL - GANTI SEMUA IMPORT LAMA DENGAN INI
+
+import { useState, useEffect } from "react";
+import Footer from "@/components/hero/Footer";                  // Folder 'hero' (h kecil) -> BENAR
+import ArtikelHeader from "@/components/Artikel/ArtikelHeader";    // Folder 'Artikel' (A besar) -> BENAR
+import ArtikelContent from "@/components/Artikel/ArtikelContent";  // Folder 'Artikel' (A besar) -> BENAR
+import ArtikelGambar from "@/components/Artikel/ArtikelGambar";    // Folder 'Artikel' (A besar) -> BENAR
+import ArtikelTerkait from "@/components/Artikel/ArtikelTerkait";  // Diperbaiki ke 'Artikel' (A besar) -> BENAR
+import LoadingOrError from "@/components/Artikel/LoadingOrError";  // Diperbaiki ke 'Artikel' (A besar) -> BENAR
 import { getPublishedArticles } from "@/app/lib/api";
 
 
