@@ -6,7 +6,8 @@ import StepIndicator from '../../../../components/harlev/StepIndicator';
 import BackToFormLink from '../../../../components/harlev/BackToFormLink';
 import PaymentModal from '../../../../components/harlev/PaymentModal';
 import PaketForms from '../../../../components/hero/PaketForms';
-import { createBooking, cancelBooking } from '../../lib/api';
+import { createBooking, cancelBooking, getBookingByOrderId } from '../../lib/api';
+
 
 function ReviewItem({ label, value }) {
   return (
@@ -67,15 +68,39 @@ export default function ReviewPage() {
     const existingOrderId = localStorage.getItem('order_id');
     const existingSnapToken = localStorage.getItem('snap_token');
 
+    const handleSnapSuccess = async (result) => {
+      localStorage.clear();
+
+      try {
+        const booking = await getBookingByOrderId(result.order_id);
+        localStorage.setItem("pending_booking", JSON.stringify(booking));
+        
+        if (booking.booking_status === 'pending') {
+          setTimeout(() => {
+            window.location.href = '/pemesanan/pending';
+          }, 1000);
+        } else {
+          setTimeout(() => {
+            window.location.href = '/pemesanan/success';
+          }, 1000);
+        }
+      } catch (error) {
+           setTimeout(() => {
+          window.location.href = '/pemesanan/pending';
+        }, 1000);
+      }
+    };
+
     const triggerSnap = (snapToken) => {
       if (!window.snap?.pay) return alert('Midtrans belum dimuat');
 
       setIsSnapLoading(true);
       window.snap.pay(snapToken, {
         onSuccess(result) {
-          console.log('Pembayaran berhasil:', result);
-          localStorage.clear();
-          setTimeout(() => window.location.href = '/pemesanan/success', 1000);
+           handleSnapSuccess(result);
+          // console.log('Pembayaran berhasil:', result);
+          // localStorage.clear();
+          // setTimeout(() => window.location.href = '/pemesanan/success', 1000);
         },
         onPending(result) {
           console.log('Menunggu pembayaran:', result);

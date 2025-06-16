@@ -74,6 +74,22 @@ export async function createBooking(payload) {
   }
 }
 
+export async function getBookingByOrderId(orderId) {
+  try {
+    const response = await fetch(`${BASE_URL}/bookings/${orderId}`);
+
+    if (!response.ok) {
+      throw new Error("Gagal mengambil data booking");
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    throw error;
+  }
+}
+
+
 export async function cancelBooking(orderId) {
   try {
     const response = await fetch(`${BASE_URL}/bookings/${orderId}`, {
