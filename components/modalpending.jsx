@@ -1,8 +1,26 @@
 "use client";
-import { data } from "autoprefixer";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function ModalPending({ show, onClose, booking  }) {
+   const handleContactAdmin = () => {
+    if (!booking) return;
+
+    const message = `Halo Admin, saya ingin konfirmasi pembayaran dengan detail:\n\n` +
+  `*Nama:* ${booking.customer_name}\n` +
+  `*Order ID:* ${booking.order_id}\n` +
+  `*Tanggal Tour:* ${booking.tour_date}\n` +
+  `*Paket:* ${booking.package?.package_name}\n` +
+  `*Total:* Rp. ${Number(booking.gross_amount).toLocaleString('id-ID')}\n` +
+  `*Status Pembayaran:* ${booking.booking_status.charAt(0).toUpperCase() + booking.booking_status.slice(1).toLowerCase()}\n` +
+  `\nMohon bantuan untuk verifikasi pembayaran ini. Terima kasih`;
+
+    const number = process.env.NEXT_PUBLIC_NUMBER_WA;
+    const encodedMessage = encodeURIComponent(message);
+    const waUrl = `https://wa.me/${number}?text=${encodedMessage}`;
+
+    window.open(waUrl, '_blank');
+  };
+
   return (
     <AnimatePresence>
       {show && (
@@ -67,19 +85,28 @@ export default function ModalPending({ show, onClose, booking  }) {
               <h2 className="text-xl text-black font-semibold mb-2">
                 Status: Tertunda
               </h2>
-              <p className="text-black mb-3">
+              <p className="text-black mb-1">
                Pembayaran kamu sedang diproses...
               </p>
-              <p className="text-black mb-6">
+              <p className="text-black mb-8">
                Silahkan hubungi admin
               </p>
+                
+              <div className="flex justify-center items-center gap-4">
                 <button
                   onClick={onClose}
                   className="bg-amber-200 text-black px-6 py-2 rounded-full hover:bg-amber-300 transition"
                 >
                   Tutup
                 </button>
+                <button
+                  onClick={handleContactAdmin}
+                  className="bg-green-200 text-black px-6 py-2 rounded-full hover:bg-green-300 transition"
+                >
+                  Admin
+                </button>
               </div>
+            </div>
           </motion.div>
         </motion.div>
       )}
