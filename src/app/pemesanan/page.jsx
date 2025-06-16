@@ -3,34 +3,47 @@
 import { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import Header_katalog from '../../../components/hero/HeaderKatalog';
+
+
+
+
 import PaketSection from '../../../components/hero/PaketSection';
 import Footer from '../../../components/hero/Footer';
 import { getTourPackages } from '../lib/api';
+
 
 export default function KatalogPemesanan() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [tourPackages, setTourPackages] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchTourPackages = async () => {
       try {
-        const data = await getTourPackages();
-        const withToken = data.map((item) => {
-          const token = uuidv4();
-          return { ...item, token };
-        });
+        const response = await fetch("http://localhost:8000/api/packages");
+        const data = await response.json();
+
+
+
+
+        const withToken = data.map((item) => ({
+          ...item,
+          token: uuidv4(),
+        }));
         const tokenMap = withToken.reduce((acc, item) => {
           acc[item.token] = item.slug;
           return acc;
         }, {});
-        localStorage.setItem('tokenSlugMap', JSON.stringify(tokenMap));
+        localStorage.setItem("tokenSlugMap", JSON.stringify(tokenMap));
         setTourPackages(withToken);
       } catch (error) {
         console.error("Error fetching tour packages:", error);
       }
     };
-    fetchData();
+
+    
+    fetchTourPackages();
   }, []);
+  
 
   return (
     <main className="bg-white text-gray-800 font-sans">
@@ -49,6 +62,8 @@ export default function KatalogPemesanan() {
           ))}
         </nav>
       )}
+      <HeaderKatalog currentStep={1} />
+      {menuOpen && <MobileMenu onClose={() => setMenuOpen(false)} />}
       <PaketSection tourPackages={tourPackages} />
       <Footer />
     </main>
