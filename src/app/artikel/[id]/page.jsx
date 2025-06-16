@@ -1,17 +1,17 @@
 "use client";
 
 import { use, useState, useEffect } from "react";
-import Footer from "../../../../components/hero/Footer";
-import ArtikelHeader from "../../../../components/Artikel/ArtikelHeader";
-import ArtikelContent from "../../../../components/artikel/ArtikelContent";
-import ArtikelGambar from "../../../../components/Artikel/ArtikelGambar";
-import ArtikelTerkait from "../../../../components/artikel/ArtikelTerkait";
-import LoadingOrError from "../../../../components/artikel/LoadingOrError";
+import Footer from "@/components/hero/Footer";
+import ArtikelHeader from "@/components/Artikel/ArtikelHeader";
+import ArtikelContent from "@/components/Artikel/ArtikelContent";
+import ArtikelGambar from "@/components/Artikel/ArtikelGambar";
+import ArtikelTerkait from "@/components/artikel/ArtikelTerkait";
+import LoadingOrError from "@/components/artikel/LoadingOrError";
 import { getPublishedArticles } from "@/app/lib/api";
 
 
 export default function ArtikelDetail({ params }) {
-  const { id } = use(params); // unwrap params Promise
+  const { id } = params; 
 
   const [article, setArticle] = useState(null);
   const [relatedArticles, setRelatedArticles] = useState([]);
@@ -33,7 +33,7 @@ export default function ArtikelDetail({ params }) {
     const fetchData = async () => {
       try {
         const res = await fetch(
-          `http://127.0.0.1:8000/api/content-generate/article/${id}`
+          `https://tpapi.siunjaya.id/api/content-generate/article/${id}`
         );
         if (!res.ok) throw new Error("Gagal mengambil artikel");
         const data = await res.json();
