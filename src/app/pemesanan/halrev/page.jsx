@@ -6,8 +6,8 @@ import StepIndicator from "@/components/harlev/StepIndicator";
 import BackToFormLink from "@/components/harlev/BackToFormLink";
 import PaymentModal from "@/components/harlev/PaymentModal";
 import PaketForms from "@/components/hero/PaketForms";
-import ReviewSummary from "@/components/harlev/ReviewSummary";
-import ReviewLoading from "@/components/harlev/ReviewLoading";
+import ReviewSummary from "@/components/ReviewSummary";
+import ReviewLoading from "@/components/ReviewLoading";
 import { createBooking, cancelBooking } from "../../lib/api";
 
 export default function ReviewPage() {
