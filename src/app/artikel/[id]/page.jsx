@@ -9,7 +9,7 @@ import ArtikelContent from "@/components/Artikel/ArtikelContent";  // Folder 'Ar
 import ArtikelGambar from "@/components/Artikel/ArtikelGambar";    // Folder 'Artikel' (A besar) -> BENAR
 import ArtikelTerkait from "@/components/Artikel/ArtikelTerkait";  // Diperbaiki ke 'Artikel' (A besar) -> BENAR
 import LoadingOrError from "@/components/Artikel/LoadingOrError";  // Diperbaiki ke 'Artikel' (A besar) -> BENAR
-import { getPublishedArticles } from "@/app/lib/api";
+import { getPublishedArticles } from "../../lib/api"; // Pastikan path ini benar sesuai struktur folder
 
 
 export default function ArtikelDetail({ params }) {
