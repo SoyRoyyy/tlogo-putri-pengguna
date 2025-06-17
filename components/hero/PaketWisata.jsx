@@ -1,14 +1,22 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import ModalMaintenance from "../modalpending";
+
 const PaketWisata = ({
   tourPackages,
   setIsPopupOpen,
   setPopupImageIndex,
   handleOpenPopup,
 }) => {
+  const router = useRouter();
   const [showModal, setShowModal] = useState(false);
+
+  const handlePesan = (token) => {
+    localStorage.setItem("selectedToken", token);
+    router.push(`/pemesanan/form?token=${encodeURIComponent(token)}`);
+  };
 
   return (
     <section className="px-6 py-14 bg-gray-50" id="paket">
@@ -17,18 +25,20 @@ const PaketWisata = ({
           Paket Wisata Populer
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-          {tourPackages.map((paket) => (
+          {tourPackages.map((paket, idx) => (
             <div
-              key={paket.id}
-              className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
+              key={paket.id ?? idx}
+              className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 transform transition duration-300 hover:scale-[1.03] hover:shadow-2xl cursor-pointer flex flex-col"
             >
-              <Image
-                src={`/images/paket/${paket.image}`}
-                alt={paket.package_name}
-                width={400}
-                height={250}
-                className="w-full h-56 object-cover rounded-t-xl"
-              />
+              <div className="relative w-full h-48 sm:h-56 overflow-hidden rounded-t-xl group">
+                <Image
+                  src={`/images/paket/${paket.image}`}
+                  alt={paket.package_name}
+                  fill
+                  style={{ objectFit: "cover" }}
+                  className="transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
               <div className="p-6 flex flex-col flex-grow justify-between">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-xl font-semibold text-black tracking-tight">
@@ -48,9 +58,8 @@ const PaketWisata = ({
                     Rp {paket.price.toLocaleString("id-ID")}
                   </div>
                   <button
-                    onClick={() => setShowModal(true)}
-                    className="bg-[#3D6CB9] text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition-colors font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
-                    aria-label={`Pesan ${paket.package_name} Sekarang`}
+                    onClick={() => handlePesan(paket.token)}
+                    className="bg-[#3D6CB9] text-white px-5 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 font-medium shadow-md"
                   >
                     Pesan Sekarang
                   </button>
@@ -59,12 +68,6 @@ const PaketWisata = ({
             </div>
           ))}
         </div>
-
-        {/* Modal muncul jika showModal true */}
-        <ModalMaintenance
-          show={showModal}
-          onClose={() => setShowModal(false)}
-        />
       </div>
     </section>
   );

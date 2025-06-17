@@ -6,16 +6,14 @@ export default function UlasanPengguna() {
       text: "Perjalanan jeep di sini benar-benar luar biasa! Pemandangan alamnya sangat memukau dan pemandu sangat profesional.",
       user: "Rina S.",
       date: "Minggu, 18 Mei 2025",
-      imageUrl:
-        "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
+      imageUrl: "https://maps.app.goo.gl/tWrTFhXvd2xg5k5g7",
       rating: 5,
     },
     {
       text: "Seru dan menantang, sangat cocok untuk yang suka petualangan off-road. Jeep nya terawat dan nyaman.",
       user: "Agus W.",
       date: "Sabtu, 10 Mei 2025",
-      imageUrl:
-        "https://images.unsplash.com/photo-1518173946689-2a0d8e8e03f9?auto=format&fit=crop&w=400&q=80",
+      imageUrl: "https://maps.app.goo.gl/LfWPDvgRxuoAosoi9",
       rating: 5,
     },
     {

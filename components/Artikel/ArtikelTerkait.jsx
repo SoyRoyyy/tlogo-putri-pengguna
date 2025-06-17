@@ -20,7 +20,7 @@ const ArtikelTerkait = ({ relatedArticles, formatTanggal }) => {
             <div className="relative w-28 h-20 flex-shrink-0">
               {relatedArticle.gambar ? (
                 <img
-                  src={`http://127.0.0.1:8000/storage/gambar/${relatedArticle.gambar}`}
+                  src={`https://tpapi.siunjaya.id/storage/gambar/${relatedArticle.gambar}`}
                   alt={relatedArticle.judul}
                   className="object-cover w-full h-full absolute inset-0"
                 />
