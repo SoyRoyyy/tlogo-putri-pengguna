@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -8,7 +9,7 @@ import PaymentModal from "@/components/harlev/PaymentModal";
 import PaketForms from "@/components/hero/PaketForms";
 import ReviewSummary from "@/components/ReviewSummary";
 import ReviewLoading from "@/components/ReviewLoading";
-import { createBooking, cancelBooking } from "../../lib/api";
+import { createBooking, cancelBooking, getBookingByOrderId } from "../../lib/api";
 
 export default function ReviewPage() {
   const [data, setData] = useState(null);
@@ -57,15 +58,50 @@ export default function ReviewPage() {
     const existingOrderId = localStorage.getItem("order_id");
     const existingSnapToken = localStorage.getItem("snap_token");
 
+    const normalizeOrderId = (orderId) => {
+          const parts = orderId.split("-");
+          if (parts.length >= 3) {
+            return parts.slice(0, 3).join("-");
+          }
+          return orderId;
+    };
+
+    const handleSnapSuccess = async (result) => {
+      localStorage.clear(); 
+      const normalizedOrderId = normalizeOrderId(result.order_id);
+
+      try {
+        const booking = await getBookingByOrderId(normalizedOrderId);
+        localStorage.setItem("pending_booking", JSON.stringify(booking));
+        
+        if ((booking.booking_status === 'pending' && booking.payment_status === 'unpaid') || booking.booking_status === 'settlement' && booking.payment_status === 'unpaid'){
+          setTimeout(() => {
+            window.location.href = '/pemesanan/pending';
+          }, 1000);
+        } else {
+          setTimeout(() => {
+            window.location.href = '/pemesanan/success';
+          }, 1000);
+        }
+      } catch (error) {
+           setTimeout(() => {
+          window.location.href = '/pemesanan/pending';
+        }, 1000);
+      }
+    };
+
     const triggerSnap = (snapToken) => {
       if (!window.snap?.pay) return alert("Midtrans belum dimuat");
 
       setIsSnapLoading(true);
       window.snap.pay(snapToken, {
         onSuccess(result) {
-          console.log("Pembayaran berhasil:", result);
-          localStorage.clear();
-          setTimeout(() => (window.location.href = "/pemesanan/success"), 1000);
+
+           handleSnapSuccess(result);
+          // console.log('Pembayaran berhasil:', result);
+          // localStorage.clear();
+          // setTimeout(() => window.location.href = '/pemesanan/success', 1000);
+
         },
         onPending(result) {
           console.log("Menunggu pembayaran:", result);

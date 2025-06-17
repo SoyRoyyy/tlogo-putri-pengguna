@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-import { fetchRemainingPayment, remainingPayment } from "../../src/app/lib/api";
+import { fetchRemainingPayment, remainingPayment, getBookingByOrderId } from "../../src/app/lib/api";
 
 
 const encryptText = (text) => btoa(text);
@@ -43,21 +43,54 @@ useEffect(() => {
   fetchData();
 }, [order_id]);
 
+ const normalizeOrderId = (orderId) => {
+          const parts = orderId.split("-");
+          if (parts.length >= 3) {
+            return parts.slice(0, 3).join("-");
+          }
+          return orderId;
+    }
+const handleSnapSuccess = async (result) => {
+      // localStorage.clear();
+      localStorage.removeItem('snap_token'); 
+      const normalizedOrderId = normalizeOrderId(result.order_id);
+
+      try {
+        const booking = await getBookingByOrderId(normalizedOrderId);
+        localStorage.setItem("pending_booking", JSON.stringify(booking));
+        
+        if ((booking.booking_status === 'pending' && booking.payment_status === 'unpaid') || booking.booking_status === 'settlement' && booking.payment_status === 'unpaid'){
+          setTimeout(() => {
+            window.location.href = '/pemesanan/pending';
+          }, 1000);
+        } else {
+          setTimeout(() => {
+            window.location.href = '/pemesanan/success';
+          }, 1000);
+        }
+      } catch (error) {
+           setTimeout(() => {
+          window.location.href = '/pemesanan/pending';
+        }, 1000);
+      }
+    };
+
 const handleBayar = async () => {
   setIsSnapLoading(true);
 
   try {
     const result = await remainingPayment(order_id);
     console.log(result);
-
+    
     localStorage.setItem("snap_token", result.snap_token);
     localStorage.setItem("order_id", result.order.order_id);
 
     window.snap.pay(result.snap_token, {
       onSuccess(result) {
-        console.log("Pembayaran berhasil:", result);
-        localStorage.clear();
-        setTimeout(() => (window.location.href = "/pemesanan/success"), 1000);
+         handleSnapSuccess(result);
+        // localStorage.clear();
+        // console.log("Pembayaran berhasil:", result);
+        // setTimeout(() => (window.location.href = "/pemesanan/success"), 1000);
       },
       onPending(result) {
         console.log("Menunggu pembayaran:", result);
