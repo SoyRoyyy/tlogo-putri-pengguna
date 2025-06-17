@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FiArrowLeftCircle } from "react-icons/fi";
-import ArticleCard from "../../../components/hero/ArtikelCard";
+import ArticleCard from "@/components/hero/ArtikelCard";
 import { getPublishedArticles } from "../lib/api";
 
 

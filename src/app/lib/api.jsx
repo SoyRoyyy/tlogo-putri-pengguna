@@ -2,7 +2,7 @@
 //FILE INI UNTUK MENGHUBUNGKAN KE API GUNAKAN INI UNTUK SETIAP REQUEST KE API UNTUK SEMUA DATA YANG DIBUTUHKAN
 export async function getTourPackages() {
   try {
-    const response = await fetch("http://127.0.0.1:8000/api/packages", {
+    const response = await fetch("https://tpapi.siunjaya.id/api/packages", {
       cache: "no-store", 
     });
     if (!response.ok) {
@@ -18,7 +18,7 @@ export async function getTourPackages() {
  
 export async function getPackageBySlug(slug) {
   try {
-    const res = await fetch(`http://localhost:8000/api/packages/${encodeURIComponent(slug)}`);
+    const res = await fetch(`https://tpapi.siunjaya.id/api/packages/${encodeURIComponent(slug)}`);
     const data = await res.json();
     if (!data.error) {
       return data;
@@ -34,7 +34,7 @@ export async function getPackageBySlug(slug) {
 export async function getPublishedArticles() {
   try {
     const response = await fetch(
-      "http://127.0.0.1:8000/api/content-generate/articleterbit"
+      "https://tpapi.siunjaya.id/api/content-generate/articleterbit"
     );
 
     if (!response.ok) {
@@ -53,7 +53,7 @@ export async function getPublishedArticles() {
   }
 }
 
-const BASE_URL = "http://localhost:8000/api";
+const BASE_URL = "https://tpapi.siunjaya.id/api";
 
 export async function createBooking(payload) {
   try {
@@ -139,3 +139,9 @@ export async function remainingPayment(order_id) {
     throw err;
   }
 }
+
+
+
+
+
+
