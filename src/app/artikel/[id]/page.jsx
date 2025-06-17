@@ -1,19 +1,15 @@
 "use client";
 
-// KODE FINAL - GANTI SEMUA IMPORT LAMA DENGAN INI
-
 import { useState, useEffect } from "react";
-import Footer from "@/components/hero/Footer";                  // Folder 'hero' (h kecil) -> BENAR
-import ArtikelHeader from "@/components/Artikel/ArtikelHeader";    // Folder 'Artikel' (A besar) -> BENAR
-import ArtikelContent from "@/components/Artikel/ArtikelContent";  // Folder 'Artikel' (A besar) -> BENAR
-import ArtikelGambar from "@/components/Artikel/ArtikelGambar";    // Folder 'Artikel' (A besar) -> BENAR
-import ArtikelTerkait from "@/components/Artikel/ArtikelTerkait";  // Diperbaiki ke 'Artikel' (A besar) -> BENAR
-import LoadingOrError from "@/components/Artikel/LoadingOrError";  // Diperbaiki ke 'Artikel' (A besar) -> BENAR
-import { getPublishedArticles } from "../../lib/api"; // Pastikan path ini benar sesuai struktur folder
-
+import Footer from "@/components/hero/Footer";
+import ArtikelHeader from "@/components/Artikel/ArtikelHeader";
+import ArtikelContent from "@/components/Artikel/ArtikelContent";
+import ArtikelTerkait from "@/components/Artikel/ArtikelTerkait";
+import LoadingOrError from "@/components/Artikel/LoadingOrError";
+import { getPublishedArticles } from "../../lib/api";
 
 export default function ArtikelDetail({ params }) {
-  const { id } = params; 
+  const { id } = params;
 
   const [article, setArticle] = useState(null);
   const [relatedArticles, setRelatedArticles] = useState([]);
@@ -63,8 +59,8 @@ export default function ArtikelDetail({ params }) {
   }, [id]);
 
   return (
-    <>
-      <div className="mx-auto max-w-screen-xl px-[200px] py-6">
+    <div className="bg-white text-gray-900 min-h-screen flex flex-col">
+      <div className="mx-auto w-full max-w-screen-xl px-6 md:px-12 py-6">
         <div className="mb-2">
           <img src="/images/image.png" alt="Logo" className="w-16 h-auto" />
         </div>
@@ -76,7 +72,6 @@ export default function ArtikelDetail({ params }) {
           <>
             <ArtikelHeader title={article.judul} />
             <ArtikelContent article={article} />
-            <ArtikelGambar gambar={article.gambar} />
             <ArtikelTerkait
               relatedArticles={relatedArticles}
               formatTanggal={formatTanggal}
@@ -85,6 +80,6 @@ export default function ArtikelDetail({ params }) {
         )}
       </div>
       <Footer />
-    </>
+    </div>
   );
 }

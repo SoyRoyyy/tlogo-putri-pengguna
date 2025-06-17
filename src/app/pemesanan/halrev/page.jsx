@@ -73,19 +73,26 @@ export default function ReviewPage() {
       try {
         const booking = await getBookingByOrderId(normalizedOrderId);
         localStorage.setItem("pending_booking", JSON.stringify(booking));
-        
-        if ((booking.booking_status === 'pending' && booking.payment_status === 'unpaid') || booking.booking_status === 'settlement' && booking.payment_status === 'unpaid'){
+
+        if (
+          (booking.booking_status === "pending" &&
+            booking.payment_status === "unpaid") ||
+          (booking.booking_status === "settlement" &&
+            booking.payment_status === "unpaid")
+        ) {
           setTimeout(() => {
-            window.location.href = '/pemesanan/pending';
+            window.location.href = "/pemesanan/pending";
           }, 1000);
         } else {
+          // Clear localStorage di sini sebelum redirect ke success
+          localStorage.clear();
           setTimeout(() => {
-            window.location.href = '/pemesanan/success';
+            window.location.href = "/pemesanan/success";
           }, 1000);
         }
       } catch (error) {
-           setTimeout(() => {
-          window.location.href = '/pemesanan/pending';
+        setTimeout(() => {
+          window.location.href = "/pemesanan/pending";
         }, 1000);
       }
     };
