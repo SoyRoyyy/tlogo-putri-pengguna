@@ -68,14 +68,23 @@ export default function ReviewPage() {
     const existingOrderId = localStorage.getItem('order_id');
     const existingSnapToken = localStorage.getItem('snap_token');
 
+    const normalizeOrderId = (orderId) => {
+          const parts = orderId.split("-");
+          if (parts.length >= 3) {
+            return parts.slice(0, 3).join("-");
+          }
+          return orderId;
+    };
+
     const handleSnapSuccess = async (result) => {
-      localStorage.clear();
+      localStorage.clear(); 
+      const normalizedOrderId = normalizeOrderId(result.order_id);
 
       try {
-        const booking = await getBookingByOrderId(result.order_id);
+        const booking = await getBookingByOrderId(normalizedOrderId);
         localStorage.setItem("pending_booking", JSON.stringify(booking));
         
-        if (booking.booking_status === 'pending') {
+        if ((booking.booking_status === 'pending' && booking.payment_status === 'unpaid') || booking.booking_status === 'settlement' && booking.payment_status === 'unpaid'){
           setTimeout(() => {
             window.location.href = '/pemesanan/pending';
           }, 1000);

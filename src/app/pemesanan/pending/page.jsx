@@ -44,7 +44,7 @@ export default function SuccessPending() {
         booking={booking}
         show={showPendingModal}
         onClose={() => {
-          localStorage.removeItem("pending_booking"); 
+          localStorage.clear(); 
           setShowPendingModal(false);
           router.push('/');
         }}
