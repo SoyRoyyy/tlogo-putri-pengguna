@@ -43,37 +43,37 @@ useEffect(() => {
   fetchData();
 }, [order_id]);
 
- const normalizeOrderId = (orderId) => {
-          const parts = orderId.split("-");
-          if (parts.length >= 3) {
-            return parts.slice(0, 3).join("-");
-          }
-          return orderId;
-    }
-const handleSnapSuccess = async (result) => {
-      // localStorage.clear();
-      localStorage.removeItem('snap_token'); 
-      const normalizedOrderId = normalizeOrderId(result.order_id);
+// const normalizeOrderId = (orderId) => {
+//           const parts = orderId.split("-");
+//           if (parts.length >= 3) {
+//             return parts.slice(0, 3).join("-");
+//           }
+//           return orderId;
+//     }
+// const handleSnapSuccess = async (result) => {
+//       // localStorage.clear();
+//       localStorage.removeItem('snap_token'); 
+//       const normalizedOrderId = normalizeOrderId(result.order_id);
 
-      try {
-        const booking = await getBookingByOrderId(normalizedOrderId);
-        localStorage.setItem("pending_booking", JSON.stringify(booking));
+//       try {
+//         const booking = await getBookingByOrderId(normalizedOrderId);
+//         localStorage.setItem("pending_booking", JSON.stringify(booking));
         
-        if ((booking.booking_status === 'pending' && booking.payment_status === 'unpaid') || booking.booking_status === 'settlement' && booking.payment_status === 'unpaid'){
-          setTimeout(() => {
-            window.location.href = '/pemesanan/pending';
-          }, 1000);
-        } else {
-          setTimeout(() => {
-            window.location.href = '/pemesanan/success';
-          }, 1000);
-        }
-      } catch (error) {
-           setTimeout(() => {
-          window.location.href = '/pemesanan/pending';
-        }, 1000);
-      }
-    };
+//         if ((booking.booking_status === 'pending' && booking.payment_status === 'unpaid') || booking.booking_status === 'settlement' && booking.payment_status === 'unpaid'){
+//           setTimeout(() => {
+//             window.location.href = '/pemesanan/pending';
+//           }, 1000);
+//         } else {
+//           setTimeout(() => {
+//             window.location.href = '/pemesanan/success';
+//           }, 1000);
+//         }
+//       } catch (error) {
+//            setTimeout(() => {
+//           window.location.href = '/pemesanan/pending';
+//         }, 1000);
+//       }
+//     };
 
 const handleBayar = async () => {
   setIsSnapLoading(true);
@@ -88,9 +88,9 @@ const handleBayar = async () => {
     window.snap.pay(result.snap_token, {
       onSuccess(result) {
          handleSnapSuccess(result);
-        // localStorage.clear();
-        // console.log("Pembayaran berhasil:", result);
-        // setTimeout(() => (window.location.href = "/pemesanan/success"), 1000);
+        localStorage.clear();
+        console.log("Pembayaran berhasil:", result);
+        setTimeout(() => (window.location.href = "/pemesanan/success"), 1000);
       },
       onPending(result) {
         console.log("Menunggu pembayaran:", result);
