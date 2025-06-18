@@ -260,44 +260,44 @@ export default function ReviewPage() {
     const existingOrderId = localStorage.getItem("order_id");
     const existingSnapToken = localStorage.getItem("snap_token");
 
-    const normalizeOrderId = (orderId) => {
-          const parts = orderId.split("-");
-          if (parts.length >= 3) {
-            return parts.slice(0, 3).join("-");
-          }
-          return orderId;
-    };
+    // const normalizeOrderId = (orderId) => {
+    //       const parts = orderId.split("-");
+    //       if (parts.length >= 3) {
+    //         return parts.slice(0, 3).join("-");
+    //       }
+    //       return orderId;
+    // };
 
-    const handleSnapSuccess = async (result) => {
-      localStorage.clear(); 
-      const normalizedOrderId = normalizeOrderId(result.order_id);
+    // const handleSnapSuccess = async (result) => {
+    //   localStorage.clear(); 
+    //   const normalizedOrderId = normalizeOrderId(result.order_id);
 
-      try {
-        const booking = await getBookingByOrderId(normalizedOrderId);
-        localStorage.setItem("pending_booking", JSON.stringify(booking));
+    //   try {
+    //     const booking = await getBookingByOrderId(normalizedOrderId);
+    //     localStorage.setItem("pending_booking", JSON.stringify(booking));
 
-        if (
-          (booking.booking_status === "pending" &&
-            booking.payment_status === "unpaid") ||
-          (booking.booking_status === "settlement" &&
-            booking.payment_status === "unpaid")
-        ) {
-          setTimeout(() => {
-            window.location.href = "/pemesanan/pending";
-          }, 1000);
-        } else {
-          // Clear localStorage di sini sebelum redirect ke success
-          localStorage.clear();
-          setTimeout(() => {
-            window.location.href = "/pemesanan/success";
-          }, 1000);
-        }
-      } catch (error) {
-        setTimeout(() => {
-          window.location.href = "/pemesanan/pending";
-        }, 1000);
-      }
-    };
+    //     if (
+    //       (booking.booking_status === "pending" &&
+    //         booking.payment_status === "unpaid") ||
+    //       (booking.booking_status === "settlement" &&
+    //         booking.payment_status === "unpaid")
+    //     ) {
+    //       setTimeout(() => {
+    //         window.location.href = "/pemesanan/pending";
+    //       }, 1000);
+    //     } else {
+    //       // Clear localStorage di sini sebelum redirect ke success
+    //       localStorage.clear();
+    //       setTimeout(() => {
+    //         window.location.href = "/pemesanan/success";
+    //       }, 1000);
+    //     }
+    //   } catch (error) {
+    //     setTimeout(() => {
+    //       window.location.href = "/pemesanan/pending";
+    //     }, 1000);
+    //   }
+    // };
 
     const triggerSnap = (snapToken) => {
       if (!window.snap?.pay) return alert("Midtrans belum dimuat");
@@ -306,10 +306,10 @@ export default function ReviewPage() {
       window.snap.pay(snapToken, {
         onSuccess(result) {
 
-           handleSnapSuccess(result);
-          // console.log('Pembayaran berhasil:', result);
-          // localStorage.clear();
-          // setTimeout(() => window.location.href = '/pemesanan/success', 1000);
+          //  handleSnapSuccess(result);
+          console.log('Pembayaran berhasil:', result);
+          localStorage.clear();
+          setTimeout(() => window.location.href = '/pemesanan/success', 1000);
 
         },
         onPending(result) {

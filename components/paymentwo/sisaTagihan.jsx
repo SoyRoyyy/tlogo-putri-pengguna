@@ -87,7 +87,7 @@ const handleBayar = async () => {
 
     window.snap.pay(result.snap_token, {
       onSuccess(result) {
-         handleSnapSuccess(result);
+        //  handleSnapSuccess(result);
         localStorage.clear();
         console.log("Pembayaran berhasil:", result);
         setTimeout(() => (window.location.href = "/pemesanan/success"), 1000);
