@@ -178,7 +178,7 @@ export default function KatalogPemesanan() {
   useEffect(() => {
     const fetchTourPackages = async () => {
       try {
-        const response = await fetch('hhttps://tpapi.siunjaya.id/api/packages');
+        const response = await fetch('https://tpapi.siunjaya.id/api/packages');
         const data = await response.json();
 
         if (!Array.isArray(data)) {

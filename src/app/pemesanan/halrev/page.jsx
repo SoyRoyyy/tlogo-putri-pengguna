@@ -271,7 +271,6 @@ export default function ReviewPage() {
     // const handleSnapSuccess = async (result) => {
     //   localStorage.clear(); 
     //   const normalizedOrderId = normalizeOrderId(result.order_id);
-
     //   try {
     //     const booking = await getBookingByOrderId(normalizedOrderId);
     //     localStorage.setItem("pending_booking", JSON.stringify(booking));
@@ -298,6 +297,7 @@ export default function ReviewPage() {
     //     }, 1000);
     //   }
     // };
+
 
     const triggerSnap = (snapToken) => {
       if (!window.snap?.pay) return alert("Midtrans belum dimuat");

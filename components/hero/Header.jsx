@@ -30,7 +30,7 @@ export default function Header() {
         {/* Navigasi Desktop */}
         <nav className="hidden md:block">
           <ul className="flex space-x-6 font-semibold text-black text-lg">
-            {["home", "fasilitas", "paket", "artikel", "about"].map((item) => {
+            {["Beranda", "fasilitas", "paket", "artikel", "Tentang"].map((item) => {
               const isArtikel = item === "artikel";
               return (
                 <li key={item} className="relative group">

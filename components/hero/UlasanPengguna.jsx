@@ -1,29 +1,28 @@
 "use client";
 
+import { FcGoogle } from "react-icons/fc";
+
 export default function UlasanPengguna() {
   const reviews = [
     {
       text: "Perjalanan jeep di sini benar-benar luar biasa! Pemandangan alamnya sangat memukau dan pemandu sangat profesional.",
       user: "Rina S.",
       date: "Minggu, 18 Mei 2025",
-      imageUrl:
-        "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
+      imageUrl: "/images/Ulasan/1.jpg",
       rating: 5,
     },
     {
       text: "Seru dan menantang, sangat cocok untuk yang suka petualangan off-road. Jeep nya terawat dan nyaman.",
       user: "Agus W.",
       date: "Sabtu, 10 Mei 2025",
-      imageUrl:
-        "https://images.unsplash.com/photo-1518173946689-2a0d8e8e03f9?auto=format&fit=crop&w=400&q=80",
+      imageUrl: "/images/Ulasan/2.jpg",
       rating: 5,
     },
     {
       text: "Layanan sangat ramah dan membantu. Jalur jeep melewati spot yang sangat instagramable. Saya sangat rekomendasikan!",
       user: "Sari M.",
       date: "Senin, 20 Mei 2025",
-      imageUrl:
-        "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=400&q=80",
+      imageUrl: "/images/Ulasan/3.jpg",
       rating: 5,
     },
   ];
@@ -81,21 +80,17 @@ export default function UlasanPengguna() {
 
               {/* Logo Google + teks */}
               <div className="flex items-center gap-3 mb-6">
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-                  alt="Google Logo"
-                  className="w-7 h-7"
-                />
+                <FcGoogle className="w-7 h-7" />
                 <span className="text-gray-700 font-medium tracking-wide">
                   Google
                 </span>
               </div>
 
-              {/* Gambar ulasan */}
+              {/* Gambar ulasan dengan ukuran sama */}
               <img
                 src={review.imageUrl}
                 alt={`Gambar ulasan oleh ${review.user}`}
-                className="rounded-2xl w-full object-cover shadow-md"
+                className="rounded-2xl w-full h-48 object-cover shadow-md"
                 loading="lazy"
               />
             </article>
