@@ -2,7 +2,7 @@ const ArtikelGambar = ({ gambar }) => {
   if (!gambar) return null;
   const src = gambar.startsWith("http")
     ? gambar
-    : `https://tpapi.siunjaya.id/storage/gambar/${gambar}`;
+    : `https://tpapi.siunjaya.id/gambar/${gambar}`;
   return (
     <img
       src={src}

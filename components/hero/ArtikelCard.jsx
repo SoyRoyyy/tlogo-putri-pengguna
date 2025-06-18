@@ -10,7 +10,7 @@ export default function ArticleCard({ article }) {
       onClick={() => router.push(`/artikel/${article.id}`)}
     >
       <img
-        src={`https://tpapi.siunjaya.id/storage/gambar/${article.gambar}`}
+        src={`https://tpapi.siunjaya.id/gambar/${article.gambar}`}
         alt={article.gambar}
         width={500}
         height={300}
@@ -18,7 +18,7 @@ export default function ArticleCard({ article }) {
       />
       <div className="p-6 flex-1 flex flex-col justify-between">
         <div>
-          <h3 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">
+          <h3 className="text-lg font-semibold text--800 mb-2 line-clamp-2">
             {article.judul}
           </h3>
           <p
